@@ -259,25 +259,25 @@
 	<script type="text/javascript">
 	$(document).ready(function(){
 		$("#idIntSheet").submit(function(e){
-			e.preventDefault();//para di siya lumipat ng link
-			var formdata = $(this).serialize();//kukunin ko yung lahat ng laman ng form
-			console.log(formdata);//tinitingnan ko sa console yung laman
-			
-			if(confirm_inputs == true){
-				$.ajax({
-					url: "getIntSheetAnswers.php",
-					method: "POST",
-					data: {formdata,formdata},
-					success: function(data){
-						console.log(data);
-						window.location.href = 'donorrecords-tab.php';
-					}
-				});
-			}  else{
-				alert("Confirmation Cancelled");
-				return false;
-			}
-		});
+		 e.preventDefault();//para di siya lumipat ng link
+    var formdata = $(this).serialize();//kukunin ko yung lahat ng laman ng form
+    var confirm_inputs = confirm("Are you sure?");
+    console.log(formdata);//tinitingnan ko sa console yung laman
+    if(confirm_inputs == true){
+      $.ajax({
+        url: "getIntSheetAnswers.php",
+        method: "POST",
+        data: {formdata,formdata},
+        success: function(data){
+          console.log(data);
+          window.location.href = 'donorrecords-tab.php';
+        }
+      });
+    }  else{
+      alert("Confirmation Cancelled");
+      return false;
+    }
+  });
 
 	});
 	</script>
