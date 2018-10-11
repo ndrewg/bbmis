@@ -108,58 +108,60 @@
 							</div>
 						</div>
 					</div>
-					<div class="card mb-4" style="border-radius: 25px 25px 0px 0px">
-						<div class="card-header bg-danger text-white" style="border-radius: 25px 25px 0px 0px;">
-							<span class="float-left p-1">
-								Contact Information
-							</span>
-							<button class="btn btn-danger float-right p-1" title="Edit your contact information." data-toggle="modal" data-target="#modalContInfo">
-								<i class="fa fa-pen"></i>
-							</button>
-						</div>
+					<div class="card mb-4 border-0" style="border-radius: 25px 25px 0px 0px">
 						<div class="card-body">
-							<div class="row">
-								<div class="w-50 px-2 py-1 font-weight-bold">Phone Number:</div>
-								<div class="w-50 px-2 py-1">
-									<?php
-										echo $varContNo;
-									?>
+							<div class="card mb-4" style="border-radius: 25px 25px 0px 0px">
+								<div class="card-header bg-danger text-white" style="border-radius: 25px 25px 0px 0px;">
+									<span class="float-left p-1">
+										Contact Information
+									</span>
+									<button class="btn btn-danger float-right p-1" title="Edit your contact information." data-toggle="modal" data-target="#modalContInfo">
+										<i class="fa fa-pen"></i>
+									</button>
+								</div>
+								<div class="card-body">
+									<div class="row">
+										<div class="w-50 px-2 py-1 font-weight-bold">Phone Number:</div>
+										<div class="w-50 px-2 py-1">
+											<?php
+												echo $varContNo;
+											?>
+										</div>
+									</div>
+									<div class="row">
+										<div class="w-50 px-2 py-1 font-weight-bold">E-mail Address:</div>
+										<div class="w-50 px-2 py-1">
+											<?php
+												echo $varEmail;
+											?>
+										</div>
+									</div>
 								</div>
 							</div>
-							<div class="row">
-								<div class="w-50 px-2 py-1 font-weight-bold">E-mail Address:</div>
-								<div class="w-50 px-2 py-1">
-									<?php
-										echo $varEmail;
-									?>
+							<div class="card mb-4" style="border-radius: 25px 25px 0px 0px">
+								<div class="card-header bg-danger text-white" style="border-radius: 25px 25px 0px 0px;">
+									<span class="float-left p-1">
+										Account Credentials
+									</span>
+									<button class="btn btn-danger float-right p-1" title="Edit your account credentials." data-toggle="modal" data-target="#modalAccInfo">
+										<i class="fa fa-pen"></i>
+									</button>
 								</div>
-							</div>
-						</div>
-					</div>
-					<div class="card mb-4" style="border-radius: 25px 25px 0px 0px">
-						<div class="card-header bg-danger text-white" style="border-radius: 25px 25px 0px 0px;">
-							<span class="float-left p-1">
-								Donation Statistics
-							</span>
-							<button class="btn btn-danger float-right p-1">
-								<i class="fa fa-pen"></i>
-							</button>
-						</div>
-						<div class="card-body">
-							<div class="row">
-								<div class="w-50 px-2 py-1 font-weight-bold">Phone Number:</div>
-								<div class="w-50 px-2 py-1">
-									<?php
-										echo $varContNo;
-									?>
-								</div>
-							</div>
-							<div class="row">
-								<div class="w-50 px-2 py-1 font-weight-bold">E-mail Address:</div>
-								<div class="w-50 px-2 py-1">
-									<?php
-										echo $varEmail;
-									?>
+								<div class="card-body">
+									<div class="row">
+										<div class="w-50 px-2 py-1 font-weight-bold">Username:</div>
+										<div class="w-50 px-2 py-1">
+											<?php
+												echo $varUn;
+											?>
+										</div>
+									</div>
+									<div class="row">
+										<div class="w-50 px-2 py-1 font-weight-bold">Password:</div>
+										<div class="w-50 px-2 py-1">
+											**********
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -168,6 +170,7 @@
 				<?php
 					include "clientPersonalInfo.php";
 					include "clientContactInfo.php";
+					include "clientAccountInfo.php";
 				?>
 			</div>
 		</div>

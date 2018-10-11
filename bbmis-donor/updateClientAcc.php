@@ -124,32 +124,20 @@
 					WHERE intClientId = '$varDbId')");
 				
 				if($qryUpdateAccCred)	{
-					echo "
-						<script type='text/javascript'>
-							swal('Congratulations!', 'Your account credentials is updated!', 'success')
-							window.location.href = 'clientAcc.php'
-						</script>
-					";
+					//account credentials is updated!
+					echo "1";
 				}
 			}
 			
 			else	{
-				echo "
-					<script type='text/javascript'>
-						swal('Oh no.', 'Your new and confimation passwords does not match. Please try again.', 'error')
-						window.location.href = 'clientAcc.php'
-					</script>
-				";
+				//new and confimation passwords does not match.
+				echo "2";
 			}
 		}
 		
 		else	{
-			echo "
-				<script type='text/javascript'>
-					alert('Your recent password is incorrect. Please try again.')
-					window.location.href = 'clientAcc.php'
-				</script>
-			";
+			//recent password is incorrect
+			echo "3";
 		}
 	}
 ?>

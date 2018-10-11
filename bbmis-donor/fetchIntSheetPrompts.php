@@ -84,7 +84,7 @@
 			<script type='text/javascript'>
 				document.getElementById('spnStatus').innerHTML = 'Available';
 				document.getElementById('spnStatus').style.color = '#5CB85C';
-				swal('Good day!', 'Please answer the interview sheet to donate!', 'info');
+				swal('Good day!', 'Please answer the interview sheet to donate!', 'assets/gif/sample.gif');
 			</script>
 			<input type='submit' id='btnSbmAns' class='form-control btn btn-outline-danger m-auto btn-lg' value='Submit Answers' />
 		";

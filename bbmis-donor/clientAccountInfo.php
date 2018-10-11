@@ -2,7 +2,7 @@
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content" style='border-radius: 30px 30px 25px 25px;'>
 			<div class="modal-header bg-danger" style='border-radius: 25px 25px 0px 0px;'>
-				<i class="fa fa-phone p-2" style="color: white;"></i>
+				<i class="fa fa-key p-2" style="color: white;"></i>
 				<h5 class="modal-title text-white" style=" vertical-align: middle;">Personal Information</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true" class='text-white'>&times;</span>
@@ -10,18 +10,21 @@
 			</div>
 			<div class="modal-body">
 				<form method="POST" id="frmClientAccInfo">
-					<!-- Occupation -->
 					<div class="form-group">
-						<label for="lblContNo" class="col-form-label">Username</label>
-						<input type="text" class="form-control" name="txtNewContNo" value="<?php echo $varContNo;?>" required="required" />
+						<label for="lblUn" class="col-form-label">Username</label>
+						<input type="text" class="form-control" name="txtNewUn" value="<?php echo $varUn;?>" required="required" />
 					</div>
 					<div class="form-group">
-						<label for="lblEmail" class="col-form-label">Password</label>
-						<input type="text" class="form-control" name="txtNewEmail" value="<?php echo $varEmail;?>" required="required" />
+						<label for="lblOldPw" class="col-form-label">Password</label>
+						<input type="password" class="form-control" name="txtOldPw" required="required" />
 					</div>
 					<div class="form-group">
-						<label for="lblEmail" class="col-form-label">Confirm Password</label>
-						<input type="text" class="form-control" name="txtNewEmail" value="<?php echo $varEmail;?>" required="required" />
+						<label for="lblNewPw" class="col-form-label">Password</label>
+						<input type="password" class="form-control" name="txtNewPw" minlength=8 required="required" />
+					</div>
+					<div class="form-group">
+						<label for="lblConfNewPw" class="col-form-label">Confirm Password</label>
+						<input type="password" class="form-control" name="txtConfNewPw" minlength=8 required="required" />
 					</div>
 					
 					<div class="modal-footer pb-1">
@@ -34,6 +37,8 @@
 	</div>
 </div>
 <script>
+	var varCounter = 0;
+	
 	$("#btnAcc").click(function(e)	{
 		$("#frmClientAccInfo").submit(function(e){
 			e.preventDefault();
@@ -53,7 +58,7 @@
 						data:{formdata:formdata},
 						success:function(data)	{
 							console.log(data);
-							if(data == '4')	{
+							if(data == '1')	{
 								swal({
 									title: 'Got it!',
 									text: 'Your account information has been updated.',
@@ -61,6 +66,34 @@
 								}).then(() => {
 									$("#modalAccInfo").modal('hide');
 									window.location.href = 'clientProfile.php'
+								});
+							}
+							else if(data == '2')	{
+								swal({
+									title: 'Oops.',
+									text: 'Your password fields does not match. Please try again.',
+									icon: 'error'
+								}).then(() => {
+									varCounter++;
+									if(varCounter == 3)	{
+										swal('Oh no.', 'You entered the credentials wrong 3 consecutive times. Please try again later.', 'error');
+										$("#modalAccInfo").modal('hide');
+										varCounter = 0;
+									}
+								});
+							}
+							else if(data == '3')	{
+								swal({
+									title: 'Oops.',
+									text: 'Your current password is incorrect. Please try again.',
+									icon: 'error'
+								}).then(() => {
+									varCounter++;
+									if(varCounter == 3)	{
+										swal('Oh no.', 'You entered the credentials wrong 3 consecutive times. Please try again later.', 'error');
+										$("#modalAccInfo").modal('hide');
+										varCounter = 0;
+									}
 								});
 							}
 						}
