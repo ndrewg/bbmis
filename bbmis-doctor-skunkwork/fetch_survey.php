@@ -17,7 +17,7 @@
          include "fetchEmpAcc.php";
          include "employeeNavbar.php";
         ?>
-       <h5 style='color:rgb(250,250,250); font-family:"Nunito-Regular"; margin-top:10px;'>Blood Component</h5>
+       <h5 style='color:rgb(250,250,250); font-family:"Nunito-Regular"; margin-top:10px;'>Survey</h5>
      </div>
      <!-- SIDE NAVIGATION -->
      <?php
@@ -77,7 +77,7 @@
                           <td><input type = 'text' value = '<?php echo $type; ?>' name = 'type<?php echo $id; ?>' id='type<?php echo $id; ?>' readonly></td>
                           <td><input type = 'text' value = '<?php echo $category; ?>' name = 'category<?php echo $id;?>' id='category<?php echo $id; ?>' readonly></td>
                           <td>
-                            <button type='button' class='btn ml-2 btn-sm' data-toggle='modal' data-target='#editsurveyitem' data-id='<?php echo $row['intQuestionId'];?>'>Edit</button> <button type='button' class='btn btn-danger' data-id='<?php echo $row['intQuestionId'];?>'>Delete</button>
+                            <button type='button' class='btn' data-toggle='modal' data-target='#editsurveyitem' data-id='<?php echo $row['intQuestionId'];?>'>Edit</button> <button type='button' class='btn btn-danger' data-id='<?php echo $row['intQuestionId'];?>'>Delete</button>
                           </td>
                         </tr>
                       </tbody>
@@ -119,49 +119,52 @@
         </div>
 
         <div class="modal-body">
-          <div class="form-group">
-            <label for="editQuestion">Question</label>
-            <input type="hidden" name = "question_id" id = "question_id">
-            <input type="text" class="form-control" id='editQuestion' name ='editQuesion'>
-          </div>
-          <div class="form-group">
-            <label for="editquestiontype">Question Type</label>
-            <select id = "editquestiontype" name="editquestiontype" >
-              <option selected disabled>Select Question Type</option>
-              <option value = "Yn">Yes Or no</option>
-              <option value = "YnDate">Yes Or no & Date</option>
-              <option value = "YnQua">Yes Or no & Qua</option>
-              <option value = "YnStr">Yes Or no & Str</option>
-              <option value = "YnDateQua">Yes Or no & Date & Quantity</option>
-              <option value = "YnDateStr">Yes Or no & Date & String</option>
-              <option value = "YnQuaStr">Yes Or no & Quantity & String</option>
-              <option value = "YnDateQuaStr">Yes Or no & Date & Quatity & String</option>
-              <option value = "Date">Date</option>
-              <option value = "DateQua">Date & Quantity</option>
-              <option value = "DateStr">Date & String</option>
-              <option value = "DateQuaStr">Date & Quantity & String</option>
-              <option value = "Qua">Quantity</option>
-              <option value = "QuaStr">Quantity & String</option>
-              <option value = "Str">String</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="editquestioncategory">Question Category</label>
-            <select id = "editquestioncategory" name = 'editquestioncategory'>
-              <option selected disabled>Select Question Category</option>
-              <?php
-              //include("../connections.php");
-
-              $getcategories = mysqli_query($connections,"SELECT * FROM tblquestioncategory WHERE stfQuestionCategoryStatus = 'Active'");
-              while($row = mysqli_fetch_assoc($getcategories)){
-                $category = $row["stfQuestionCategory"];
-                ?>
-                <option value = "<?php echo $category;?>"><?php echo $category;?></option>
+          <div class="container-fluid">
+            <div class="form-group">
+              <label for="editQuestion">Question</label>
+              <input type="hidden" name = "question_id" id = "question_id">
+              <input type="text" class="form-control" id='editQuestion' name ='editQuesion'>
+            </div>
+            <div class="form-group">
+              <label for="editquestiontype">Question Type</label>
+              <select id = "editquestiontype" name="editquestiontype" >
+                <option selected disabled>Select Question Type</option>
+                <option value = "Yn">Yes Or no</option>
+                <option value = "YnDate">Yes Or no & Date</option>
+                <option value = "YnQua">Yes Or no & Qua</option>
+                <option value = "YnStr">Yes Or no & Str</option>
+                <option value = "YnDateQua">Yes Or no & Date & Quantity</option>
+                <option value = "YnDateStr">Yes Or no & Date & String</option>
+                <option value = "YnQuaStr">Yes Or no & Quantity & String</option>
+                <option value = "YnDateQuaStr">Yes Or no & Date & Quatity & String</option>
+                <option value = "Date">Date</option>
+                <option value = "DateQua">Date & Quantity</option>
+                <option value = "DateStr">Date & String</option>
+                <option value = "DateQuaStr">Date & Quantity & String</option>
+                <option value = "Qua">Quantity</option>
+                <option value = "QuaStr">Quantity & String</option>
+                <option value = "Str">String</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="editquestioncategory">Question Category</label>
+              <select id = "editquestioncategory" name = 'editquestioncategory'>
+                <option selected disabled>Select Question Category</option>
                 <?php
-              }
-              ?>
-            </select>
+                //include("../connections.php");
+
+                $getcategories = mysqli_query($connections,"SELECT * FROM tblquestioncategory WHERE stfQuestionCategoryStatus = 'Active'");
+                while($row = mysqli_fetch_assoc($getcategories)){
+                  $category = $row["stfQuestionCategory"];
+                  ?>
+                  <option value = "<?php echo $category;?>"><?php echo $category;?></option>
+                  <?php
+                }
+                ?>
+              </select>
+            </div>
           </div>
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -249,6 +252,7 @@
   <script type="text/javascript" src="js/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="js/dataTables.bootstrap4.min.js"></script>
   <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="js/notification.js"></script>
   <!-- <script type="text/javascript" src="js/dataTables.responsive.min.js"></script>
   <script type="text/javascript" src="js/responsive.bootstrap4.min.js"></script> -->
   <!-- <script type="text/javascript" src="../js/fetchsurvey.js"></script> -->
@@ -261,7 +265,7 @@
     saveeditedsurvey();
     var tr_number_add = 0;
     var deleted_rows = 0;
-
+    $('#surveytab').addClass("active");
     function editsurvey(){
       $('#editsurveyitem').on('show.bs.modal', function(e) {
         $("#save_changes").show();

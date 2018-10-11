@@ -253,6 +253,7 @@
   <script type="text/javascript" src="js/preservatives-tab.js"></script>
   <script type="text/javascript">
     $(function(){
+      $('#preservativetab').addClass("active");
       check_expiringbloodbags();
 
       function check_expiringbloodbags(){

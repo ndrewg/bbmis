@@ -25,7 +25,7 @@
 
 			<!-- END OF SIDE NAVIGATION -->
 			<div class="col-md-10 offset-md-2">
-				<div class="content-container">
+				<div class="content-container" style="padding-bottom: 50px">
 					<?php
 					include("connections.php");
 
@@ -94,7 +94,7 @@
 									</table>
 									<input type="hidden" name="hiddenclientid" value="<?php echo $client;?>" required>
 									<input type="hidden" name="hiddenexamcode" value="<?php echo $examcode;?>" required>
-									<Button type='submit' class='btn btn-success ml-1 right' id='updatesurvey_save'>Submit</button>
+									<Button type='submit' class='btn btn-outline-danger float-right' id='updatesurvey_save'>Submit</button>
 								</form>
 
 								<?php
