@@ -55,7 +55,7 @@ while($row = mysqli_fetch_array($result)) {  // preparing an array
 
 	 $sub_array[] =
 	 	'
-		<button type="button" class="btn-success" data-toggle="modal" data-target="#editstaffinfo" data-id="'.$row["intEmployeeId"].'" data-fname = "'.$row["strEmployeeFirstName"].'"
+		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#editstaffinfo" data-id="'.$row["intEmployeeId"].'" data-fname = "'.$row["strEmployeeFirstName"].'"
 		data-mname="'.$row["strEmployeeMiddleName"].'" data-lname="'.$row["strEmployeeLastName"].'" data-status="'.$row["stfEmployeeStatus"] .'"data-type="'.$row["stfEmployeeType"].'">Edit</button>
 	 	'; //<button type="button" name="delete" class="btn btn-danger fa fa-trash btn-sm btnDeleteCultureMedia" id="'.$row["intClientId"].'"></button>
 
