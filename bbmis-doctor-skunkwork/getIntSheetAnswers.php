@@ -1,6 +1,6 @@
 <?php
 	include "connections.php";
-parse_str($_POST["formdata"], $params);
+	parse_str($_POST["formdata"], $params);
 	$varDbId = $params["hidden_id"];
 
 	$qryQueId = mysqli_query($connections, "SELECT intQuestionId,intQuestionCategoryId FROM tblquestion WHERE boolVersionInUse = '1'");
@@ -13,7 +13,8 @@ parse_str($_POST["formdata"], $params);
 	}
 
 
-	mysqli_query($connections, "INSERT INTO tbldonation(intClientId,stfDonationRemarks,stfDonationStatus) VALUES('$varDbId','Incomplete','Unable')");
+	// mysqli_query($connections, "INSERT INTO tbldonation(intClientId,stfDonationRemarks,stfDonationStatus) VALUES('$varDbId','Incomplete','Unable')");
+	mysqli_query($connections, "INSERT INTO tbldonation(intClientId) VALUES('$varDbId')");
 
 	$donationidqry = mysqli_query($connections,"SELECT intDonationId FROM tbldonation WHERE intClientId = '$varDbId' AND stfDonationRemarks = 'Incomplete' ORDER BY intDonationId DESC LIMIT 1 OFFSET 0");
 
@@ -63,23 +64,27 @@ parse_str($_POST["formdata"], $params);
 		}
 	//	echo '<br />';
 
-if($varSex == 'Female'){
-		$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', '$varstatus')");
+		if($varSex == 'Female'){
+				$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', '$varstatus')");
+
+		if($varstatus == 'Wrong'){
+					mysqli_query($connections,"UPDATE tbldonation SET stfDonationRemarks = 'Complete' WHERE intDonationId = '$donation_id'");
+				}
+		}
+		
+		else if ($varSex == 'Male' AND $category == '3'){
+			$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', 'Correct')");
+
+		}
+		
+		else if ($varSex == 'Male' AND $category != '3') {
+
+			$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', '$varstatus')");
 
 		if($varstatus == 'Wrong'){
 			mysqli_query($connections,"UPDATE tbldonation SET stfDonationRemarks = 'Complete' WHERE intDonationId = '$donation_id'");
 		}
-}else if ($varSex == 'Male' AND $category == '3'){
-	$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', 'Correct')");
-
-}else if ($varSex == 'Male' AND $category != '3') {
-
-	$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', '$varstatus')");
-
-	if($varstatus == 'Wrong'){
-		mysqli_query($connections,"UPDATE tbldonation SET stfDonationRemarks = 'Complete' WHERE intDonationId = '$donation_id'");
-	}
-}
+		}
 
 	}
 ?>

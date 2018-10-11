@@ -1,0 +1,22 @@
+<div class='btn-group-toggle text-center w-100 form-group mb-sm-3' data-toggle='buttons'>
+	<label id='btnYn$varQueId' class='btn btn-outline-danger form-control col-4 mr-sm-2' value='Yes'>
+		<input type='radio' name='txtYn$varQueId' value='Yes' autocomplete='off' required='required' />Oo
+	</label>
+	<label id='btnYn$varQueId' class='btn btn-outline-danger form-control col-4' value='No'>
+		<input type='radio' name='txtYn$varQueId' value='No' autocomplete='off' required='required' />Hindi
+	</label>
+</div>
+
+<button class='btn btn-outline-success btn-lg mb-sm-3 col-12'>
+	<i class='fa fa-check fa-2x'></i>
+</button>
+<button class='btn btn-outline-danger btn-lg col-12'>
+	<i class='fa fa-times fa-2x'></i>
+</button>
+
+								<tr>
+									<td class='align-middle text-center' style='width: 10%;>Item No.</td>
+									<td class='align-middle text-center' style='width: 40%;>Question</td>
+									<td class='align-middle text-center' style='width: 50%;>Answers</td>
+									<td class='align-middle text-center' style='width: 10%;>Remarks</td>
+								</tr>
