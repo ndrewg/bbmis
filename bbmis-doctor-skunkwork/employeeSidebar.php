@@ -6,7 +6,7 @@
 
   <div class='container-fluid pt-3'>
     <div class='container text-center'>
-      <img src='../img/<?php echo $varImg ?>' class="img-fluid" alt="donor image" style="width:45px; border-radius:60px; margin-top:10px; vertical-align: center;">
+      <img src='../img/<?php echo $varImg ?>' class="img-fluid" alt="donor image" style="width:50px; height: 50px; border-radius:60px; margin-top:10px; vertical-align: center;">
     </div>
     <div class='container text-center'>
       <div class='container'>
@@ -43,7 +43,7 @@
       <a href="survey-tab.php" class="nav-link nav-item" id="surveytab"><i class="fas fa-file-alt mr-1"></i> Survey</a>
       <a href="category-tab.php" class="nav-link nav-item" id="surveycategorytab"><i class="far fa-file-alt"></i> Survey Category</a>
       <a href="storage-tab.php" class="nav-link nav-item" id="storagetab"><i class="fas fa-box-open"></i> Storage</a>
-      <a href="staff-tab.php" class="nav-link nav-item" id="stafftab"><i class="fas fa-user-cog mr-1"></i> Staff</a>
+      <a href="staff-tab.php" class="nav-link nav-item" id="stafftab"><i class="fas fa-user-md mr-1"></i> Staff</a>
       <a href="donor-tab.php" class="nav-link nav-item" id="donortab"><i class="fas fa-user-cog mr-1"></i> Donor</a>
     </div>
     <h6 class="collapsibleheader" data-toggle="collapse" data-target="#transaction-tabs" aria-expanded="false" aria-controls="transaction-tabs">Transaction</h6>

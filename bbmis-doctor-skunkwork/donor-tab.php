@@ -25,7 +25,7 @@
       <!-- END OF SIDE NAVIGATION -->
       <!-- MAIN CONTENT -->
       <div class="col-md-10 offset-md-2 mb-5">
-        <div class="content-container" >
+        <div class="content-container">
           <h4 style="font-family: 'Nunito-Regular'">Current Donors</h4>
           <div class="container-fluid" style="padding-bottom: 40px;">
             <table id="tbl_donor" class="table table-striped table-bordered text-center" style="width: 100%">
@@ -41,10 +41,7 @@
             <button type="button" class="btn btn-outline-danger float-right mt-3" data-toggle="modal" data-target="#modalSignUp"><i class="fas fa-user-plus"></i> Add Donor</button>
           </div>
         </div>
-      </div>
-
-      <div class="col-md-10 offset-md-2 mb-5">
-        <div class="content-container" >
+        <div class="content-container" style="margin-top: -20px">
           <h4 style="font-family: 'Nunito-Regular'">Banned Donors</h4>
           <div class="container-fluid" style="padding-bottom: 40px;">
             <table id="tbl_banneddonor" class="table table-striped table-bordered text-center" style="width: 100%">
