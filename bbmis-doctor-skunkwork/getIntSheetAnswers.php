@@ -65,7 +65,7 @@
 	//	echo '<br />';
 
 		if($varSex == 'Female'){
-				$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', '$varstatus')");
+				$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, dtmExamChecked, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', NOW(), '$varstatus')");
 
 		if($varstatus == 'Wrong'){
 					mysqli_query($connections,"UPDATE tbldonation SET stfDonationRemarks = 'Complete' WHERE intDonationId = '$donation_id'");
@@ -73,13 +73,13 @@
 		}
 		
 		else if ($varSex == 'Male' AND $category == '3'){
-			$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', 'Correct')");
+			$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, dtmExamChecked, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', NOW(), 'Correct')");
 
 		}
 		
 		else if ($varSex == 'Male' AND $category != '3') {
 
-			$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', '$varstatus')");
+			$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, dtmExamChecked, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', NOW(), '$varstatus')");
 
 		if($varstatus == 'Wrong'){
 			mysqli_query($connections,"UPDATE tbldonation SET stfDonationRemarks = 'Complete' WHERE intDonationId = '$donation_id'");
