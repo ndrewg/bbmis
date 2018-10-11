@@ -92,19 +92,18 @@ GROUP BY 1");
       <div class="content-container">
         <div class="container-fluid">
           <div class="row">
-            <div class = 'col-md-3 card card-body text-center mr-5 mb-5'>
+            <div class="col-md-4 card card-body text-center mx-auto">
               <h4>Remaining blood bag count</h4>
               <table class='table text-center'>
-              <thead>
-              <tr>
-              <th>Blood Type</th>
-              <th>Rhesus</th>
-              <th>Remaining Count</th>
-              </tr>
-              </thead>
-            <?php
-            //remaining-----------------------------------------------------------------------------------------------------------------------
-            if (mysqli_num_rows($reports_remaining) > 0 ){
+                <thead>
+                  <tr>
+                    <th>Blood Type</th>
+                    <th>Rhesus</th>
+                    <th>Remaining Count</th>
+                  </tr>
+                </thead>
+              <?php
+              if (mysqli_num_rows($reports_remaining) > 0 ){
               $output = "";
               while ($row = mysqli_fetch_assoc($reports_remaining)) {
                 $blood_type = $row["stfBloodType"];
@@ -126,28 +125,32 @@ GROUP BY 1");
               ";
               echo $output;
             }
-            else {
-              echo "No records";
+            else if (mysqli_num_rows($reports_remaining) == 0){
+              $output =
+              "<tr>
+                <td></td>
+                <td>No records</td>
+                <td></td>
+              </tr>
+              </table>";
+              echo $output;
             }
-             ?>
-             </div>
-             <?php
-             //wastage------------------------------------------------------------------------------------------------------------------------------------
-             if (mysqli_num_rows($reports_wastage) > 0){
-               $output =
-               "
-               <div class='col-md-3 card card-body text-center mr-5'>
-               <h4>Wastage Report</h4>
-               <table class='table text-center'>
-               <thead>
-               <tr>
-               <th>Blood Type</th>
-               <th>Rhesus</th>
-               <th>Remaining Count</th>
-               </tr>
-               </thead>
-               ";
-               while ($row = mysqli_fetch_assoc($reports_wastage)) {
+               ?>
+            </div>
+            <div class="col-md-4 card card-body text-center mx-auto">
+              <h4>Wastage Report</h4>
+              <table class='table text-center'>
+                <thead>
+                  <tr>
+                    <th>Blood Type</th>
+                    <th>Rhesus</th>
+                    <th>Remaining Count</th>
+                  </tr>
+                </thead>
+               <?php
+               if (mysqli_num_rows($reports_wastage) > 0){
+                 $output = "";
+                 while($row = mysqli_fetch_assoc($reports_wastage)){
                  $blood_type = $row["stfBloodType"];
                  $rhesus = $row["stfBloodTypeRhesus"];
                  $wastage = $row["count_wastage"];
@@ -161,110 +164,128 @@ GROUP BY 1");
                  </tr>
                  </tbody>
                  ";
-               }
-               $output .= "
-               </table>
-               </div>";
-               echo $output;
-             }else{
-
-             }
-              ?>
-              <?php
-              //WEEKLY BLOOD----------------------------------------------------------------------------------------------------
-              if (mysqli_num_rows($reports_weekly) > 0){
-                $output =
-                "
-                <div class='col-md-3 card card-body text-center'>
-                <h4>Daily Blood Extraction</h4>
-                <table class='table text-center'>
-                <thead>
-                <tr>
-                <th>Day</th>
-                <th>Blood Bag Count</th>
-                <th>Blood Type </th>
-                </tr>
-                </thead>
-                ";
-                while ($row = mysqli_fetch_assoc($reports_weekly)) {
-                  $day = $row["Day"];
-                  $bloodbagamount1 = $row["Blood Bag Count"];
-                  $bloodType = $row["stfBloodType"];
-                  $output .=
-                  "
-                  <tbody>
-                  <tr>
-                  <td>$day</td>
-                  <td>$bloodbagamount1</td>
-                  <td>$bloodType</td>
-                  </tr>
-                  </tbody>
-                  ";
-                }
-                $output .= "
-                </table>
-                </div>";
-                echo $output;
-              }else{
-
-              }
-               ?>
-               <?php
-               //Monthly BLOOD----------------------------------------------------------------------------------------------------
-               if (mysqli_num_rows($reports_monthly) > 0){
-                 $output =
-                 "
-                 <div class='col-md-3 card card-body text-center mr-5'>
-                 <h4>Monthly Blood Extraction</h4>
-                 <table class='table text-center'>
-                 <thead>
-                 <tr>
-                 <th>Month Year</th>
-                 <th>Blood Bag Count</th>
-                 <th>Blood Type </th>
-                 </tr>
-                 </thead>
-                 ";
-                 while ($row = mysqli_fetch_assoc($reports_monthly)) {
-                   $month_year = $row["Month Year"];
-                   $bloodbagamount2 = $row["Blood Bag Count"];
-                  $bloodType = $row["stfBloodType"];
-                   $output .=
-                   "
-                   <tbody>
-                   <tr>
-                   <td>$month_year</td>
-                   <td>$bloodbagamount2</td>
-                   <td>$bloodType</td>
-                   </tr>
-                   </tbody>
-                   ";
                  }
-                 $output .= "
-                 </table>
-                 </div>";
+                 $output .=
+                 "</table>";
                  echo $output;
-               }else{
-
+               }
+               else if (mysqli_num_rows($reports_wastage) == 0) {
+                $output =
+                 "
+                 <tr>
+                   <td></td>
+                   <td>No records</td>
+                   <td></td>
+                 </tr>
+                 </table>";
+                 echo $output;
                }
                 ?>
+            </div>
+            <div class="col-md-4 card card-body text-center mx-auto">
+              <h4>Daily Blood Extraction</h4>
+              <table class='table text-center'>
+                <thead>
+                  <tr>
+                    <th>Day</th>
+                    <th>Blood Bag Count</th>
+                    <th>Blood Type </th>
+                  </tr>
+                </thead>
                 <?php
-                //Monthly BLOOD----------------------------------------------------------------------------------------------------
-                if (mysqli_num_rows($reports_yearly) > 0){
+                if (mysqli_num_rows($reports_weekly) > 0){
+                  $output = "";
+                  while($row = mysqli_fetch_assoc($reports_weekly)){
+                    $day = $row["Day"];
+                    $bloodbagamount1 = $row["Blood Bag Count"];
+                    $bloodType = $row["stfBloodType"];
+                    $output .=
+                    "
+                    <tbody>
+                    <tr>
+                    <td>$day</td>
+                    <td>$bloodbagamount1</td>
+                    <td>$bloodType</td>
+                    </tr>
+                    </tbody>
+                    ";
+                  }
+                  $output .= "</table>";
+                  echo $output;
+                }
+                else if (mysqli_num_rows($reports_weekly) == 0){
                   $output =
                   "
-                  <div class='col-md-3 card card-body text-center mr-5'>
-                  <h4>Yearly Blood Extraction</h4>
-                  <table class='table text-center'>
-                  <thead>
                   <tr>
-                  <th>Year</th>
-                  <th>Blood Bag Count</th>
-                  <th>Blood Type </th>
+                    <td></td>
+                    <td>No records</td>
+                    <td></td>
                   </tr>
-                  </thead>
+                  </table>
                   ";
-                  while ($row = mysqli_fetch_assoc($reports_yearly)) {
+                  echo $output;
+                }
+                 ?>
+            </div>
+            <div class="col-md-4 card card-body text-center mx-auto mt-3">
+              <h4>Monthly Blood Extraction</h4>
+              <table class='table text-center'>
+                <thead>
+                  <tr>
+                    <th>Month Year</th>
+                    <th>Blood Bag Count</th>
+                    <th>Blood Type </th>
+                  </tr>
+                </thead>
+                <?php
+                if (mysqli_num_rows($reports_monthly) > 0){
+                  $output = "";
+                  while($row = mysqli_fetch_assoc($reports_monthly)){
+                    $month_year = $row["Month Year"];
+                    $bloodbagamount2 = $row["Blood Bag Count"];
+                    $bloodType = $row["stfBloodType"];
+                    $output .=
+                    "
+                    <tbody>
+                    <tr>
+                    <td>$month_year</td>
+                    <td>$bloodbagamount2</td>
+                    <td>$bloodType</td>
+                    </tr>
+                    </tbody>
+                    ";
+                  }
+                  $output .= "</table>";
+                  echo $output;
+                }
+                else if (mysqli_num_rows($reports_monthly) == 0){
+                  $output =
+                  "
+                  <tr>
+                    <td></td>
+                    <td>No records</td>
+                    <td></td>
+                  </tr>
+                  </table>
+                  ";
+                  echo $output;
+                }
+                 ?>
+            </div>
+            <div class="col-md-4 card card-body text-center mx-auto mt-3">
+              <h4>Yearly Blood Extraction</h4>
+              <table class='table text-center'>
+                <thead>
+                  <tr>
+                    <th>Year</th>
+                    <th>Blood Bag Count</th>
+                    <th>Blood Type </th>
+                  </tr>
+                </thead>
+                <?php
+                if(mysqli_num_rows($reports_yearly) > 0){
+                  $output = "";
+                  while($row = mysqli_fetch_assoc($reports_yearly)){
                     $day = $row["Year"];
                     $bloodbagamount = $row["Blood Bag Count"];
                     $bloodType = $row["stfBloodType"];
@@ -279,67 +300,77 @@ GROUP BY 1");
                     </tbody>
                     ";
                   }
-                  $output .= "
-                  </table>
-                  </div>";
+                  $output .= "</table>";
                   echo $output;
-                }else{
-
+                }
+                else if (mysqli_num_rows($reports_yearly) == 0){
+                  $output =
+                  "
+                  <tr>
+                    <td></td>
+                    <td>No records</td>
+                    <td></td>
+                  </tr>
+                  </table>
+                  ";
+                  echo $output;
                 }
                  ?>
-                 <?php
-                 //Monthly BLOOD----------------------------------------------------------------------------------------------------
-                 if (mysqli_num_rows($bloodbagpertype) > 0){
-                   $output =
-                   "
-                   <div class='col-md-3 card card-body text-center mr-5'>
-                   <h4>Remaining Blood Bag Count Per Blood Type</h4>
-                   <table class='table text-center'>
-                   <thead>
-                   <tr>
-                   <th>Blood Type</th>
-                   <th>Blood Bag Count</th>
-                   </tr>
-                   </thead>
-                   ";
-                   while ($row = mysqli_fetch_assoc($bloodbagpertype)) {
-                     $day = $row["Blood Type"];
-                     $bloodbagamount = $row["Blood Bag Count"];
-                     $output .=
-                     "
-                     <tbody>
-                     <tr>
-                     <td>$day</td>
-                     <td>$bloodbagamount</td>
-                     </tr>
-                     </tbody>
-                     ";
-                   }
-                   $output .= "
-                   </table>
-                   </div>";
-                   echo $output;
-                 }else{
-
-                 }
-                  ?>
-                  <?php
-                  //Monthly BLOOD----------------------------------------------------------------------------------------------------
-                  if (mysqli_num_rows($donorpertype) > 0){
-                    $output =
+            </div>
+            <div class="col-md-4 card card-body text-center mx-auto mt-3">
+              <h4>Remaining Blood Bag Count Per Blood Type</h4>
+              <table class='table text-center'>
+                <thead>
+                  <tr>
+                    <th>Blood Type</th>
+                    <th>Blood Bag Count</th>
+                  </tr>
+                </thead>
+                <?php
+                if (mysqli_num_rows($bloodbagpertype) > 0){
+                  $output = "";
+                  while($row = mysqli_fetch_assoc($bloodbagpertype)){
+                    $day = $row["Blood Type"];
+                    $bloodbagamount = $row["Blood Bag Count"];
+                    $output .=
                     "
-                    <div class='col-md-3 card card-body text-center mr-5'>
-                    <h4>Donor Count Per Blood Type</h4>
-                    <table class='table text-center'>
-                    <thead>
+                    <tbody>
                     <tr>
+                    <td>$day</td>
+                    <td>$bloodbagamount</td>
+                    </tr>
+                    </tbody>
+                    ";
+                  }
+                  $output .= "</table>";
+                  echo $output;
+                }
+                else if (mysqli_num_rows($bloodbagpertype) == 0){
+                  $output =
+                  "
+                  <tr>
+                    <td>No records</td>
+                    <td></td>
+                  </tr>
+                  ";
+                  echo $output;
+                }
+                 ?>
+            </div>
+            <div class="col-md-4 card card-body text-center mx-auto mt-3">
+              <h4>Donor Count Per Blood Type</h4>
+              <table class='table text-center'>
+                <thead>
+                  <tr>
                     <th>Blood Type</th>
                     <th>Donor Count</th>
-                    </tr>
-                    </thead>
-                    ";
-                    while ($row = mysqli_fetch_assoc($donorpertype)) {
-                      $day = $row["Blood Type"];
+                  </tr>
+                </thead>
+                <?php
+                if (mysqli_num_rows($donorpertype) > 0) {
+                  $output = "";
+                  while($row = mysqli_fetch_assoc($donorpertype)){
+                    $day = $row["Blood Type"];
                       $bloodbagamount = $row["Donor Count"];
                       $output .=
                       "
@@ -350,244 +381,282 @@ GROUP BY 1");
                       </tr>
                       </tbody>
                       ";
-                    }
-                    $output .= "
-                    </table>
-                    </div>";
-                    echo $output;
-                  }else{
-
                   }
-                   ?>
-                   <?php
-                   //Monthly BLOOD----------------------------------------------------------------------------------------------------
-                   if (mysqli_num_rows($bloodcomponentfailedcount) > 0){
-                     $output =
-                     "
-                     <div class='col-md-3 card card-body text-center mr-5'>
-                     <h4>Count of donor fail per Component</h4>
-                     <table class='table text-center'>
-                     <thead>
-                     <tr>
-                     <th>Month Year</th>
-                     <th>Blood Component</th>
-                     <th>Failed Client Count</th>
-                     </tr>
-                     </thead>
-                     ";
-                     while ($row = mysqli_fetch_assoc($bloodcomponentfailedcount)) {
-                       $monthyear = $row["Month Year"];
-                       $day = $row["strBloodComponent"];
-                       $bloodbagamount = $row["Failed Client Count"];
-                       $output .=
-                       "
-                       <tbody>
-                       <tr>
-                       <td>$monthyear</td>
-                       <td>$day</td>
-                       <td>$bloodbagamount</td>
-                       </tr>
-                       </tbody>
-                       ";
-                     }
-                     $output .= "
-                     </table>
-                     </div>";
-                     echo $output;
-                   }else{
-
-                   }
-                    ?>
-
-                    <?php
-                    //Monthly BLOOD----------------------------------------------------------------------------------------------------
-                    if (mysqli_num_rows($bloodcomponentfailedlist) > 0){
-                      $output =
-                      "
-                      <div class='col-md-3 card card-body text-center mr-5'>
-                      <h4>List of donor fail per Component</h4>
-                      <table class='table text-center'>
-                      <thead>
-                      <tr>
-                      <th>Month Year</th>
-                      <th>Blood Component</th>
-                      <th>Failed Client Name</th>
-                      </tr>
-                      </thead>
-                      ";
-                      while ($row = mysqli_fetch_assoc($bloodcomponentfailedlist)) {
-                        $monthyear = $row["Month Year"];
-                        $day = $row["strBloodComponent"];
-                        $bloodbagamount = $row["Client Full Name"];
-                        $output .=
-                        "
-                        <tbody>
-                        <tr>
-                        <td>$monthyear</td>
-                        <td>$day</td>
-                        <td>$bloodbagamount</td>
-                        </tr>
-                        </tbody>
-                        ";
-                      }
-                      $output .= "
-                      </table>
-                      </div>";
-                      echo $output;
-                    }else{
-
-                    }
-                     ?>
-                     <?php
-                     //Monthly BLOOD----------------------------------------------------------------------------------------------------
-                     if (mysqli_num_rows($blooddiseasefailedcount) > 0){
-                       $output =
-                       "
-                       <div class='col-md-3 card card-body text-center mr-5'>
-                       <h4>Count of donor fail per Disease</h4>
-                       <table class='table text-center'>
-                       <thead>
-                       <tr>
-                       <th>Month Year</th>
-                       <th>Disease</th>
-                       <th>Failed Client Count</th>
-                       </tr>
-                       </thead>
-                       ";
-                       while ($row = mysqli_fetch_assoc($blooddiseasefailedcount)) {
-                         $monthyear = $row["Month Year"];
-                         $day = $row["strDisease"];
-                         $bloodbagamount = $row["Failed Client Count"];
-                         $output .=
-                         "
-                         <tbody>
-                         <tr>
-                         <td>$monthyear</td>
-                         <td>$day</td>
-                         <td>$bloodbagamount</td>
-                         </tr>
-                         </tbody>
-                         ";
-                       }
-                       $output .= "
-                       </table>
-                       </div>";
-                       echo $output;
-                     }else{
-
-                     }
-                      ?>
-                      <?php
-                      //Monthly BLOOD----------------------------------------------------------------------------------------------------
-                      if (mysqli_num_rows($blooddiseasefailedlist) > 0){
-                        $output =
-                        "
-                        <div class='col-md-3 card card-body text-center mr-5'>
-                        <h4>List of donor fail per Disease</h4>
-                        <table class='table text-center'>
-                        <thead>
-                        <tr>
-                        <th>Month Year</th>
-                        <th>Disease</th>
-                        <th>Failed Client Count</th>
-                        </tr>
-                        </thead>
-                        ";
-                        while ($row = mysqli_fetch_assoc($blooddiseasefailedlist)) {
-                          $monthyear = $row["Month Year"];
-                          $day = $row["strDisease"];
-                          $bloodbagamount = $row["client Full Name"];
-                          $output .=
-                          "
-                          <tbody>
-                          <tr>
-                          <td>$monthyear</td>
-                          <td>$day</td>
-                          <td>$bloodbagamount</td>
-                          </tr>
-                          </tbody>
-                          ";
-                        }
-                        $output .= "
-                        </table>
-                        </div>";
-                        echo $output;
-                      }else{
-
-                      }
-                       ?>
-                       <?php
-                       //Monthly BLOOD----------------------------------------------------------------------------------------------------
-                       if (mysqli_num_rows($donorcountperage) > 0){
-                         $output =
-                         "
-                         <div class='col-md-3 card card-body text-center mr-5'>
-                         <h4>Count of Client per Age</h4>
-                         <table class='table text-center'>
-                         <thead>
-                         <tr>
-                         <th>Client Age</th>
-                         <th>Client Count</th>
-                         </tr>
-                         </thead>
-                         ";
-                         while ($row = mysqli_fetch_assoc($donorcountperage)) {
-                           $monthyear = $row["Client Age"];
-                           $day = $row["Client Count"];
-                           $output .=
-                           "
-                           <tbody>
-                           <tr>
-                           <td>$monthyear</td>
-                           <td>$day</td>
-                           </tr>
-                           </tbody>
-                           ";
-                         }
-                         $output .= "
-                         </table>
-                         </div>";
-                         echo $output;
-                       }else{
-
-                       }
-                        ?>
-                        <?php
-                        //Monthly BLOOD----------------------------------------------------------------------------------------------------
-                        if (mysqli_num_rows($donorcountpersex) > 0){
-                          $output =
-                          "
-                          <div class='col-md-3 card card-body text-center mr-5'>
-                          <h4>Count of Client per Sex</h4>
-                          <table class='table text-center'>
-                          <thead>
-                          <tr>
-                          <th>Client Sex</th>
-                          <th>Client Count</th>
-                          </tr>
-                          </thead>
-                          ";
-                          while ($row = mysqli_fetch_assoc($donorcountpersex)) {
-                            $monthyear = $row["Client Sex"];
-                            $day = $row["Client Count"];
-                            $output .=
-                            "
-                            <tbody>
-                            <tr>
-                            <td>$monthyear</td>
-                            <td>$day</td>
-                            </tr>
-                            </tbody>
-                            ";
-                          }
-                          $output .= "
-                          </table>
-                          </div>";
-                          echo $output;
-                        }else{
-
-                        }
-                         ?>
+                  $output .= "</table>";
+                  echo $output;
+                }
+                else if (mysqli_num_rows($donorpertype) == 0 ){
+                  $output =
+                  "
+                  <tr>
+                    <td>No records</td>
+                    <td></td>
+                  </tr>
+                  ";
+                  echo $output;
+                }
+                 ?>
+            </div>
+            <div class="col-md-4 card card-body text-center mx-auto mt-3">
+              <h4>Count of donor fail per Component</h4>
+              <table class='table text-center'>
+                <thead>
+                  <tr>
+                    <th>Month Year</th>
+                    <th>Blood Component</th>
+                    <th>Failed Client Count</th>
+                  </tr>
+                </thead>
+                <?php
+                if (mysqli_num_rows($bloodcomponentfailedcount) > 0){
+                  $output = "";
+                  while($row = mysqli_fetch_assoc($bloodcomponentfailedcount)){
+                    $monthyear = $row["Month Year"];
+                    $day = $row["strBloodComponent"];
+                    $bloodbagamount = $row["Failed Client Count"];
+                    $output .=
+                    "
+                    <tbody>
+                    <tr>
+                    <td>$monthyear</td>
+                    <td>$day</td>
+                    <td>$bloodbagamount</td>
+                    </tr>
+                    </tbody>
+                    ";
+                  }
+                  $output .= "</table>";
+                  echo $output;
+                }
+                else if (mysqli_num_rows($bloodcomponentfailedcount) == 0){
+                  $output =
+                  "
+                  <tr>
+                    <td></td>
+                    <td>No records</td>
+                    <td></td>
+                  </tr>
+                  </table>
+                  ";
+                  echo $output;
+                }
+                 ?>
+            </div>
+            <div class="col-md-4 card card-body text-center mx-auto mt-3">
+              <h4>List of donor fail per Component</h4>
+              <table class='table text-center'>
+                <thead>
+                  <tr>
+                    <th>Month Year</th>
+                    <th>Blood Component</th>
+                    <th>Failed Client Name</th>
+                  </tr>
+                </thead>
+                <?php
+                if (mysqli_num_rows($bloodcomponentfailedlist) > 0){
+                  $output = "";
+                  while($row = mysqli_fetch_assoc($bloodcomponentfailedlist)){
+                    $monthyear = $row["Month Year"];
+                    $day = $row["strBloodComponent"];
+                    $bloodbagamount = $row["Client Full Name"];
+                    $output .=
+                    "
+                    <tbody>
+                    <tr>
+                    <td>$monthyear</td>
+                    <td>$day</td>
+                    <td>$bloodbagamount</td>
+                    </tr>
+                    </tbody>
+                    ";
+                  }
+                  $output .= "</table>";
+                  echo $output;
+                }
+                else if (mysqli_num_rows($bloodcomponentfailedlist) == 0 ){
+                  $output =
+                  "
+                  <tr>
+                    <td></td>
+                    <td>No records</td>
+                    <td></td>
+                  </tr>
+                  </table>
+                  ";
+                  echo $output;
+                }
+                 ?>
+            </div>
+            <div class="col-md-4 card card-body text-center mx-auto mt-3">
+              <h4>Count of donor fail per Disease</h4>
+              <table class='table text-center'>
+                <thead>
+                  <tr>
+                    <th>Month Year</th>
+                    <th>Disease</th>
+                    <th>Failed Client Count</th>
+                  </tr>
+                </thead>
+                <?php
+                if (mysqli_num_rows($blooddiseasefailedcount) > 0){
+                  $output = "";
+                  while($row=mysqli_fetch_assoc($blooddiseasefailedcount)){
+                    $monthyear = $row["Month Year"];
+                    $day = $row["strDisease"];
+                    $bloodbagamount = $row["Failed Client Count"];
+                    $output .=
+                    "
+                    <tbody>
+                    <tr>
+                    <td>$monthyear</td>
+                    <td>$day</td>
+                    <td>$bloodbagamount</td>
+                    </tr>
+                    </tbody>
+                    ";
+                  }
+                  $output .= "</table>";
+                  echo $output;
+                }
+                else if (mysqli_num_rows($blooddiseasefailedcount) == 0){
+                  $output =
+                  "
+                  <tr>
+                    <td></td>
+                    <td>No records</td>
+                    <td></td>
+                  </tr>
+                  </table>
+                  ";
+                  echo $output;
+                }
+                 ?>
+            </div>
+            <div class="col-md-4 card card-body text-center mx-auto mt-3">
+              <h4>List of donor fail per Disease</h4>
+              <table class='table text-center'>
+                <thead>
+                  <tr>
+                    <th>Month Year</th>
+                    <th>Disease</th>
+                    <th>Failed Client Count</th>
+                  </tr>
+                </thead>
+                <?php
+                if (mysqli_num_rows($blooddiseasefailedlist) > 0){
+                  $output = "";
+                  while($row = mysqli_fetch_assoc($blooddiseasefailedlist)){
+                    $monthyear = $row["Month Year"];
+                    $day = $row["strDisease"];
+                    $bloodbagamount = $row["client Full Name"];
+                    $output .=
+                    "
+                    <tbody>
+                    <tr>
+                    <td>$monthyear</td>
+                    <td>$day</td>
+                    <td>$bloodbagamount</td>
+                    </tr>
+                    </tbody>
+                    ";
+                  }
+                  $output .= "</table>";
+                  echo $output;
+                }
+                else if (mysqli_num_rows($blooddiseasefailedlist) == 0 ){
+                  $output =
+                  "
+                  <tr>
+                    <td></td>
+                    <td>No records</td>
+                    <td></td>
+                  </tr>
+                  </table>
+                  ";
+                  echo $output;
+                }
+                 ?>
+            </div>
+            <div class="col-md-4 card card-body text-center mx-auto mt-3">
+              <h4>Count of Client per Age</h4>
+              <table class='table text-center'>
+                <thead>
+                  <tr>
+                    <th>Client Age</th>
+                    <th>Client Count</th>
+                  </tr>
+                </thead>
+                <?php
+                if (mysqli_num_rows($donorcountperage) > 0){
+                  $output = "";
+                  while($row = mysqli_fetch_assoc($donorcountperage)){
+                    $monthyear = $row["Client Age"];
+                    $day = $row["Client Count"];
+                    $output .=
+                    "
+                    <tbody>
+                    <tr>
+                    <td>$monthyear</td>
+                    <td>$day</td>
+                    </tr>
+                    </tbody>
+                    ";
+                  }
+                  $output .= "</table>";
+                  echo $output;
+                }
+                else if (mysqli_num_rows($donorcountperage) == 0){
+                  $output =
+                  "
+                  <tr>
+                    <td>No records</td>
+                    <td></td>
+                  </tr>
+                  ";
+                  echo $output;
+                }
+                 ?>
+            </div>
+            <div class="col-md-4 card card-body text-center mx-auto mt-3">
+              <h4>Count of Client per Sex</h4>
+              <table class='table text-center'>
+                <thead>
+                  <tr>
+                    <th>Client Sex</th>
+                    <th>Client Count</th>
+                  </tr>
+                </thead>
+                <?php
+                if (mysqli_num_rows($donorcountpersex) > 0){
+                  $output = "";
+                  while($row = mysqli_fetch_assoc($donorcountpersex)){
+                    $monthyear = $row["Client Sex"];
+                    $day = $row["Client Count"];
+                    $output .=
+                    "
+                    <tbody>
+                    <tr>
+                    <td>$monthyear</td>
+                    <td>$day</td>
+                    </tr>
+                    </tbody>
+                    ";
+                  }
+                  $output .= "</table>";
+                  echo $output;
+                }
+                else if (mysqli_num_rows($donorcountpersex) == 0 ){
+                  $output =
+                  "
+                  <tr>
+                    <td>No records</td>
+                    <td></td>
+                  </tr>
+                  ";
+                  echo $output;
+                }
+                 ?>
+            </div>
           </div>
         </div>
       </div>
