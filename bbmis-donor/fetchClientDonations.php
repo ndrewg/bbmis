@@ -1,11 +1,12 @@
 <?php
 	$qryFetchDonations = mysqli_query($conn, "
-		SELECT MAX(me.dtmExamTaken) AS 'Exam Taken', ss.dtmDateScreened AS 'Date Screened', bv.intBloodVolume AS 'Amount Bled', ss.strPhlebotomist AS 'Phlebotomist', 'Volunteer'
+		SELECT d.intDonationId, MAX(me.dtmExamTaken) AS 'Exam Taken', ss.dtmDateScreened AS 'Date Screened', bv.intBloodVolume AS 'Amount Bled', ss.strPhlebotomist AS 'Phlebotomist', d.stfDonationStatus, d.stfDonationRemarks
 		FROM tbldonation d
 		JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId
 		JOIN tblphysicalexam pe ON me.intDonationId = pe.intDonationId
+		JOIN tblinitialscreening ins ON pe.intDonationId = ins.intDonationId
+		JOIN tblserologicalscreening ss ON ins.intDonationId = ss.intDonationId
 		JOIN tblbloodvolume bv ON pe.intBloodVolumeId = bv.intBloodVolumeId
-		JOIN tblserologicalscreening ss ON pe.intDonationId = ss.intDonationId
 		WHERE d.intDonationId = (
 			SELECT d1.intDonationId
 			FROM tbldonation d1
@@ -26,42 +27,52 @@
 	
 	if($varDonations > 0)	{
 		while($rowDonations = mysqli_fetch_assoc($qryFetchDonations))	{
-			$varExamTaken = date_create($rowDonations["Exam Taken"]);
-			$varExamTaken = date_format($varExamTaken, "F d, Y");
+			$varDonId = $rowDonations["intDonationId"];
+			$varExamTaken = date_format(date_create($rowDonations["Exam Taken"]), "F d, Y");
+			
 			if(isset($varDateScreened))	{
 				$varDateScreened = date_format(date_create($rowDonations["Date Screened"]), "F d, Y");
 			}
 			else	{
 				$varDateScreened = 'Unscreened';
 			}
+			
 			$varBloodVolume = $rowDonations["Amount Bled"];
 			$varPhlebotomist = $rowDonations["Phlebotomist"];
-			$varDonationType = $rowDonations["Volunteer"];
+			$varStatus = $rowDonations["stfDonationStatus"];
+			$varRemarks = $rowDonations["stfDonationRemarks"];
 		}
 		
 		echo "
-			<div class='row text-white' style='border-radius: 25px 25px 0px 0px; word-wrap: break-word'>
-				<div class='col-2 text-center p-3 bg-danger' style='border-radius: 25px 0 0 0;'>Exam Taken</div>
-				<div class='col-2 text-center p-3 bg-danger'>Date Screened</div>
-				<div class='col-2 text-center p-3 bg-danger'>Amount Bled <span title='Cubic Centimeter'>(cc)</span></div>
-				<div class='col-2 text-center p-3 bg-danger'>Phlebotomist</div>
-				<div class='col-2 text-center p-3 bg-danger'>Donation Type</div>
-				<div class='col-2 text-center p-3 bg-danger' style='border-radius: 0 25px 0 0;'>Remarks</div>
-			</div>
+			<table class='table table-hover text-center'>
+				<tr class='bg-danger text-white'>
+					<td style='width: 5%' >No.</td>
+					<td style='width: 15%'>Exam Taken</td>
+					<td style='width: 15%'>Date Screened</td>
+					<td style='width: 12%'>Blood Volume</td>
+					<td style='width: 23%'>Phlebotomist</td>
+					<td style='width: 15%'>Status</td>
+					<td style='width: 15%'>Remarks</td>
+				</tr>
 		";
 		
 		for($x=0; $x<$varDonations; $x++)	{
 			echo "
-				<div class='row'>
-					<div class='col-2 text-center p-2 border border-top-0'>$varExamTaken</div>
-					<div class='col-2 text-center p-2 border border-top-0'>$varDateScreened</div>
-					<div class='col-2 text-center p-2 border border-top-0'>$varBloodVolume</div>
-					<div class='col-2 text-center p-2 border border-top-0'>$varPhlebotomist</div>
-					<div class='col-2 text-center p-2 border border-top-0'>$varDonationType</div>
-					<div class='col-2 text-center p-2 border border-top-0'>Incomplete</div>
-				</div>
+				<tr id='rowDon1' class='table-bordered'>
+					<td>$varDonId</td>
+					<td>$varExamTaken</td>
+					<td>$varDateScreened</td>
+					<td>$varBloodVolume</td>
+					<td>$varPhlebotomist</td>
+					<td>$varStatus</td>
+					<td>$varRemarks</td>
+				</tr>
 			";
 		}
+		
+		echo "
+			</table>
+		";
 	}
 	
 	else	{

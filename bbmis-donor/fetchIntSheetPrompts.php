@@ -1,4 +1,3 @@
-<script src="js/sweetalert.min.js" type="text/javascript"></script>
 <?php
 	include "connection.php";
 	
@@ -235,7 +234,6 @@
 				}
 				
 				if(isset($varPhysRem))	{
-					// echo 'dudeasasas';
 					if($varPhysRem == 'Failed')	{
 						ntfFldPE();
 					}

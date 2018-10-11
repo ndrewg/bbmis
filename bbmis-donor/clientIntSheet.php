@@ -3,6 +3,7 @@
 	<head>
 		<link rel="icon" href="assets/images/blood.ico">
 		<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" type="text/css">
+		<link rel="stylesheet" href="assets/fa/css/all.min.css" type="text/css">
 		<link rel="stylesheet" href="assets/css/bs-override.css" type="text/css">
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,13 +38,11 @@
 	</body>
 	<script>
 		$(document).ready(function()	{
-			// e.preventDefault();
 			var intsheetanswers = $(this).serialize();
 			// console.log(intsheetanswers);
 			$.ajax	({
 				url: "fetchIntSheetAnswers.php",
 				data: {intsheetanswers: intsheetanswers},
-				// var data = intsheetanswers,
 				success: function(data)	{
 					if(data != '')	{
 						console.log(data);
@@ -62,9 +61,6 @@
 							$("input[type='radio'][name='txtYn" + varObj[x].id + "'][value='" + varObj[x].yn + "']").prop('checked', true);
 							$("#btnYn" + varObj[x].id + "[value='" + varObj[x].yn + "']").addClass("active");
 							
-							// $("input[type='number'][name='intQua" + varObj[x].id + "'][value=" + varObj[x].qua + "]");
-							// $("input[type='text'][name='txtStr" + varObj[x].id + "'][value=" + varObj[x].str + "]");
-							
 							$("input[type='number'][name='intQua" + varObj[x].id + "']").val(varObj[x].qua);
 							
 							$("input[type='text'][name='txtStr" + varObj[x].id + "']").val(varObj[x].str);
@@ -74,7 +70,6 @@
 							$("select[name='optDd" + varObj[x].id + "'] option[value='" + varObj[x].dd + "']").prop('selected', true);
 							
 							$("select[name='optDy" + varObj[x].id + "'] option[value='" + varObj[x].dy + "']").prop('selected', true);
-							
 						}
 					}
 				}
@@ -83,23 +78,6 @@
 		
 		$("#btnPassed").click(function()	{
 			window.location.href = 'genIntSheetAnsPdf.php'
-		});
-		
-		$("#btnEmpty").click(function(e)	{
-			e.preventDefault();
-			var formdata = $(this).serialize();
-			// console.log(formdata);
-			$.ajax	({
-				url:"etc/truncate.php",
-				type:"POST",
-				data:{formdata:formdata},
-				success:function(data)	{
-					// console.log(data);
-					if(data == '3')	{
-						// console.log('oks');
-					}
-				}
-			});
 		});
 
 		$("#btnSbmAns").click(function(e)	{
@@ -140,6 +118,23 @@
 		
 		$("#btnPlsWait").click(function(e)	{
 			swal('Please wait.', 'Your current medical exam is not yet checked. You will be notified in the next few days.', 'info');
+		});
+		
+		$("#btnEmpty").click(function(e)	{
+			e.preventDefault();
+			var formdata = $(this).serialize();
+			// console.log(formdata);
+			$.ajax	({
+				url:"etc/truncate.php",
+				type:"POST",
+				data:{formdata:formdata},
+				success:function(data)	{
+					// console.log(data);
+					if(data == '3')	{
+						window.location.href = 'clientIntSheet.php'
+					}
+				}
+			});
 		});
 	</script>
 </html>

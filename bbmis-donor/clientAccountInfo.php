@@ -15,15 +15,15 @@
 						<input type="text" class="form-control" name="txtNewUn" value="<?php echo $varUn;?>" required="required" />
 					</div>
 					<div class="form-group">
-						<label for="lblOldPw" class="col-form-label">Password</label>
+						<label for="lblOldPw" class="col-form-label">Recent Password</label>
 						<input type="password" class="form-control" name="txtOldPw" required="required" />
 					</div>
 					<div class="form-group">
-						<label for="lblNewPw" class="col-form-label">Password</label>
+						<label for="lblNewPw" class="col-form-label">New Password</label>
 						<input type="password" class="form-control" name="txtNewPw" minlength=8 required="required" />
 					</div>
 					<div class="form-group">
-						<label for="lblConfNewPw" class="col-form-label">Confirm Password</label>
+						<label for="lblConfNewPw" class="col-form-label">Confirm New Password</label>
 						<input type="password" class="form-control" name="txtConfNewPw" minlength=8 required="required" />
 					</div>
 					

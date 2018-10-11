@@ -26,7 +26,13 @@
 		
 		<div class="container border mt-sm-4 mb-sm-4">
 			<div class="col-10 m-auto mt-sm-4 p-4 text-center">
-				<img src="assets/images/profileImg/<?php echo $varImg;?>" style="width: 150px; border-radius: 75px;" />
+				<div class='border'>
+					<img src="assets/images/profileImg/<?php echo $varImg;?>" id='idClntImg' style="width: 150px; border-radius: 75px;" />
+				</div>
+				<div class='border m-auto'>
+					<i id="btnHover" class='fa fa-pen text-white p-4 m-auto' style="border-radius: 75px; background-color: rgba(0,0,0,0.25);"></i>
+				</div>
+				<input type="file" style="display: none;" />
 				<h4 class="h4 mt-sm-4">
 				<?php
 					if($varMname == "")	{
@@ -175,4 +181,12 @@
 			</div>
 		</div>
 	</body>
+	<script>
+		$("#idClntImg").on("mouseover", function()	{
+			$("#btnHover").fadeIn();
+		});
+		$("#btnHover").on("mouseout", function()	{
+			$("#btnHover").fadeOut();
+		});
+	</script>
 </html>

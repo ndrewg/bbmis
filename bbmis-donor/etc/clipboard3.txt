@@ -1,3 +1,108 @@
+//No donation record.
+					if(data == '0')	{
+						$("#idMeRemarks, #idPeRemarks, #idIsRemarks, #idSsRemarks").addClass("font-weight-bold");
+						$("#idMeRemarks, #idPeRemarks, #idIsRemarks, #idSsRemarks").css("color", "#46B8DA");
+						$("#idMeRemarks").text("Unanswered");
+						$("#idPeRemarks, #idIsRemarks, #idSsRemarks").text("Unscreened");
+					}
+					//Medical Exam
+					if(data == '1')	{
+						$("#idMeBtn").addClass("active");
+						$("#idMeRemarks").addClass("font-weight-bold");
+						$("#idMeRemarks").text("Passed");
+						$("#idMeRemarks").css("color", "#5CB85C");
+					}
+					if(data == '2')	{
+						$("#idMeBtn").addClass("active");
+						$("#idMeRemarks").addClass("font-weight-bold");
+						$("#idMeRemarks").text("Failed");
+						$("#idMeRemarks").css("color", "#D4403B");
+					}
+					if(data == '3')	{
+						$("#idMeBtn").addClass("active");
+						$("#idMeRemarks").addClass("font-weight-bold");
+						$("#idMeRemarks").text("Checking Error");
+						$("#idMeRemarks").css("color", "#46B8DA");
+					}
+					if(data == '4')	{
+						$("#idMeBtn").addClass("active");
+						$("#idMeRemarks").addClass("font-weight-bold");
+						$("#idMeRemarks").text("Unchecked");
+						$("#idMeRemarks").css("color", "#46B8DA");
+					}
+					if(data == '5')	{
+						$("#idMeBtn").addClass("active");
+						$("#idMeRemarks").addClass("font-weight-bold");
+						$("#idMeRemarks").text("Expired");
+						$("#idMeRemarks").css("color", "#46B8DA");
+					}
+					
+					//Physical Exam
+					if(data == '6')	{
+						// $("#idPeBtn").addClass("active");
+						$("#idPeRemarks").addClass("font-weight-bold");
+						$("#idPeRemarks").text("Unscreened");
+						$("#idPeRemarks").css("color", "#46B8DA");
+					}
+
+<h5 class='h3 text-center'>Donation Progress</h3>
+				<div class="row border p-4">
+					<div class="btn btn-outline-danger border m-auto p-4" style="border-radius: 75px;">
+						<i class="fa fa-4x fa-notes-medical" style="width: 75px; height: 75px;"></i>
+					</div>
+					<div class="btn btn-outline-danger border m-auto p-4" style="border-radius: 75px;">
+						<i class="fa fa-4x fa-weight" style="width: 75px; height: 75px;"></i>
+					</div>
+					<div class="btn btn-outline-danger border m-auto p-4" style="border-radius: 75px;">
+						<i class="fa fa-4x fa-vial" style="width: 75px; height: 75px;"></i>
+					</div>
+					<div class="btn btn-outline-danger border m-auto p-4" style="border-radius: 75px;">
+						<i class="fa fa-4x fa-vials" style="width: 75px; height: 75px;"></i>
+					</div>
+				</div>
+				<div class="row p-4">
+					<div class="border m-auto">
+						<div>Step 1:</div>
+						<div>Medical Exam</div>
+					</div>
+					<div class="border m-auto">
+						<div>Step 2:</div>
+						<div>Physical Exam</div>
+					</div>
+					<div class="border m-auto">
+						<div>Step 3:</div>
+						<div>Initial Screening</div>
+					</div>
+					<div class="border m-auto">
+						<div>Step 4:</div>
+						<div>Serological Screening</div>
+					</div>
+				</div>
+
+<div class='row text-white' style='border-radius: 25px 25px 0px 0px; word-wrap: break-word'>
+				<div class='col-2 text-center p-3 bg-danger' style='border-radius: 25px 0 0 0;'>Exam Taken</div>
+				<div class='col-2 text-center p-3 bg-danger'>Date Screened</div>
+				<div class='col-2 text-center p-3 bg-danger'>Amount Bled <span title='Cubic Centimeter'>(cc)</span></div>
+				<div class='col-2 text-center p-3 bg-danger'>Phlebotomist</div>
+				<div class='col-2 text-center p-3 bg-danger' style='border-radius: 0 25px 0 0;'>Remarks</div>
+			</div>
+			
+			<div class='row'>
+					<div class='col-2 text-center p-2 border border-top-0'>$varExamTaken</div>
+					<div class='col-2 text-center p-2 border border-top-0'>$varDateScreened</div>
+					<div class='col-2 text-center p-2 border border-top-0'>$varBloodVolume</div>
+					<div class='col-2 text-center p-2 border border-top-0'>$varPhlebotomist</div>
+					<div class='col-2 text-center p-2 border border-top-0'>Incomplete</div>
+				</div>
+
+SELECT DISTINCT(c.intClientId), c.strClientLastName
+FROM tblclient c, tbldonation d, tblmedicalexam me, tblphysicalexam pe, tblinitialscreening ins, tblserologicalscreening ss
+WHERE c.intClientId = d.intClientId
+OR d.intDonationId = me.intDonationId
+OR me.intDonationId = pe.intDonationId
+OR pe.intDonationId = ins.intDonationId
+OR ins.intDonationId = ss.intDonationId
+
 require('assets/fpdf/fpdf.php');
 
 	class PDF extends FPDF	{

@@ -19,7 +19,7 @@
 	function typeYn($varQueId)	{
 		echo "
 				<div class='row'>
-					<div class='btn-group-toggle text-center w-100 form-group mb-sm-3' data-toggle='buttons'>
+					<div class='btn-group-toggle text-center w-100 form-group' data-toggle='buttons'>
 						<label id='btnYn$varQueId' class='btn btn-outline-danger form-control col-4 mr-sm-2' value='Yes'>
 							<input type='radio' name='txtYn$varQueId' value='Yes' autocomplete='off' required='required' />Oo
 						</label>
@@ -102,10 +102,10 @@
 			FROM tblquestion q
 			JOIN tblquestioncategory qc ON q.intQuestionCategoryId = qc.intQuestionCategoryId
 			WHERE decQuestionVersion = (
-					SELECT DISTINCT(q1.decQuestionVersion)
-					FROM tblquestion q1
-					WHERE boolVersionInUse = '1'
-				)
+				SELECT DISTINCT(q1.decQuestionVersion)
+				FROM tblquestion q1
+				WHERE boolVersionInUse = '1'
+			)
 			LIMIT 1 OFFSET $x
 		");
 		
