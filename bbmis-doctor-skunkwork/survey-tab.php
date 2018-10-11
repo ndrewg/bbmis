@@ -24,7 +24,7 @@
       ?>
       <!-- END OF SIDE NAVIGATION -->
       <div class="col-md-10 offset-md-2">
-        <div class="content-container">
+        <div class="content-container" style="padding-bottom: 50px">
           <div id = "survey-list">
             <?php
             include("connections.php");
@@ -32,7 +32,7 @@
             $fetchsurveys = mysqli_query($connections,"SELECT DISTINCT(decQuestionVersion), boolVersionInUse
             FROM tblquestion GROUP BY decQuestionVersion ORDER BY decQuestionVersion ASC");
             ?>
-            <h3>Surveys</h3>
+            <h4 class="nunito">Available Surveys</h4>
             <table class='table table-bordered mt-5 text-center' id='tblsurvey'>
               <thead>
                 <tr>
@@ -58,14 +58,14 @@
                   <tr>
                     <td><?php echo $version; ?></td>
                     <td><?php echo $inusetext; ?></td>
-                    <td><a href ="fetch_survey.php?selected=<?php echo $version; ?>"><button type='button' class='btn ml-2 btn-sm'  name = 'check_survey'>View</button></a></td>
+                    <td><a href ="fetch_survey.php?selected=<?php echo $version; ?>"><button type='button' class='btn'  name = 'check_survey'>View</button></a></td>
                   </tr>
                 </tbody>
               <?php }
               ?>
             </table>
           </div>
-          <a href ="survey-related/add_newsurvey.php"><button type = 'button' class='btn btn-primary btn-sm float-right' id = "make_survey" style="margin-top: -10px">Make a new Survey</button></a>
+          <a href ="survey-related/add_newsurvey.php"><button type = 'button' class='btn btn-outline-danger float-right mt-1' id = "make_survey" style="margin-top: -10px">Make a new Survey</button></a>
         </div>
         <!-- end -->
 

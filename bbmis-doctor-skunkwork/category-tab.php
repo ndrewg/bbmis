@@ -24,8 +24,7 @@
 			?>
 		 <!-- END OF SIDE NAVIGATION -->
       <div class="col-md-10 offset-md-2">
-        <div class="container-fluid">
-          <div class="content-container">
+          <div class="content-container" style="padding-bottom: 50px">
             <h4 style="font-family:'Nunito-Regular'">Active Categories</h4>
             <div id ="surveycategory">
               <?php
@@ -54,7 +53,12 @@
                         <tr>
                           <td><?php echo $sc_id; ?></td>
                           <td><?php echo $sc_name; ?></td>
-                          <td><button type='button' class='btn btn-success btn-sm' data-toggle='modal' data-target='#editSurveyCategoryModal' data-id='<?php echo $sc_id; ?>' id='btntbl'>Edit</button><button type='button' name ='deletecategory' class='btn btn-default btn-sm ml-2' data-toggle='modal' data-target='#viewSurveyCategoryModal' data-id='<?php echo $sc_id; ?>'>View Details</button></td>
+                          <td>
+                            <div class='btn-group'>
+                              <button type='button' class='btn btn-success' data-toggle='modal' data-target='#editSurveyCategoryModal' data-id='<?php echo $sc_id; ?>' id='btntbl'>Edit</button>
+                              <button type='button' name ='deletecategory' class='btn btn-default' data-toggle='modal' data-target='#viewSurveyCategoryModal' data-id='<?php echo $sc_id; ?>'>View Details</button>
+                            </div>
+                          </td>
                         </tr>
                       </tbody>
                       <?php
@@ -63,9 +67,9 @@
                   </table>
                 <?php } ?>
               </div>
-              <button type='button' class='btn btn-success btn-sm' data-toggle='modal' data-target='#addSurveyCategoryModal'>Add Survey Category</button>
+              <button type='button' class='btn btn-outline-danger float-right' data-toggle='modal' data-target='#addSurveyCategoryModal'>Add Survey Category</button>
             </div>
-            <div class="content-container">
+            <div class="content-container" style="margin-top: -20px">
               <h4 style="font-family: 'Nunito-Regular'">Disabled Categories</h4>
               <?php
               include("connections.php");
@@ -103,7 +107,6 @@
                 <?php }
                 ?>
               </div>
-            </div>
           </div>
         </div>
       </div>
@@ -225,12 +228,6 @@
       $('#surveycategorytab').addClass("active");
 
       $(document).ready(function(){
-        //showsurveycategory();
-        savenewsurveycategory();
-        editsurveycategory();
-        saveeditedsurveycategory();
-        viewsurveycategory();
-        viewsurveycategory_enable();
         check_expiringbloodbags();
 
         function check_expiringbloodbags(){
@@ -242,233 +239,202 @@
             }
           });
         }
-        /*  function showsurveycategory(){
+      });
+
+      $(document).on("submit", "form[name='form_addnewsurveycategory']", function(e){
+        e.preventDefault();
+        var confirm_input = confirm("Are you sure?");
+        var formdata = $("form[name='form_addnewsurveycategory']").serialize();
+
+        if (confirm_input == true){
+          $.ajax({
+            type: "POST",
+            url: 'survey-related/add_newsurveycategory.php',
+            data: {formdata,formdata},
+            success:function(data){
+              if(data == 1){
+                alert("Blood Component Added");
+                $('#addSurveyCategorytModal').modal('hide');
+                $("#addSurveyCategory .modal-body input").val("");
+                window.location.href = "category-tab.php";
+                //$('#divdonoraddsero').show(600);
+              }
+              else if(data == 2){
+                alert("The Survey Category You Entered Already Exists, Please check the disabled survey categories too.");
+                window.location.href = "category-tab.php";
+              }
+              else if (data == 3) {
+                alert("Survey Category is not saved");
+                window.location.href = "category-tab.php";
+              }
+            }
+          });
+        }
+        else{
+          alert("Confirmation Cancelled");
+          return false;
+        }
+      });
+
+      $(document).on("show.bs.modal", "#editsurveycategory", function(e){
+        var rowid = $(e.relatedTarget).data('id');
+        alert(rowid);
         $.ajax({
-        url: 'survey-related/showsurveycategory.php',
-        success: function(data) {
-        $("#surveycategory").html(data);
-      },
-      complete: function() {
-      // Schedule the next request when the current one's complete
-      setTimeout(showsurveycategory, 5000);
-    }
-  });
-}*/
-
-function savenewsurveycategory(){
-  $("form[name='form_addnewsurveycategory']").on('submit',function(e){
-    e.preventDefault();
-    var confirm_input = confirm("Are you sure?");
-    var formdata = $("form[name='form_addnewsurveycategory']").serialize();
-
-    if (confirm_input == true){
-      $.ajax({
-        type: "POST",
-        url: 'survey-related/add_newsurveycategory.php',
-        data: {formdata,formdata},
-        success:function(data){
-          if(data == 1){
-            alert("Blood Component Added");
-            $('#addSurveyCategorytModal').modal('hide');
-            $("#addSurveyCategory .modal-body input").val("");
-            window.location.href = "category-tab.php";
-            //$('#divdonoraddsero').show(600);
-          }
-          else if(data == 2){
-            alert("The Survey Category You Entered Already Exists, Please check the disabled survey categories too.");
-            window.location.href = "category-tab.php";
-          }
-          else if (data == 3) {
-            alert("Survey Category is not saved");
-            window.location.href = "category-tab.php";
-          }
-        }
-      });
-    }
-    else{
-      alert("Confirmation Cancelled");
-      return false;
-    }
-
-  });
-}
-
-function editsurveycategory(){
-  $('#editSurveyCategoryModal').on('show.bs.modal', function(e) {
-    var rowid = $(e.relatedTarget).data('id');
-    alert(rowid);
-    $.ajax({
-      type: "POST",
-      url: 'survey-related/fetch_surveycategory.php',
-      data: 'rowid=' + rowid,
-      dataType: "json",
-      success: function(data){
-        $('#surveycategory_ID').val(data.intQuestionCategoryId);
-        $('#editSurveyCategoryName').val(data.stfQuestionCategory);
-      }
-
-    });
-  });
-}
-
-function viewsurveycategory(){
-  $('#viewSurveyCategoryModal').on('show.bs.modal', function(e) {
-    var rowid = $(e.relatedTarget).data('id');
-    alert(rowid);
-    $.ajax({
-      type: "POST",
-      url: 'survey-related/fetch_surveycategory.php',
-      data: 'rowid=' + rowid,
-      dataType: "json",
-      success: function(data){
-        $('#viewsurveycategory_ID').val(data.intQuestionCategoryId);
-        $('#viewSurveyCategoryName').val(data.stfQuestionCategory);
-      }
-
-    });
-  });
-}
-
-function viewsurveycategory_enable(){
-  $('#viewSurveyCategoryModal_enable').on('show.bs.modal', function(e) {
-    var rowid = $(e.relatedTarget).data('id');
-    alert(rowid);
-    $.ajax({
-      type: "POST",
-      url: 'survey-related/fetch_surveycategory.php',
-      data: 'rowid=' + rowid,
-      dataType: "json",
-      success: function(data){
-        $('#viewsurveycategory_ID_enable').val(data.intQuestionCategoryId);
-        $('#viewSurveyCategoryName_enable').val(data.stfQuestionCategory);
-      }
-
-    });
-  });
-}
-
-
-function saveeditedsurveycategory(){
-  $("form[name='form_editsurveycategory']").on('submit',function(e){
-    e.preventDefault();
-    var confirm_input = confirm("Are you sure?");
-    var formdata = $("form[name='form_editsurveycategory']").serialize();
-
-    if (confirm_input == true){
-      $.ajax({
-        type: "POST",
-        url: 'survey-related/edit_surveycategory.php',
-        data: {formdata,formdata},
-        success:function(data){
-          if(data == 1){
-            alert("Survey Category Succesfully Edited");
-            $('#editSurveyCategoryModal').modal('hide');
-            $("#editSurveyCategoryModal .modal-body input").val("");
-            window.location.href = "category-tab.php";
-            //$('#divdonoraddsero').show(600);
-          }
-          else if(data == 2){
-            alert("The Survey Category You Entered Already Exists");
-            window.location.href = "category-tab.php";
-          }
-          else if (data == 3) {
-            alert("Survey Category is not Edited");
-            window.location.href = "category-tab.php";
-          }
-        }
-      });
-    }
-    else{
-      alert("Confirmation Cancelled");
-      return false;
-    }
-
-  });
-}
-
-$("#btnsavedeletesurveycategory").click(function(e){
-  e.preventDefault();
-  var id = $("#viewsurveycategory_ID").val();
-  swal({
-    title: "Are you sure?",
-    text: "You are about to disable this category",
-    icon: "info",
-    buttons: true,
-  })
-  //var confirm_delete = confirm("Are you sure?");
-  //if(confirm_delete == true){
-  .then((willApprove) => {
-    if (willApprove) {
-    $.ajax({
-      type: "POST",
-      url: 'survey-related/delete_category.php',
-      data: {id:id},
-      success:function(data){
-      /*  alert("Category has been disabled");
-        window.location.href = "category-tab.php";*/
-        if(data == "deleted"){
-        swal({
-          title: "",
-          text: "The category is now disabled",
-          icon: "success",
-          buttons: {text:"Okay"},
-        })
-        .then((willApprove) => {
-          if (willApprove) {
-            window.location.href = "category-tab.php";
+          type: "POST",
+          url: 'survey-related/fetch_surveycategory.php',
+          data: 'rowid=' + rowid,
+          dataType: "json",
+          success: function(data){
+            $('#surveycategory_ID').val(data.intQuestionCategoryId);
+            $('#editSurveyCategoryName').val(data.stfQuestionCategory);
           }
         });
-      }else{
+      });
+
+      $(document).on("show.bs.modal", "#viewSurveyCategoryModal", function(e){
+        var rowid = $(e.relatedTarget).data('id');
+        alert(rowid);
+        $.ajax({
+          type: "POST",
+          url: 'survey-related/fetch_surveycategory.php',
+          data: 'rowid=' + rowid,
+          dataType: "json",
+          success: function(data){
+            $('#viewsurveycategory_ID').val(data.intQuestionCategoryId);
+            $('#viewSurveyCategoryName').val(data.stfQuestionCategory);
+          }
+        });
+      });
+
+      $(document).on("show.bs.modal","#viewSurveyCategoryModal_enable", function(e){
+        var rowid = $(e.relatedTarget).data('id');
+        alert(rowid);
+        $.ajax({
+          type: "POST",
+          url: 'survey-related/fetch_surveycategory.php',
+          data: 'rowid=' + rowid,
+          dataType: "json",
+          success: function(data){
+            $('#viewsurveycategory_ID_enable').val(data.intQuestionCategoryId);
+            $('#viewSurveyCategoryName_enable').val(data.stfQuestionCategory);
+          }
+        });
+      });
+
+      $(document).on("submit", "form[name='form_editsurveycategory']", function(e){
+        e.preventDefault();
+        var confirm_input = confirm("Are you sure?");
+        var formdata = $("form[name='form_editsurveycategory']").serialize();
+
+        if (confirm_input == true){
+          $.ajax({
+            type: "POST",
+            url: 'survey-related/edit_surveycategory.php',
+            data: {formdata,formdata},
+            success:function(data){
+              if(data == 1){
+                alert("Survey Category Succesfully Edited");
+                $('#editSurveyCategoryModal').modal('hide');
+                $("#editSurveyCategoryModal .modal-body input").val("");
+                window.location.href = "category-tab.php";
+                //$('#divdonoraddsero').show(600);
+              }
+              else if(data == 2){
+                alert("The Survey Category You Entered Already Exists");
+                window.location.href = "category-tab.php";
+              }
+              else if (data == 3) {
+                alert("Survey Category is not Edited");
+                window.location.href = "category-tab.php";
+              }
+            }
+          });
+        }
+        else{
+          alert("Confirmation Cancelled");
+          return false;
+        }
+      });
+
+      $(document).on("click","#btnsavedeletesurveycategory", function(e){
+        e.preventDefault();
+        var id = $("#viewsurveycategory_ID").val();
         swal({
-          title: "",
-          text: "The category is not disabled because "+data+" record/s uses this.",
-          icon: "error",
-          buttons: {text:"Okay"},
+          title: "Are you sure?",
+          text: "You are about to disable this category",
+          icon: "info",
+          buttons: true,
         })
+        //var confirm_delete = confirm("Are you sure?");
+        //if(confirm_delete == true){
         .then((willApprove) => {
           if (willApprove) {
+            $.ajax({
+              type: "POST",
+              url: 'survey-related/delete_category.php',
+              data: {id:id},
+              success:function(data){
+                /*  alert("Category has been disabled");
+                window.location.href = "category-tab.php";*/
+                if(data == "deleted"){
+                  swal({
+                    title: "",
+                    text: "The category is now disabled",
+                    icon: "success",
+                    buttons: {text:"Okay"},
+                  })
+                  .then((willApprove) => {
+                    if (willApprove) {
+                      window.location.href = "category-tab.php";
+                    }
+                  });
+                }else{
+                  swal({
+                    title: "",
+                    text: "The category is not disabled because "+data+" record/s uses this.",
+                    icon: "error",
+                    buttons: {text:"Okay"},
+                  })
+                  .then((willApprove) => {
+                    if (willApprove) {
+                      window.location.href = "category-tab.php";
+                    }
+                  });
+                }
+              }
+            });
+            /*}
+            else{
+            alert("Confirmation Cancelled");
+            return false;
+          }*/
+        }
+        else {
+          swal("","Cancelled","info");
+        }
+      });
+    });
+
+    $(document).on("click", "#btnsaveenablesurveycategory", function(e){
+      e.preventDefault();
+      var id = $("#viewsurveycategory_ID_enable").val();
+      var confirm_enable = confirm("Are you sure?");
+      if(confirm_enable == true){
+        $.ajax({
+          type: "POST",
+          url: 'survey-related/enable_category.php',
+          data: {id:id},
+          success:function(data){
+            alert("Category has been enabled");
             window.location.href = "category-tab.php";
           }
         });
       }
+      else{
+        alert("Confirmation Cancelled");
+        return false;
       }
     });
-  /*}
-  else{
-    alert("Confirmation Cancelled");
-    return false;
-  }*/
-}
-else {
-  swal("","Cancelled","info");
-}
-});
-
-});
-$("#btnsaveenablesurveycategory").click(function(e){
-  e.preventDefault();
-  var id = $("#viewsurveycategory_ID_enable").val();
-  var confirm_enable = confirm("Are you sure?");
-  if(confirm_enable == true){
-    $.ajax({
-      type: "POST",
-      url: 'survey-related/enable_category.php',
-      data: {id:id},
-      success:function(data){
-        alert("Category has been enabled");
-        window.location.href = "category-tab.php";
-      }
-    });
-  }
-  else{
-    alert("Confirmation Cancelled");
-    return false;
-  }
-
-});
-
-});
-
-</script>
+  </script>
 </body>
 </html>

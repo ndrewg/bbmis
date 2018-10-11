@@ -34,10 +34,10 @@
 
             if(mysqli_num_rows($viewrequests) > 0){
               ?>
-              <h3>Donor Edit Requests</h3>
+              <h4 class="nunito">Donor Edit Requests</h4>
               <table class='table table-bordered mt-5 text-center'>
                 <thead>
-                  <tr style='background-color:#fa4251; color:#fff'>
+                  <tr>
                     <th>Request ID</th>
                     <th>Client Name</th>
                     <th>Date Requested</th>
@@ -61,7 +61,7 @@
                     <td><?php echo $reqId; ?></td>
                     <td><?php echo $fullname; ?></td>
                     <td><?php echo $date_requested; ?></td>
-                    <td><button type='button' name = 'viewRequest' class='btn btn-primary btn-sm ml-2' data-toggle='modal' data-target='#viewRequestModal'
+                    <td><button type='button' name = 'viewRequest' class='btn' data-toggle='modal' data-target='#viewRequestModal'
                       data-id='<?php echo $reqId; ?>'>View Details</button></td>
                     </td>
                   </tr>
@@ -129,7 +129,6 @@
     $('#donoreditrequeststab').addClass("active");
 
     $(document).ready(function(){
-      viewRequest();
       check_expiringbloodbags();
 
       function check_expiringbloodbags(){
@@ -141,67 +140,63 @@
           }
         });
       }
-      function viewRequest(){
-        $('#viewRequestModal').on('show.bs.modal', function(e) {
-          var rowid = $(e.relatedTarget).data('id');
-          alert(rowid);
-          $.ajax({
-            type: "POST",
-            url: 'people-related/fetch_request.php',
-            data: 'rowid=' + rowid,
-            dataType: "json",
-            success: function(data){
-              $('#viewRequestId').val(data.intClientReqId);
-              $('#viewDonorName').val(data.Fullname);
-              $('#viewDateRequested').val(data.dtmDateRequested);
-            }
-
-          });
-        });
-      }
-
-      $("#acceptrequest").click(function(){
-        var reqId = $('#viewRequestId').val();
-        var confirm_input = confirm("Are you sure you?");
-        if(confirm_input == true){
-          $.ajax({
-            type: "POST",
-            url: 'people-related/accept_request.php',
-            data: 'reqId=' + reqId,
-            success: function(data){
-              alert("Edit Granted");
-              window.location.href = "donoreditrequests-tab.php";
-            }
-          });
-        }
-        else{
-          alert("Confirmation Cancelled");
-          return false;
-        }
-      });
-
-      $("#rejectrequest").click(function(){
-        var reqId = $('#viewRequestId').val();
-        var confirm_input = confirm("Are you sure you?");
-        if(confirm_input == true){
-          $.ajax({
-            type: "POST",
-            url: 'people-related/reject_request.php',
-            data: 'reqId=' + reqId,
-            success: function(data){
-              alert("Edit Rejected");
-              window.location.href = "donoreditrequests-tab.php";
-            }
-          });
-        }
-        else{
-          alert("Confirmation Cancelled");
-          return false;
-        }
-      });
-
     });
 
+    $(document).on("show.bs.modal", "#viewRequestModal", function(e){
+      var rowid = $(e.relatedTarget).data('id');
+      alert(rowid);
+      $.ajax({
+        type: "POST",
+        url: 'people-related/fetch_request.php',
+        data: 'rowid=' + rowid,
+        dataType: "json",
+        success: function(data){
+          $('#viewRequestId').val(data.intClientReqId);
+          $('#viewDonorName').val(data.Fullname);
+          $('#viewDateRequested').val(data.dtmDateRequested);
+        }
+      });
+    });
+
+    $(document).on("click", "#acceptrequest", function(e){
+      var reqId = $('#viewRequestId').val();
+      var confirm_input = confirm("Are you sure you?");
+      if(confirm_input == true){
+        $.ajax({
+          type: "POST",
+          url: 'people-related/accept_request.php',
+          data: 'reqId=' + reqId,
+          success: function(data){
+            alert("Edit Granted");
+            window.location.href = "donoreditrequests-tab.php";
+          }
+        });
+      }
+      else{
+        alert("Confirmation Cancelled");
+        return false;
+      }
+    });
+
+    $(document).on("click", "#rejectrequest", function(e){
+      var reqId = $('#viewRequestId').val();
+      var confirm_input = confirm("Are you sure you?");
+      if(confirm_input == true){
+        $.ajax({
+          type: "POST",
+          url: 'people-related/reject_request.php',
+          data: 'reqId=' + reqId,
+          success: function(data){
+            alert("Edit Rejected");
+            window.location.href = "donoreditrequests-tab.php";
+          }
+        });
+      }
+      else{
+        alert("Confirmation Cancelled");
+        return false;
+      }
+    });
     </script>
   </body>
   </html>

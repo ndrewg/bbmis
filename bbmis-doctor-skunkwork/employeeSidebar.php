@@ -37,7 +37,7 @@
     <div class="collapse show" id="maintenance-tabs">
       <a href="bloodtype-tab.php" class="nav-link nav-item" id="bloodtypetab"><i class="fas fa-heartbeat"></i> Blood Type</a>
       <a href="bloodcomponent-tab.php" class="nav-link nav-item" id="bloodcomponenttab"><img src="css/glyphicon/si-glyph-blood-bag.svg" style="width:20px;"> Blood Component</a>
-      <a href="preservatives-tab.php" class="nav-link nav-item" id="preservativetab"><img src="css/glyphicon/si-glyph-blood-bag.svg" style="width:20px;"> Preservative</a>
+      <a href="preservatives-tab.php" class="nav-link nav-item" id="preservativetab"><i class="fas fa-pills"></i> Preservative</a>
       <a href="disease-tab.php" class="nav-link nav-item" id="diseasetab"><img src="css/glyphicon/si-glyph-heart-delete.svg" style="width:17px;"> Disease</a>
       <a href="donoreditrequests-tab.php" class="nav-link nav-item" id="donoreditrequeststab"><img src="css/glyphicon/si-glyph-document-checked.svg" style="width: 17px" alt=""> Donor Edit Requests</a>
       <a href="survey-tab.php" class="nav-link nav-item" id="surveytab"><i class="fas fa-file-alt mr-1"></i> Survey</a>
@@ -51,7 +51,6 @@
       <a href="donorrecords-tab.php" class="nav-link nav-item" id="donorrecordstab"><i class="fas fa-file-medical-alt mr-1"></i> Donor Records</a>
       <a href="bloodinventory-tab.php" class="nav-link nav-item" id="bloodinventorytab"><i class="fas fa-first-aid mr-1"></i> Blood Inventory</a>
     </div>
-    <a href="queries-tab.php" class="nav-link nav-item" id="queriestab"><i class="fas fa-search-plus"></i> Queries</a>
     <a href="reports-tab.php" class="nav-link nav-item" id="reportstab"><i class="fas fa-file-medical"></i> Reports</a>
     <!-- <h6 class="collapsibleheader" data-toggle="collapse" data-target="#queriesreports-tabs" aria-expanded="false" aria-controls="queriesreports-tabs">Queries and Reports</h6> -->
     <!-- <div class="collapse show" id="queriesreports-tabs">

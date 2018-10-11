@@ -29,13 +29,9 @@
 			?>
 			<!-- END OF SIDE NAVIGATION -->
       <div class="col-md-10 offset-md-2">
-        <div class="container-fluid">
           <div class="content-container animated fadeIn fast">
             <h4 style="font-family: 'Nunito-Regular'">Available Donors</h4>
             <!-- SHOW CLIENTS THAT ANSWERED THE INTERVIEW SHEET -->
-            <!-- <div id="donortable" style="margin-top: -15px">
-
-            </div> -->
             <div id="div_donorrecords">
               <table id="tbl_donorrecords" class="table table-striped table-bordered" style="width: 100%;">
                 <thead>
@@ -264,7 +260,7 @@
     </div>
     <!-- end of add initial screening results -->
     <!-- add serological screening -->
-    <div id="div_donoraddserological" style="display: none">
+    <div id="div_donoraddserological" style="display: none; padding-bottom: 60px; margin-top: -20px">
       <h4 style="font-family: 'Roboto-Regular'; margin-bottom: 20px;"><span class="badge badge-pill badge-dark mr-3">4</span>Serological Screening</h4><hr>
       <form method="POST" name = "adddonorseroexam" action="savedonorseroexam.php">
         <input type="hidden" id="clientId_sero" name ="clientId_sero">
@@ -384,7 +380,7 @@
 
           ?>
         </select>
-        <button type="submit" class="btn btn-success ml-1 float-right" id='donorserorecord_save'>Save</button>
+        <button type="submit" class="btn btn-success mt-2 float-right" id='donorserorecord_save'>Save</button>
       </form>
     </div>
     <!-- end add serological -->
@@ -481,46 +477,45 @@
 <div class="modal fade" id="chooseStorageModal" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
+      <div class="modal-body">
+        <form name ='change_storageForm' id = 'change_storageForm' method='post'>
+              <div class="form-group">
+                <label for="bloodbag_underquarantine2">Underquarantined Blood</label>
+                <input type="text" id ="bloodbag_underquarantine2" class = "form-control" name = "bloodbag_underquarantine2" readonly required>
+              </div>
 
-<form name ='change_storageForm' id = 'change_storageForm' method='post'>
-      <div class="form-group">
-        <label for="bloodbag_underquarantine2">Underquarantined Blood</label>
-        <input type="text" id ="bloodbag_underquarantine2" class = "form-control" name = "bloodbag_underquarantine2" readonly required>
+                <div class="form-group">
+                  <label for="chosenStorage">Choose a Storage</label>
+                <select class="form-control" name="chosenStorage" id="chosenStorage" required>
+                  <?php
+                  include("connections.php");
+
+                  $fetch_storage = mysqli_query($connections, " SELECT intStorageId,intStorageCapacity,strStorageName FROM tblstorage WHERE intStorageTypeId = 2");
+
+                  if(mysqli_num_rows($fetch_storage) > 0 ){
+                    while($row = mysqli_fetch_assoc($fetch_storage)){
+                      $storageid = $row["intStorageId"];
+                      $storagename = $row["strStorageName"];
+                      $storagecapacity = $row["intStorageCapacity"];
+
+                      $check_ifmayspacepa = mysqli_query($connections,"SELECT COUNT(intBloodBagId) AS bloodcount FROM tblbloodbag bb JOIN tblstorage s ON bb.intStorageId = s.intStorageId WHERE intBloodDispatchmentId = '1' AND stfIsBloodBagExpired = 'No' AND intStorageTypeId = 2 AND s.intStorageId = $storageid");
+
+                      while ($row2 = mysqli_fetch_assoc($check_ifmayspacepa)) {
+                        $quantity = $row2["bloodcount"];
+                      }
+
+                      if($quantity < $storagecapacity){
+                      ?>
+                      <option value="<?php echo $storageid ?>"><?php echo $storagename ?></option>
+                      <?php
+                    }
+
+                    }
+                  }
+                  ?>
+                </select>
+              </div>
       </div>
-
-        <div class="form-group">
-          <label for="chosenStorage">Choose a Storage</label>
-        <select class="form-control" name="chosenStorage" id="chosenStorage" required>
-          <?php
-          include("connections.php");
-
-          $fetch_storage = mysqli_query($connections, " SELECT intStorageId,intStorageCapacity,strStorageName FROM tblstorage WHERE intStorageTypeId = 2");
-
-          if(mysqli_num_rows($fetch_storage) > 0 ){
-            while($row = mysqli_fetch_assoc($fetch_storage)){
-              $storageid = $row["intStorageId"];
-              $storagename = $row["strStorageName"];
-              $storagecapacity = $row["intStorageCapacity"];
-
-              $check_ifmayspacepa = mysqli_query($connections,"SELECT COUNT(intBloodBagId) AS bloodcount FROM tblbloodbag bb JOIN tblstorage s ON bb.intStorageId = s.intStorageId WHERE intBloodDispatchmentId = '1' AND stfIsBloodBagExpired = 'No' AND intStorageTypeId = 2 AND s.intStorageId = $storageid");
-
-              while ($row2 = mysqli_fetch_assoc($check_ifmayspacepa)) {
-                $quantity = $row2["bloodcount"];
-              }
-
-              if($quantity < $storagecapacity){
-              ?>
-              <option value="<?php echo $storageid ?>"><?php echo $storagename ?></option>
-              <?php
-            }
-
-            }
-          }
-          ?>
-        </select>
-      </div>
-
-
     <div class="modal-footer">
       <button type="submit" class="btn btn-success" id="submit_changestorage">Save</button>
     </div>
