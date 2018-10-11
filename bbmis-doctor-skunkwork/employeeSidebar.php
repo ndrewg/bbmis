@@ -77,6 +77,8 @@
     $('#stafftab').hide();
     $('#collapsibleheader').hide();
     $('#maintenance-tab').hide();
+    $('#donortab').hide();
+    $('#preservativetab').hide();
   }
 // });
 </script>
