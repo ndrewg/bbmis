@@ -24,9 +24,17 @@
 			?>
 		 <!-- END OF SIDE NAVIGATION -->
       <div class="col-md-10 offset-md-2">
-          <div class="content-container" style="padding-bottom: 50px">
+          <div class="content-container" style="padding-bottom: 60px">
             <h4 style="font-family:'Nunito-Regular'">Active Categories</h4>
-            <div id ="surveycategory">
+            <table id="tbl_activesurveycategory" class="table table-striped table-bordered text-center" style="width: 100%">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+            </table>
+            <!-- <div id ="surveycategory">
               <?php
               include("connections.php");
 
@@ -66,12 +74,20 @@
                     ?>
                   </table>
                 <?php } ?>
-              </div>
-              <button type='button' class='btn btn-outline-danger float-right' data-toggle='modal' data-target='#addSurveyCategoryModal'>Add Survey Category</button>
+              </div> -->
+              <button type='button' class='btn btn-outline-danger float-right mt-2' data-toggle='modal' data-target='#addSurveyCategoryModal'>Add Survey Category</button>
             </div>
             <div class="content-container" style="margin-top: -20px">
               <h4 style="font-family: 'Nunito-Regular'">Disabled Categories</h4>
-              <?php
+              <table id="tbl_inactivesurveycategory" class="table table-bordered table-striped text-center" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th>Category</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+              </table>
+              <!-- <?php
               include("connections.php");
 
               $viewcategory = mysqli_query($connections,"SELECT *
@@ -105,7 +121,7 @@
                     ?>
                   </table>
                 <?php }
-                ?>
+                ?> -->
               </div>
           </div>
         </div>
@@ -229,6 +245,8 @@
 
       $(document).ready(function(){
         check_expiringbloodbags();
+        fetch_activesurveycategory();
+        fetch_inactivesurveycategory();
 
         function check_expiringbloodbags(){
           $.ajax({
@@ -236,6 +254,34 @@
             url: "blood-related/check_expiringbloodbags.php",
             complete: function(){
               setTimeout(check_expiringbloodbags, 60000);
+            }
+          });
+        }
+
+        function fetch_activesurveycategory(){
+          var dataTable = $('#tbl_activesurveycategory').DataTable({
+            "processing" : true,
+            "serverSide" : true,
+            "ajax" : {
+              url : "survey-related/fetch_activesurveycategory.php",
+              type: "POST"
+            },
+            "language" : {
+              "emptyTable" : "No active category to show"
+            }
+          });
+        }
+
+        function fetch_inactivesurveycategory(){
+          var dataTable = $('#tbl_inactivesurveycategory').DataTable({
+            "processing" : true,
+            "serverSide" : true,
+            "ajax" : {
+              url : "survey-related/fetch_inactivesurveycategory.php",
+              type: "POST"
+            },
+            "language" : {
+              "emptyTable" : "No inactive category to show"
             }
           });
         }
@@ -253,7 +299,7 @@
             data: {formdata,formdata},
             success:function(data){
               if(data == 1){
-                alert("Blood Component Added");
+                alert("Category Added");
                 $('#addSurveyCategorytModal').modal('hide');
                 $("#addSurveyCategory .modal-body input").val("");
                 window.location.href = "category-tab.php";
@@ -276,7 +322,7 @@
         }
       });
 
-      $(document).on("show.bs.modal", "#editsurveycategory", function(e){
+      $(document).on("show.bs.modal", "#editSurveyCategoryModal", function(e){
         var rowid = $(e.relatedTarget).data('id');
         alert(rowid);
         $.ajax({
