@@ -137,11 +137,11 @@
 						echo "
 							<div class='btn-group-toggle text-center w-100 form-group mb-sm-3' data-toggle='buttons'>
 								<label id='btnYn$varQueId' class='btn btn-outline-success btn-lg form-control col-12 mb-sm-3' value='Yes'>
-									<input type='radio' name='updatestatus$varQueId' value='Yes' autocomplete='off' required='required' />
+									<input type='radio' name='updatestatus$varQueId' value='Correct' autocomplete='off' required='required' />
 										<i class='fa fa-check fa-2x'></i>
 								</label>
 								<label id='btnYn$varQueId' class='btn btn-outline-danger btn-lg form-control col-12' value='No'>
-									<input type='radio' name='updatestatus$varQueId' value='No' autocomplete='off' required='required' />
+									<input type='radio' name='updatestatus$varQueId' value='Wrong' autocomplete='off' required='required' />
 										<i class='fa fa-times fa-2x'></i>
 								</label>
 							</div>

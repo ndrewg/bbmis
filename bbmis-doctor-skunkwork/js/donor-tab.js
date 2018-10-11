@@ -1,6 +1,6 @@
 $(document).ready(function(){
   fetch_donor();
-  savedonorinfo();
+  //savedonorinfo();
   editdonorinfo();
   fetch_banneddonor();
   function fetch_donor(){
@@ -54,7 +54,7 @@ $(document).ready(function(){
     });
   }
 
-  function savedonorinfo(){
+/*  function savedonorinfo(){
     $("form[name = 'editdonor' ]").submit(function(e){
       e.preventDefault();
       var clientocc = $("#clientocc").val();
@@ -92,7 +92,7 @@ $(document).ready(function(){
         alert("Invalid Contact");
       }
     });
-  }
+  }*/
 /*  $image_crop = $('#image_demo').croppie({
     enableExif:true,
     viewport:{
@@ -135,5 +135,22 @@ $(document).ready(function(){
 
 $("#fileimg").change(function() {
   readURL(this);
+});
+
+function readURL2(input) {
+
+if (input.files && input.files[0]) {
+  var reader = new FileReader();
+
+  reader.onload = function(e) {
+    $('#imageprev2').attr('src', e.target.result);
+  }
+
+  reader.readAsDataURL(input.files[0]);
+}
+}
+
+$("#clientimage").change(function() {
+readURL2(this);
 });
 });

@@ -253,7 +253,7 @@
       </div>
       <div class="modal-body">
         <div class="container-fluid">
-          <form action="edit_donorrecord.php" method="post" name="editdonor">
+          <form action="people-related/edit_donorrecord.php" method="post" name="editdonor" enctype="multipart/form-data">
             <div class="form-group">
               <input type = "hidden" id ='clientId' name ='clientId'>
               <label for="clientfname">First Name</label>
@@ -266,6 +266,11 @@
             <div class="form-group">
               <label for="clientlname">Last Name</label>
               <input type="text" class="form-control" id='clientlname' disabled>
+            </div>
+            <div class="form-group">
+              <label for="clientimage">Image</label>
+              <input type="file" class="form-control" id='clientimage' name ='clientimage'>
+              <img id="imageprev2" style = "width:200px;height:200px" src="#" alt="your image" />
             </div>
             <div class="form-group">
               <label for="clientocc">Occupation</label>

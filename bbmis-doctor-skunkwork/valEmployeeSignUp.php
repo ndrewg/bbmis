@@ -17,12 +17,12 @@
 
 		else	{
 			//parse_str($_POST["formdata"], $params);
-			$varFname = ucwords(strtolower(ltrim(rtrim($_REQUEST["txtFname"]))));
-			$varMname = ucwords(strtolower(ltrim(rtrim($_REQUEST["txtMname"]))));
-			$varLname = ucwords(strtolower(ltrim(rtrim($_REQUEST["txtLname"]))));
-			$varPos = $_REQUEST["optPos"];
-			$varUn = strtolower(ltrim(rtrim($_REQUEST["txtUn"])));
-			$varPw = $_REQUEST["txtPw"];
+			$varFname = ucwords(strtolower(ltrim(rtrim(mysqli_real_escape_string($connections,$_REQUEST["txtFname"])))));
+			$varMname = ucwords(strtolower(ltrim(rtrim(mysqli_real_escape_string($connections,$_REQUEST["txtMname"])))));
+			$varLname = ucwords(strtolower(ltrim(rtrim(mysqli_real_escape_string($connections,$_REQUEST["txtLname"])))));
+			$varPos = mysqli_real_escape_string($connections,$_REQUEST["optPos"]);
+			$varUn = strtolower(ltrim(rtrim(mysqli_real_escape_string($connections,$_REQUEST["txtUn"]))));
+			$varPw = mysqli_real_escape_string($connections,$_REQUEST["txtPw"]);
 		}
 	}
 

@@ -9,11 +9,11 @@ $(document).ready(function(){
   $('#submit_item').click(function() {
     var chosenType = $('#questiontype option:selected').val();
     var chosenCategory = $('#questioncategory option:selected').val();
-    var question = escape($("#question_text").val());
+    var question = $("#question_text").val();
 
-    var total_row = "<tr><td><input type='checkbox' name='record'></td><td>" + "<input type ='text' name = 'question"+tr_number+"' "+"value = '"+ question +"'>" + "</td><td>" + "<input type ='text' name = 'category"+tr_number+"' "+"value = '" + chosenCategory +"' readonly>" + "</td><td>" + "<input type ='text' name = 'type"+tr_number+"' "+"value = '" + chosenType + "' readonly>" + "</td></tr>";
+    var total_row = "<tr><td><input type='checkbox' name='record'></td><td>" + "<textarea class = 'form-control' name = 'question"+tr_number+"' "+"value = '"+ question +"'>" +question+ "</textarea></td><td>" + "<input type ='text' name = 'category"+tr_number+"' "+"value = '" + chosenCategory +"' readonly>" + "</td><td>" + "<input type ='text' name = 'type"+tr_number+"' "+"value = '" + chosenType + "' readonly>" + "</td></tr>";
 
-    console.log(total_row);
+    console.log(total_row+question);
     $("table tbody").append(total_row);
 
     $("#acceptableValue input").val("");

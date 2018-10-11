@@ -23,10 +23,10 @@
 		<?php
 			include "clientNavBar.php";
 		?>
-		
+
 		<div class="container border mt-sm-4 mb-sm-4">
 			<div class="col-10 m-auto mt-sm-4 p-4 text-center">
-				<img src="assets/images/profileImg/<?php echo $varImg;?>" style="width: 150px; border-radius: 75px;" />
+				<img src="../img/<?php echo $varImg;?>" style="width: 150px; border-radius: 75px;" />
 				<h4 class="h4 mt-sm-4">
 				<?php
 					if($varMname == "")	{
@@ -34,11 +34,11 @@
 					}
 					else	{
 						$varMidInit = substr($varMname, 0, 1);
-						
+
 						if(substr_count($varMname, " ") != 0)	{
 							$varMidInit .= substr($varMname, strpos($varMname, " ")+1, 1);
 						}
-						
+
 						echo "$varFname $varMidInit. $varLname";
 					}
 				?>

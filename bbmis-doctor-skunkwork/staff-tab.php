@@ -157,6 +157,12 @@
                   <span style="color: red;">*</span>
                   <input type="text" class="form-control" id="edit_lblLastName" name="txtLname" required="required" />
                 </div>
+                <div class="form-group col-4">
+                  <label for="lblLastName" class="col-form-label">Image</label>
+                  <span style="color: red;">*</span>
+                  <input type="file" class="form-control" id="edit_image" name="edit_image"  />
+                  <img id="imageprev2" style = "width:200px;height:200px" src="#" alt="your image" />
+                </div>
               </div>
 
               <div class="form-group col-6">

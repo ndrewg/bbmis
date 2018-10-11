@@ -11,8 +11,11 @@ $Temp = $params['donortemperature'];
 $GenApp = $params['donorgenapp'];
 $heent = $params['donorheent'];
 $HnL = $params['donorheartlungs'];
-$date = $params['date_phys'];
 $remarks = $params['examremarks'];
+$date = $params['date_phys'];
+$datenow = date('Y-m-d H:i:s');
+$date_1 = new DateTime($date);
+$datenow_1 = new DateTime($datenow);
 
 //
 
@@ -26,7 +29,7 @@ while($donation = mysqli_fetch_assoc($donationidqry)){
  $donation_id = $donation["intDonationId"];
 }
 
-
+if($date_1 <= $datenow_1){
 if ($weight && $Bp && $Pr && $Temp && $GenApp && $heent && $HnL ){
       if($remarks == 'Temporarily Deferred' || $remarks == 'Permanently Deferred'){
           $savedefferal  =  mysqli_query($connections,"INSERT INTO tbldeferral (intClientId,	txtDeferralReason,	txtDeferralInstructions)
@@ -87,6 +90,9 @@ if ($weight && $Bp && $Pr && $Temp && $GenApp && $heent && $HnL ){
 else{
   echo 3;//if may kulang sa input
 }
-
+}
+else{
+  echo 5;
+}
 
  ?>
