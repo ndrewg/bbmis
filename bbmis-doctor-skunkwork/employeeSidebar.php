@@ -6,7 +6,7 @@
 
   <div class='container-fluid pt-3'>
     <div class='container text-center'>
-      <img src="images/ablirdp.jpg" class="img-fluid" alt="donor image" style="width:45px; border-radius:60px; margin-top:10px; vertical-align: center;">
+      <img src='../img/<?php echo $varImg ?>' class="img-fluid" alt="donor image" style="width:45px; border-radius:60px; margin-top:10px; vertical-align: center;">
     </div>
     <div class='container text-center'>
       <div class='container'>

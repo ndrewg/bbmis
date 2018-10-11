@@ -46,7 +46,7 @@
 			if($fileSize < 1000000)	{
 				$fileNameNew = uniqid('', true).".".$fileActualExt;/*gagawin niyang integer na unique*/
 
-				$fileDestination = 'assets/images/profileImg/'.$fileNameNew;
+				$fileDestination = '../img/'.$fileNameNew;
 				move_uploaded_file($fileTmpName, $fileDestination);/*yung unang paramter kung saan galing which is yung temporary location, yung second parameter kung saan ililipat*/
 				header("Location:home.php");
 
@@ -91,7 +91,7 @@
 					FROM tbluser
 					WHERE strUserName = '$varUn'
 				");
-				
+
 				while($row = mysqli_fetch_assoc($qryCheckUserNew))	{
 					$varDbId = $row["intUserId"];
 				}

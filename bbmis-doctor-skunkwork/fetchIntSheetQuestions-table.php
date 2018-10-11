@@ -33,19 +33,19 @@
 				<?php
 					include("connections.php");
 					$varQueCount = 1;
-					// $varDbId = $_GET["client_id"];
-					$varDbId = 1;
+				 $varDbId = $_GET["client_id"];
+					//$varDbId = 1;
 				?>
-				
+
 				<input type="hidden" name="hidden_id" value="<?php echo $varDbId;?>" />
-				
+
 				<?php
 					$qryDistQueCtg = mysqli_query($connections, "
 					SELECT DISTINCT(qc.stfQuestionCategory)
 					FROM tblquestion q
 					JOIN tblquestioncategory qc ON q.intQuestionCategoryId = qc.intQuestionCategoryId
 					");
-					
+
 					$qryCountQueCtg = mysqli_num_rows($qryDistQueCtg);
 
 					$qryCliSex = mysqli_query($connections, "SELECT stfClientSex FROM tblclient WHERE intClientId = $varDbId");
@@ -132,7 +132,7 @@
 								</div>
 						";
 					}
-					
+
 					function btnRems($varQueId)	{
 						echo "
 							<div class='btn-group-toggle text-center w-100 form-group mb-sm-3' data-toggle='buttons'>
@@ -147,7 +147,7 @@
 							</div>
 						";
 					}
-					
+
 					for($x=0; $x<$qryCountQueCtg; $x++)	{
 						$qryQueCtg = mysqli_query($connections, "
 							SELECT DISTINCT(qc.stfQuestionCategory)
@@ -160,7 +160,7 @@
 								)
 							LIMIT 1 OFFSET $x
 						");
-						
+
 						while($rowCtg = mysqli_fetch_assoc($qryQueCtg))	{
 							$varQueCtg = $rowCtg["stfQuestionCategory"];
 
@@ -179,7 +179,7 @@
 										</td>
 									</tr>
 							";
-							
+
 							$qryQue = mysqli_query($connections, "
 								SELECT q.intQuestionId, q.txtQuestion, q.stfQuestionType
 								FROM tblquestion q
@@ -229,9 +229,9 @@
 										</td>
 										<td class='align-middle text-center' style='width: 10%;'>
 							";
-							
+
 							btnRems($varQueId);
-							
+
 							echo "
 										</td>
 									</tr>

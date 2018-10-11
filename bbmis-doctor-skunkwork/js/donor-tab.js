@@ -37,6 +37,7 @@ $(document).ready(function(){
       var sex = $(e.relatedTarget).data('sex');
       var btype = $(e.relatedTarget).data('btype');
       var status = $(e.relatedTarget).data('status');
+      var age = $(e.relatedTarget).data('age');
       alert(btype);
       $("#clientId").val(rowid);
       $("#clientfname").val(fname);
@@ -47,6 +48,7 @@ $(document).ready(function(){
       $("#clientsex").val(sex);
       $("#clientbloodtype").val(btype);
       $("#clientcivstat").val(status);
+      $("#clientbday").val(age);
       var bbtype = $('#clientbloodtype').val();
       console.log(bbtype);
     });

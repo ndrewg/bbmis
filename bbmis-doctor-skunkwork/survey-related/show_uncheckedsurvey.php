@@ -30,7 +30,7 @@ $unchecked_surveys = mysqli_query($connections,"SELECT DISTINCT(d.intDonationId)
              <td>$exam</td>
              <td>$donor_id</td>
              <td> $donor_name</td>
-             <td><a href = 'people-related/fetch_donorsurveyanswers.php?rowid= $exam ><button type='button' class='btn ml-2 btn-sm btnchecksurvey' data-id='$exam' name = 'check_survey'>Check</button></a></td>
+             <td><a href = 'fetch_donorsurveyanswers.php?rowid=$exam' ><button type='button' class='btn ml-2 btn-sm btnchecksurvey' data-id='$exam' name = 'check_survey'>Check</button></a></td>
              </tr>
            </tbody>";
 

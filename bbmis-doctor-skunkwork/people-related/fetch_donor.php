@@ -5,7 +5,7 @@ $columns = array('strClientFirstName',
 		'strClientMiddleName', 'strClientLastName'
 	 	);
 
-	$query = "SELECT intClientId, strClientFirstName, strClientMiddleName, strClientLastName,strClientOccupation,strClientContact,intBloodTypeId,stfClientCivilStatus,stfClientSex
+	$query = "SELECT intClientId, strClientFirstName, strClientMiddleName, strClientLastName,strClientOccupation,strClientContact,intBloodTypeId,stfClientCivilStatus,stfClientSex,TIMESTAMPDIFF(year,datClientBirthday,NOW()) AS age
 		  		FROM tblclient";
 
 	// datatable column index  => database column name
@@ -63,9 +63,9 @@ $bloodid = $row["intBloodTypeId"];
 
 	 $sub_array[] =
 	 	'
-		<button type="button" class="btn-success" data-toggle="modal" data-target="#editdonorinfo" data-id="'.$row["intClientId"].'" data-fname = "'.$row["strClientFirstName"].'"
+		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#editdonorinfo" data-id="'.$row["intClientId"].'" data-fname = "'.$row["strClientFirstName"].'"
 		data-mname="'.$row["strClientMiddleName"].'" data-lname="'.$row["strClientLastName"].'" data-occ="'.$row["strClientOccupation"].'" data-contact ="'.$row["strClientContact"].'"
-    data-sex="'.$row["stfClientSex"].'" data-btype = "'.$bloodid.'" data-status = "'.$row["stfClientCivilStatus"].'">Edit</button>
+    data-sex="'.$row["stfClientSex"].'" data-btype = "'.$bloodid.'" data-status = "'.$row["stfClientCivilStatus"].'" data-age = "'.$row["age"].'">Edit</button>
 	 	'; //<button type="button" name="delete" class="btn btn-danger fa fa-trash btn-sm btnDeleteCultureMedia" id="'.$row["intClientId"].'"></button>
 
 	$data[] = $sub_array;

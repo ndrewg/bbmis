@@ -1,5 +1,5 @@
 <?php
-	include "connections.php";
+	include ("connections.php");
 	parse_str(mysqli_real_escape_string($connections,$_POST["formdata"]), $params);
 	$varUn = $params["txtUn"];
 	$varPw = $params["txtPw"];
@@ -34,9 +34,9 @@
 				$varDbId = $row["intUserId"];
 				$varDbPw = $row["strUserPassword"];
 
+
 				if($varDbPw == $varPw)	{
-					$qryJoinView1 = mysqli_query($connections, "
-					SELECT e.intEmployeeId, e.stfEmployeeType
+					$qryJoinView1 = mysqli_query($connections, "SELECT e.intEmployeeId, e.stfEmployeeType ,u.strUserImageDir
 					FROM tblemployee e
 					JOIN tbluser u ON e.intUserId = u.intUserId
 					WHERE u.intUserId = '$varDbId'
@@ -45,6 +45,7 @@
 					while($row = mysqli_fetch_assoc($qryJoinView1))	{
 						$varEmpId = $row["intEmployeeId"];
 						$varRole = $row["stfEmployeeType"];
+						
 					}
 
 					if(isset($varRole))	{

@@ -169,7 +169,7 @@ $checkifpwedenaulit = mysqli_query($connections,"SELECT *
 																									else if (mysqli_num_rows($checkifpwedenaulit) > 0){
 																										$sub_array[3] =
 																										'
-																										<a href = "fetchIntSheetQuestions.php?client_id='.$row["intClientId"].'"><button type="button" class="btn btn-primary btnAddrecord" data-id="'.$row["intClientId"].'">Add record</button></a>
+																										<a href = "fetchIntSheetQuestions-table.php?client_id='.$row["intClientId"].'"><button type="button" class="btn btn-primary btnAddrecord" data-id="'.$row["intClientId"].'">Add record</button></a>
 																								    <button type="button" class="btn ml-2" data-toggle="modal" data-target="#editdonorinfo" data-id="'.$row["intClientId"].'">Edit</button>
 																								    <a class="btn btn-default btn-sm ml-2 btn_viewrec" data-id="'.$row["intClientId"].'" href="donorrecords-tab-viewinfo.php?id='.$row["intClientId"].'">View</a>
 
@@ -217,7 +217,7 @@ else{
 
 	$sub_array[3] =
 		'
-		<a href = "fetchIntSheetQuestions.php?client_id='.$row["intClientId"].'"><button type="button" class="btn btn-primary btnAddrecord" data-id="'.$row["intClientId"].'">Add record</button></a>
+		<a href = "fetchIntSheetQuestions-table.php?client_id='.$row["intClientId"].'"><button type="button" class="btn btn-primary btnAddrecord" data-id="'.$row["intClientId"].'">Add record</button></a>
     <button type="button" class="btn ml-2" data-toggle="modal" data-target="#editdonorinfo" data-id="'.$row["intClientId"].'">Edit</button>
     <a class="btn btn-default btn-sm ml-2 btn_viewrec" data-id="'.$row["intClientId"].'" href="donorrecords-tab-viewinfo.php?id='.$row["intClientId"].'">View</a>
 
