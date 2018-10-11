@@ -1,0 +1,246 @@
+@font-face {
+  font-family: 'Roboto-Regular';
+  src: url('fonts/Roboto-Regular');
+  src: url('fonts/Roboto/Roboto-Regular.eot?#iefix') format('embedded-opentype'),
+       url('fonts/Roboto/Roboto-Regular.woff2') format('woff2'),
+       url('fonts/Roboto/Roboto-Regular.woff') format('woff'),
+       url('fonts/Roboto/Roboto-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'OpenSans-Regular';
+  src: url('fonts/OpenSans-Regular');
+  src: url('fonts/OpenSans/OpenSans-Regular.eot?#iefix') format('embedded-opentype'),
+       url('fonts/OpenSans/OpenSans-Regular.woff2') format('woff2'),
+       url('fonts/OpenSans/OpenSans-Regular.woff') format('woff'),
+       url('fonts/OpenSans/OpenSans-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Raleway-Regular';
+  src: url('fonts/Raleway-Regular');
+  src: url('fonts/Raleway/Raleway-Regular.eot?#iefix') format('embedded-opentype'),
+       url('fonts/Raleway/Raleway-Regular.woff2') format('woff2'),
+       url('fonts/Raleway/Raleway-Regular.woff') format('woff'),
+       url('fonts/Raleway/Raleway-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Karla-Regular';
+  src: url('fonts/Karla-Regular');
+  src: url('fonts/Karla/Karla-Regular.eot?#iefix') format('embedded-opentype'),
+       url('fonts/Karla/Karla-Regular.woff2') format('woff2'),
+       url('fonts/Karla/Karla-Regular.woff') format('woff'),
+       url('fonts/Karla/Karla-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'OpenSans-Light';
+    src: url('fonts/OpenSans-Light/OpenSans-Light.eot');
+    src: url('fonts/OpenSans-Light/OpenSans-Light.eot?#iefix') format('embedded-opentype'),
+        url('fonts/OpenSans-Light/OpenSans-Light.woff2') format('woff2'),
+        url('fonts/OpenSans-Light/OpenSans-Light.woff') format('woff'),
+        url('fonts/OpenSans-Light/OpenSans-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Nunito-Regular';
+    src: url('fonts/Nunito/Nunito-Regular.eot');
+    src: url('fonts/Nunito/Nunito-Regular.eot?#iefix') format('embedded-opentype'),
+        url('fonts/Nunito/Nunito-Regular.woff2') format('woff2'),
+        url('fonts/Nunito/Nunito-Regular.woff') format('woff'),
+        url('fonts/Nunito/Nunito-Regular.ttf') format('truetype'),
+        url('fonts/Nunito/Nunito-Regular.svg#Nunito-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+html, body{
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  overflow-x: visible;
+  font-family: 'Raleway-Regular';
+}
+body{
+  background-color: #eeeeee;
+}
+hr{
+  background: white;
+}
+.sidebar{
+  position: fixed;
+  overflow-x: hidden;
+  top: 0;
+  bottom: 0;
+  background-color: rgb(255,255,255);
+  font-size: 14px;
+  /* left: 0; */
+  box-shadow: 0 16px 38px -12px rgba(0, 0, 0, 0.56), 0 4px 25px 0px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+}
+.sidebar::-webkit-scrollbar{
+  width: 7px;
+}
+.sidebar::-webkit-scrollbar-track{
+  border-radius:10px;
+}
+.sidebar::-webkit-scrollbar-thumb{
+  background: #eeeeee;
+}
+.sidebar::-webkit-scrollbar-thumb:hover{
+  background: #bdbdbd;
+}
+.sidebar::-webkit-scrollbar-thumb:horizontal{
+  width: 10px;
+}
+.system-title{
+  background-color: #D81B60;
+  width: 500px;
+  height: 50px;
+  position:relative;
+  left:-15px;
+}
+.header{
+  height: 50px;
+  background-color: rgb(234, 72, 127);
+  box-shadow: 0 0px 0px -5px rgba(0, 0, 0, 0.6);
+}
+.label{
+  font-family: 'OpenSans-Regular';
+  font-weight: bold;
+  color: gray;
+}
+.collapsibleheader{
+  font-family: 'Karla-Regular';
+  font-weight: bold;
+  width: 100%;
+  cursor: pointer;
+  color: rgb(50,50,50);
+}
+/* nav tabs design */
+a.nav-link.nav-item{
+  height: 45px;
+  width:100%;
+  margin-top:5px;
+  display: inline-block;
+  vertical-align: middle;
+  font-family: 'OpenSans-Regular';
+  color: rgb(50,50,50);
+}
+a.nav-link.nav-item:hover{
+  background-color: rgba(200, 200, 200, 0.2);
+}
+a.nav-link.nav-item.active{
+  color: #F06292;
+}
+/* Custom design in certain divs*/
+.content-container{
+  border-top-style: solid;
+  border-top-color: rgb(221, 56, 116);
+  border-radius: 3px;
+  margin: 60px 0 30px 0;
+  padding: 30px 20px 30px 20px;
+  background-color: rgb(255,255,255);
+  box-shadow: 0 0 5px 1px #bdbdbd;
+}
+#div_donoraddphysical{
+  border-top-style: solid;
+  border-top-color: rgb(25, 118, 210);
+  margin: 30px 0px 30px 0;
+  padding: 30px 30px 30px 30px;
+  background-color: rgb(255,255,255);
+  box-shadow: 0 0 5px 1px #bdbdbd;
+  border-radius: 3px;
+}
+#div_donoraddinitial{
+  border-top-style: solid;
+  border-top-color: rgb(25, 118, 210);
+  margin: 30px 0px 30px 0;
+  padding: 30px 30px 50px 30px;
+  background-color: rgb(255,255,255);
+  box-shadow: 0 0 5px 1px #bdbdbd;
+  border-radius: 3px;
+}
+#div_donoraddserological{
+  border-top-style: solid;
+  border-top-color: rgb(25, 118, 210);
+  margin: 30px 0px 30px 0;
+  padding: 30px 30px 50px 30px;
+  background-color: rgb(255,255,255);
+  box-shadow: 0 0 5px 1px #bdbdbd;
+  border-radius: 3px;
+}
+#div_sortedbloodbags{
+  border-top-style: solid;
+  border-top-color: rgb(25, 118, 210);
+  margin: 10px 0px 10px 0;
+  padding: 10px 10px 30px 10px;
+  background-color: rgb(255,255,255);
+  box-shadow: 0 0 5px 1px #bdbdbd;
+  border-radius: 3px;
+}
+.button-container{
+  border-top-style: solid;
+  border-top-color: rgb(25, 118, 210);
+  border-radius: 3px;
+  background-color: rgb(238, 238, 238);
+  margin: 0px 0px 20px 0;
+  padding: 30px 30px 30px 30px;
+}
+/**/
+.systemheader{
+  margin-top: 10px;
+  color: rgb(238,238,238);
+  font-family: 'Nunito-Regular';
+}
+.donorname{
+  color: rgb(50,50,50);
+  font-family: 'OpenSans-Light';
+  /* border-width: 0px; */
+}
+.btn_tbledit{
+  font-family: 'OpenSans-Regular';
+}
+.label-donorinfo{
+  font-weight: bold;
+  font-family: 'OpenSans-Regular';
+}
+.storage-buttons{
+  background-color: rgb(250,250,250);
+}
+#btn_addbloodbag{
+  margin-bottom: 20px;
+}
+.legend{
+  list-style: none;
+}
+.legend li{
+  float: right;
+  color: rgb(70, 70, 70);
+  font-size: 14px;
+}
+.legend span{
+  border: 1px solid #ccc;
+  float:left;
+  width: 12px;
+  height: 12px;
+  margin: 2px;
+}
+.legend .fresh {
+  background-color: rgb(52, 216, 0);
+}
+.legend .stillgood {
+  background-color: rgb(224, 168, 0);
+}
+.legend .almostrotten {
+  background-color: rgb(255, 0, 0);
+}
+.nunito{
+  font-family: 'Nunito-Regular';
+}
+.tab-title{
+  color:rgb(250,250,250);
+  margin-top:10px;
+  font-family: 'Nunito-Regular';
+}
+.notification-dropdown{
+  max-height: 400px;
+  min-height: 200px;
+  min-width: 200px;
+}

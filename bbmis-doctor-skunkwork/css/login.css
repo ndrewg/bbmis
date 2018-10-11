@@ -1,0 +1,83 @@
+@font-face {
+  font-family: 'Roboto-Regular';
+  src: url('fonts/Roboto-Regular');
+  src: url('fonts/Roboto/Roboto-Regular.eot?#iefix') format('embedded-opentype'),
+       url('fonts/Roboto/Roboto-Regular.woff2') format('woff2'),
+       url('fonts/Roboto/Roboto-Regular.woff') format('woff'),
+       url('fonts/Roboto/Roboto-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'OpenSans-Regular';
+  src: url('fonts/OpenSans-Regular');
+  src: url('fonts/OpenSans/OpenSans-Regular.eot?#iefix') format('embedded-opentype'),
+       url('fonts/OpenSans/OpenSans-Regular.woff2') format('woff2'),
+       url('fonts/OpenSans/OpenSans-Regular.woff') format('woff'),
+       url('fonts/OpenSans/OpenSans-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Raleway-Regular';
+  src: url('fonts/Raleway-Regular');
+  src: url('fonts/Raleway/Raleway-Regular.eot?#iefix') format('embedded-opentype'),
+       url('fonts/Raleway/Raleway-Regular.woff2') format('woff2'),
+       url('fonts/Raleway/Raleway-Regular.woff') format('woff'),
+       url('fonts/Raleway/Raleway-Regular.ttf') format('truetype');
+}
+@font-face {
+  font-family: 'Karla-Regular';
+  src: url('fonts/Karla-Regular');
+  src: url('fonts/Karla/Karla-Regular.eot?#iefix') format('embedded-opentype'),
+       url('fonts/Karla/Karla-Regular.woff2') format('woff2'),
+       url('fonts/Karla/Karla-Regular.woff') format('woff'),
+       url('fonts/Karla/Karla-Regular.ttf') format('truetype');
+}
+@font-face {
+    font-family: 'OpenSans-Light';
+    src: url('fonts/OpenSans-Light/OpenSans-Light.eot');
+    src: url('fonts/OpenSans-Light/OpenSans-Light.eot?#iefix') format('embedded-opentype'),
+        url('fonts/OpenSans-Light/OpenSans-Light.woff2') format('woff2'),
+        url('fonts/OpenSans-Light/OpenSans-Light.woff') format('woff'),
+        url('fonts/OpenSans-Light/OpenSans-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Nunito-Regular';
+    src: url('fonts/Nunito/Nunito-Regular.eot');
+    src: url('fonts/Nunito/Nunito-Regular.eot?#iefix') format('embedded-opentype'),
+        url('fonts/Nunito/Nunito-Regular.woff2') format('woff2'),
+        url('fonts/Nunito/Nunito-Regular.woff') format('woff'),
+        url('fonts/Nunito/Nunito-Regular.ttf') format('truetype'),
+        url('fonts/Nunito/Nunito-Regular.svg#Nunito-Regular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+html, body{
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+body{
+  margin: 0;
+  font-family: "Raleway-Regular";
+  background: linear-gradient(to top, #ffffff 60%, #EA487F 40%);
+  /* background-image: url("../images/rbcflow.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover; */
+}
+#btn_signin{
+  background-color: rgb(234, 72, 127);
+  font-family: 'Roboto-Regular';
+  border-radius: 50px;
+}
+#btn_signin:hover{
+  box-shadow: 0 0 10px 10px #eee;
+}
+#login-content{
+  /* margin-top: 20px; */
+  box-shadow: 0 0 5px 0px rgb(100,100,100);
+  padding-bottom: 60px;
+  padding-left: 30px;
+  padding-right: 30px;
+}

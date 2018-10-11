@@ -1,0 +1,663 @@
+
+	
+	$qryDonationCheck = mysqli_query($conn, "
+		SELECT intDonationId
+		FROM tbldonation
+		WHERE intClientId = $varDbId
+		ORDER BY intDonationId DESC
+		LIMIT 1
+	");
+	
+	while($rowDonationCheck = mysqli_fetch_assoc($qryDonationCheck))	{
+		$varDonationId = $rowDonationCheck["intDonationId"];
+	}
+	
+	if(isset($varDonationId))	{
+		$qryDateCheck = mysqli_query($conn, "
+			SELECT DISTINCT(me.intDonationId), me.dtmExamChecked AS 'Date Checked', DATE_ADD(me.dtmExamChecked, INTERVAL 7 DAY) AS 'Date Available', NOW() AS 'Date Now'
+			FROM tblclient c
+			JOIN tbldonation d ON c.intClientId = d.intClientId
+			JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId
+			WHERE c.intClientId = $varDbId
+			AND me.intDonationId = (
+				SELECT me1.intDonationId
+				FROM tblmedicalexam me1
+				WHERE c.intClientId = $varDbId
+				ORDER BY me1.intDonationId DESC
+				LIMIT 1
+			)
+		");
+		
+		while($rowDateCheck = mysqli_fetch_assoc($qryDateCheck))	{
+			$varDonId = $rowDateCheck["intDonationId"];
+			$varDateChecked = $rowDateCheck["Date Checked"];
+			$varDateAvailable = $rowDateCheck["Date Available"];
+			$varDateNow = $rowDateCheck["Date Now"];
+		}
+		
+		if(isset($varDateChecked))	{
+			if($varDateChecked == '0000-00-00 00:00:00')	{
+				// The date is not yet updated = Unchecked state.
+				ntfUnchk();
+			}
+			else	{
+				if(isset($varDateAvailable)) {
+					if($varDateAvailable >= $varDateNow)	{
+						$qryCheckAnswerRemarks = mysqli_query($conn, "
+						SELECT DISTINCT(me.stfAnswerRemarks), COUNT(me.stfAnswerRemarks) AS 'Remarks Count'
+						FROM tblclient c
+						JOIN tbldonation d ON c.intClientId = d.intClientId
+						JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId
+						WHERE c.intClientId = $varDbId
+						AND me.intDonationId = (
+							SELECT me1.intDonationId
+							FROM tblmedicalexam me1
+							WHERE c.intClientId = $varDbId
+							ORDER BY me1.intDonationId DESC
+							LIMIT 1 OFFSET 0)
+						GROUP BY me.stfAnswerRemarks");
+						
+						$varAnswerRemarks = array();
+						$varCountAnswerRemarks = array();
+						
+						$varCount = 0;
+						
+						while($rowCheckAnswerRemarks = mysqli_fetch_assoc($qryCheckAnswerRemarks))	{
+							$varAnswerRemarks[$varCount] = $rowCheckAnswerRemarks["stfAnswerRemarks"];
+							$varCountAnswerRemarks[$varCount] = $rowCheckAnswerRemarks["Remarks Count"];
+							$varCount++;
+						}
+						
+						$varCountRows = mysqli_num_rows($qryCheckAnswerRemarks);
+						
+						if($varCountRows > 1)	{
+							if(in_array('Wrong', $varAnswerRemarks))	{
+								ntfFld();
+							}
+							else	{
+								//Error if there are other status except Correct and Wrong.
+								ntfErr();
+							}
+						}
+						
+						else if($varCountRows == 1)	{
+							if(in_array('Correct', $varAnswerRemarks))	{
+								ntfSuc();
+							}
+							else if(in_array('Wrong', $varAnswerRemarks))	{
+								ntfFld();
+							}
+							else if(in_array('Unchecked', $varAnswerRemarks))	{
+								ntfUnchk();
+							}
+						}		
+					}
+				}
+			}
+		}
+	}
+	 
+	else	{
+		ntfFrst();
+	}
+
+$qryDonationCheck = mysqli_query($conn, "
+		SELECT DISTINCT(intDonationId)
+		FROM tbldonation
+		WHERE intClientId = $varDbId
+		ORDER BY intDonationId DESC
+		LIMIT 1
+	");
+	
+	$varDonationIdRow = mysqli_num_rows($qryDonationCheck);
+	
+	while($rowDonationCheck = mysqli_fetch_assoc($qryDonationCheck))	{
+		$varDonationId = $rowDonationCheck["intDonationId"];
+	}
+	
+	if($varDonationIdRow == 1)	{
+		$qryDateCheck = mysqli_query($conn, "
+		SELECT DISTINCT(me.intDonationId), me.dtmExamChecked AS 'Date Checked', DATE_ADD(me.dtmExamChecked, INTERVAL 7 DAY) AS 'Date Available', NOW() AS 'Date Now'
+		FROM tblclient c
+		JOIN tbldonation d ON c.intClientId = d.intClientId
+		JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId
+		WHERE c.intClientId = $varDbId
+		AND me.intDonationId = (
+			SELECT me1.intDonationId
+			FROM tblmedicalexam me1
+			WHERE c.intClientId = $varDbId
+			ORDER BY me1.intDonationId DESC
+			LIMIT 1 OFFSET 0)
+		");
+		
+		$varDateRows = mysqli_num_rows($qryDateCheck);
+	
+		while($rowDateCheck = mysqli_fetch_assoc($qryDateCheck))	{
+			$varDonId = $rowDateCheck["intDonationId"];
+			$varDateChecked = $rowDateCheck["Date Checked"];
+			$varDateAvailable = $rowDateCheck["Date Available"];
+			$varDateNow = $rowDateCheck["Date Now"];
+		}
+		
+		if(isset($varDateChecked))	{
+			if($varDateChecked == '0000-00-00 00:00:00')	{
+				// The date is not yet updated = Unchecked state.
+				ntfUnchk();
+			}
+			
+			else	{
+				if(isset($varDateAvailable)) {
+					if($varDateAvailable >= $varDateNow)	{
+						$qryCheckMedicalExamStatus = mysqli_query($conn, "
+						SELECT me.stfClientMedicalExamStatus, COUNT(me.stfClientMedicalExamStatus) AS 'Remarks Count'
+						FROM tblclient c
+						JOIN tbldonation d ON c.intClientId = d.intClientId
+						JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId
+						WHERE c.intClientId = $varDbId
+						AND me.intDonationId = (
+							SELECT me1.intDonationId
+							FROM tblmedicalexam me1
+							WHERE c.intClientId = $varDbId
+							ORDER BY me1.intDonationId DESC
+							LIMIT 1 OFFSET 0)
+						GROUP BY me.stfClientMedicalExamStatus");
+						
+						$varMedicalExamStatus = array();
+						$varCountMedicalExamStatus = array();
+						
+						$varCount = 0;
+						
+						while($rowCheckMedicalExamStatus = mysqli_fetch_assoc($qryCheckMedicalExamStatus))	{
+							$varMedicalExamStatus[$varCount] = $rowCheckMedicalExamStatus["stfClientMedicalExamStatus"];
+							$varCountMedicalExamStatus[$varCount] = $rowCheckMedicalExamStatus["Remarks Count"];
+							$varCount++;
+						}
+						
+						$varCountRows = mysqli_num_rows($qryCheckMedicalExamStatus);
+						
+						if($varCountRows > 1)	{
+							if(in_array('Wrong', $varMedicalExamStatus))	{
+								ntfFld();
+							}
+							else	{
+								//Error if there are other status except Correct and Wrong.
+								ntfErr();
+							}
+						}
+						
+						else if($varCountRows == 1)	{
+							if(in_array('Correct', $varMedicalExamStatus))	{
+								ntfSuc();
+							}
+							else if(in_array('Wrong', $varMedicalExamStatus))	{
+								ntfFld();
+							}
+							else if(in_array('Unchecked', $varMedicalExamStatus))	{
+								ntfUnchk();
+							}
+						}		
+					}
+				}
+			}
+		}
+	}
+	else	{
+		//First donation of the client.
+		ntfAvl1();
+	}
+
+ if($varDateDiff == null)	{
+			if(isset($varReq) && isset($varAcp))	{
+				//Variable for fetching the cooldown days of the request set by the employee.
+				$varReqWait = 60; 
+				
+				$varCooldown = $varReqWait - $varDateDiff;
+				
+				if($varCooldown <= 0)	{
+					echo "<button class='btn btn-outline-danger' type='submit' name='btnAct' value='Request'>Request for Update 1</button>";
+				}
+				
+				else	{
+					echo "<button class='btn btn-outline-danger' type='button' title='You can update again your personal information after $varCooldown day/s.' disabled='disabled'>Request for Update ($varCooldown)</button>";
+				}
+			}
+		}		
+	
+	else	{
+		if(isset($varReq) && isset($varAcp))	{
+			if($varReq == "Requested" && $varAcp == "Unnotified")	{
+				echo "
+					<button class='btn btn-outline-danger' type='button' disabled='disabled'>Waiting for Response</button>
+				";
+			}
+			
+			else if($varReq == "Requested" && $varAcp == "Granted" && $varUpd == "Not Updated")	{
+				echo "
+					<input type='button' type='submit' name='btnAct' value='Update' class='btn btn-outline-danger' />
+				";
+				echo "
+					<input type='hidden' name='btnAct' value='Update' />
+					<input type='submit' id='btnReq' class='btn btn-outline-danger' />
+				";
+			}
+			
+			else	{
+				echo "
+				<input type='hidden' name='btnAct' value='Request' />
+				<input type='submit' id='btnReq' class='btn btn-outline-danger' />
+			";
+			}
+		}
+			
+		else	{
+			echo "
+				<input type='hidden' name='btnAct' value='Request' />
+				<input type='submit' id='btnReq' class='btn btn-outline-danger' />
+			";
+		}
+	}
+ 
+ <!--script>
+	$(document).ready(function(){
+		$("form[name='nice']").on("submit",function(e)	{
+			e.preventDefault();
+			var formdata = $(this).serialize();
+			console.log(formdata);
+			
+			swal({
+				title: 'Notice.',
+				text: 'Are you sure you want to send a request?',
+				icon: 'info',
+				buttons: true,
+			}).then((willApprove) => {
+				if(willApprove)	{
+					$.ajax({
+						type: "POST",
+						url: "updateClientAcc.php",
+						data: {formdata:formdata},
+						success: function(data)	{
+							if(data == '1')	{
+								console.log('nice');
+							}
+						}
+					});
+				}
+				else	{
+					console.log('nope');
+				}
+			});
+		});
+	});
+</script-->
+<!--script>
+	$(document).on("submit", "form[name='nice']", function(e)	{
+		e.preventDefault();
+		let formdata = $(this).serialize();
+		console.log(formdata);
+		
+		swal({
+			title: 'Notice.',
+			text: 'Are you sure you want to send a request?',
+			icon: 'info',
+			buttons: true,
+		}).then((willApprove) => {
+			if(willApprove)	{
+				$.ajax({
+					type: "POST",
+					url: "updateClientAcc.php",
+					data: {formdata:formdata},
+					success: function(data)	{
+						if(data == '1')	{
+							console.log('nice');
+						}
+					}
+				});
+			}
+			else	{
+				console.log('nope');
+			}
+		});
+	});
+</script-->
+
+<!--script>
+	$(document).ready(function()	{
+    $("input[name='btnAct']").click(function(e)	{
+			e.preventDefault();
+			swal({
+				title: 'Notice.',
+				text: 'Are you sure you want to send a request?',
+				icon: 'info',
+				buttons: ['No', 'Yes, send request'],
+			}).then((willRequest) => {
+				if(willRequest)	{
+					$("#frmClientPersInfo").submit(function(e)	{
+						e.preventDefault();
+						var formdata = $(this).serialize();
+						console.log(formdata);
+						$.ajax({
+							url: "updateClientAcc.php",
+							type: "POST",
+							data: {formdata:formdata},
+							success: function(data)	{
+								console.log(data);
+								if(data == '1')	{
+									swal({
+										title: 'Got it!',
+										text: 'Your request has been sent.',
+										icon: 'success'
+									}).then(() => {
+										window.location.href = 'clientHome.php'
+									});
+								}
+							}
+						});
+					});
+				}
+				else	{
+					swal('Okay.', 'Your request is cancelled.', 'success');
+				}
+			});
+    });
+	});
+</script-->
+	
+<!--script>
+	$("#frmClientPersInfo").submit(function(e){
+		e.preventDefault();
+		var formdata = $(this).serialize();
+		console.log(formdata);
+		$.ajax({
+			url:"updateClientAcc.php",
+			type:"POST",
+			data:{formdata:formdata},
+			success:function(data)	{
+				console.log(data);
+				if(data == "1")	{
+					swal({
+						title: 'Notice.',
+						text: 'Are you sure you want to send a request?',
+						icon: 'info',
+						buttons: {
+							cancel: true,
+							request: {
+								text: 'Send Request',
+								value: 'request',
+							},
+						}
+					}).then((value) => {						
+						if(value == 'request')	{
+							console.log(value);
+							swal({
+								title: 'Got it!',
+								text: 'Your request has been sent.',
+								icon: 'success'
+							}).then(() => {
+								window.location.href = 'clientHome.php'
+							});
+						}
+						
+						else	{
+							swal('Okay.', 'Your request is cancelled.', 'success');
+						}
+					});
+				}
+			}
+		})
+	});
+</script-->
+ 
+ data-toggle="collapse" href="#collapse" role="button" aria-expanded="false" aria-controls="collapseExample"
+
+<div class="row">
+					<div class="col-3">
+						<p class="text-muted text-center"><small><strong>PERSONAL INFORMATION</strong></small></p>
+						<hr style="margin-top: -15px;" />
+						<div class="row p-1">
+							<div class="col-5 m-auto text-right">
+								<p class="h6">Sex:</p>
+							</div>
+							<div class="col-5 m-auto text-left">
+								<p class="h6"><?php echo $varSex?></p>
+							</div>
+						</div>
+						<div class="row p-1">
+							<div class="col-5 m-auto text-right">
+								<p class="h6">Civil Status:</p>
+							</div>
+							<div class="col-5 m-auto text-left">
+								<p class="h6"><?php echo $varCvlStat?></p>
+							</div>
+						</div>
+						<div class="row p-1">
+							<div class="col-5 m-auto text-right">
+								<p class="h6">Birthday:</p>
+							</div>
+							<div class="col-5 m-auto text-left">
+								<p class="h6" title="Age: <?php  ?>"><?php echo date_format(date_create($varBday), "F d, Y");?></p>
+							</div>
+						</div>
+						<div class="row p-1">
+							<div class="col-5 m-auto text-right">
+								<p class="h6">Occupation:</p>
+							</div>
+							<div class="col-5 m-auto text-left">
+								<p class="h6"><?php echo $varOcc?></p>
+							</div>
+						</div>
+						<br />
+						<p class="text-muted text-center"><small><strong>MEDICAL STATISTICS</strong></small></p>
+						<hr style="margin-top: -15px;" />
+						<div class="row p-1">
+							<div class="col-5 m-auto text-right">
+								<p class="h6">Blood Type:</p>
+							</div>
+							<div class="col-5 m-auto text-left">
+								<p class="h6">O+<?php //echo $var?></p>
+							</div>
+						</div>
+						<div class="row p-1">
+							<div class="col-5 m-auto text-right">
+								<p class="h6">Times Donated:</p>
+							</div>
+							<div class="col-5 m-auto text-left">
+								<p class="h6">84<?php //echo $var?></p>
+							</div>
+						</div>
+						<div class="row p-1">
+							<div class="col-5 m-auto text-right">
+								<p class="h6">Height(cm):</p>
+							</div>
+							<div class="col-5 m-auto text-left">
+								<p class="h6" title="
+								<?php	echo "Height(m): " . 155*0.01 . "; Height(ft/in): " . round(155/30.48) . "&apos;" . round((155-(round(155/30.48)*30.48)), 0) . "&quot;";?>">155</p>
+							</div>
+						</div>
+						<div class="row p-1">
+							<div class="col-5 m-auto text-right">
+								<p class="h6">Weight(kg):</p>
+							</div>
+							<div class="col-5 m-auto text-left">
+								<p class="h6" title="Weight(lbs): <?php echo round(($varWeight*2.2046226218), 1);?>">0<?php //echo $varWeight?></p>
+							</div>
+						</div>
+						<br />
+					</div>
+				</div>
+
+	// echo $varDonations;
+	
+	echo "
+			<table class='table table-bordered table-hover text-center' style='border-radius: 25px 25px 0px 0px;'>
+				<thead class='bg-danger text-white' style='border-radius: 25px 25px 0px 0px;'>
+					<td>Date Screened</td>
+					<td>Date Bled</td>
+					<td>Amount Bled (cc)</td>
+					<td>Phlebotomist</td>
+					<td>Donation Type</td>
+					<td>Remarks</td>
+				</thead>
+	";
+	
+			// $varExamTaken = date_create($varExamTaken);
+		// $varExamTaken = date_format($varExamTaken, "F d, Y");
+		
+		// $varDateScreened = date_create($varDateScreened);
+		// $varDateScreened = date_format($varDateScreened, "F d, Y");
+		
+		echo "
+				<tr>
+					<td>$varExamTaken</td>
+					<td>$varDateScreened</td>
+					<td>$varBloodVolume</td>
+					<td>$varPhlebotomist</td>
+					<td>$varDonationType</td>
+					<td>hmmmmmmm</td>
+				</tr>
+		";
+		
+	echo "
+			</table>
+	";
+
+<div class="row p-3">
+				<div class="card-deck m-auto">
+					<div class="card">
+						<div class="card-header bg-danger text-white">
+							Random Blood Fact #1
+						</div>
+						<div class="card-body">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisis tortor nec pharetra blandit. Aliquam erat volutpat. Nam aliquet, nisi vitae eleifend fermentum, eros orci convallis diam, sit amet congue erat turpis vitae quam. Nunc ut velit in nunc rutrum pulvinar. Aliquam sagittis risus orci, vel lacinia quam ullamcorper quis. Aenean augue justo, venenatis nec varius quis, pretium eu orci. In sed lectus id sem consectetur malesuada. Sed sed tincidunt odio.
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-header bg-danger text-white">
+							Random Blood Fact #2
+						</div>
+						<div class="card-body">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisis tortor nec pharetra blandit. Aliquam erat volutpat. Nam aliquet, nisi vitae eleifend fermentum, eros orci convallis diam, sit amet congue erat turpis vitae quam. Nunc ut velit in nunc rutrum pulvinar. Aliquam sagittis risus orci, vel lacinia quam ullamcorper quis. Aenean augue justo, venenatis nec varius quis, pretium eu orci. In sed lectus id sem consectetur malesuada. Sed sed tincidunt odio.
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="row p-3">
+				<div class="card-deck m-auto">
+					<div class="card">
+						<div class="card-header bg-danger text-white">
+							Random Blood Fact #3
+						</div>
+						<div class="card-body">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisis tortor nec pharetra blandit. Aliquam erat volutpat. Nam aliquet, nisi vitae eleifend fermentum, eros orci convallis diam, sit amet congue erat turpis vitae quam. Nunc ut velit in nunc rutrum pulvinar. Aliquam sagittis risus orci, vel lacinia quam ullamcorper quis. Aenean augue justo, venenatis nec varius quis, pretium eu orci. In sed lectus id sem consectetur malesuada. Sed sed tincidunt odio.
+						</div>
+					</div>
+					<div class="card">
+						<div class="card-header bg-danger text-white">
+							Random Blood Fact #4
+						</div>
+						<div class="card-body">
+							Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla facilisis tortor nec pharetra blandit. Aliquam erat volutpat. Nam aliquet, nisi vitae eleifend fermentum, eros orci convallis diam, sit amet congue erat turpis vitae quam. Nunc ut velit in nunc rutrum pulvinar. Aliquam sagittis risus orci, vel lacinia quam ullamcorper quis. Aenean augue justo, venenatis nec varius quis, pretium eu orci. In sed lectus id sem consectetur malesuada. Sed sed tincidunt odio.
+						</div>
+					</div>
+				</div>
+			</div>
+			
+			<br />
+			<a href="clientIntSheet.php" class="btn btn-outline-danger btn-lg btn-block">Donate Now!</a>
+			<br />
+			<br />
+
+<form action="updateClientAcc.php" method="POST">
+				<p class="text-muted text-uppercase"><small><strong>Personal Information</strong></small></p>
+				<hr style="margin-top: -15px;" />
+				
+				<div class="row">
+					<div class="form-group col-4">
+						<label for="lblFirstName" class="col-form-label">First Name</label>
+						<input type="text" class="form-control" id="lblFirstName" name="txtNewFname" value="<?php echo $varFname;?>" />
+					</div>
+					<div class="form-group col-4">
+						<label for="lblMiddleName" class="col-form-label">Middle Name</label>
+						<input type="text" class="form-control" id="lblMiddleName" name="txtNewMname" value="<?php echo $varMname;?>" />
+					</div>
+					<div class="form-group col-4">
+						<label for="lblLastName" class="col-form-label">Last Name</label>
+						<input type="text" class="form-control" id="lblLastName"  name="txtNewLname" value="<?php echo $varLname;?>" />
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="form-group col-6">
+						<label for="lblSex" class="col-form-label">Sex</label>
+						<input type="text" class="form-control" id="lblSex" value="<?php echo $varSex;?>" />
+					</div>
+					
+					<div class="form-group col-6">
+						<label for="lblCvlStat" class="col-form-label">Civil Status</label>
+						<input type="text" class="form-control" id="lblCvlStat" name="txtNewCvlStat" value="<?php echo $varCvlStat;?>" />
+					</div>
+				</div>
+				
+				<div class="row">
+					<div class="form-group col-6">
+						<label for="lblBdate" class="col-form-label">Birthdate</label>
+						<input type="text" class="form-control" id="lblBdate" value="<?php echo date_format(date_create($varBday), "F d, Y");?>" />
+					</div>
+					
+					<div class="form-group col-6">
+						<label for="lblOcc" class="col-form-label">Occupation</label>
+						<input type="text" title="If you have multiple occupations, please seperate with a comma(,)." class="form-control" id="lblOcc" name="txtNewOcc" value="<?php echo $varOcc;?>" />
+					</div>
+				</div>
+				
+				<div class="modal-footer">
+					<?php
+						include "fetchUpdateBtn.php";
+					?>
+				</div>
+			</form>
+			
+			<form action="updateClientAcc.php" method="POST">
+				<br/>
+				<p class="text-muted text-uppercase"><small><strong>Contact Information</strong></small></p>
+				<hr style="margin-top: -15px;" />
+				
+				<div class="form-group">
+					<label for="lblContactNo" class="col-form-label">Contact No.</label>
+					<input type="text" class="form-control" id="lblContactNo" name="txtNewContNo" value="<?php echo $varContNo;?>" minlength=11 maxlength=15 />
+				</div>
+				
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-outline-danger" name="btnAct" value="Contact" id="btncont">Update</button>
+				</div>
+			</form>
+				
+			<form action="updateClientAcc.php" method="POST">
+				<br/>
+				<p class="text-muted text-uppercase"><small><strong>Account Credentials</strong></small></p>
+				<hr style="margin-top: -15px;" />
+
+				<div class="form-group">
+					<label for="lblUn" class="col-form-label">Username</label>
+					<input type="text" class="form-control" id="lblUn" name="txtNewUn" value="<?php echo $varUn;?>" minlength=8 required="required" />
+				</div>
+				
+				<div class="form-group">
+					<label for="lblPw" class="col-form-label">Old Password</label>
+					<input type="password" class="form-control" id="lblOldPw" name="txtOldPw" title="Enter your recent password." minlength=1 required="required"/>
+				</div>
+				
+				<div class="form-group">
+					<label for="lblNewPw" class="col-form-label">New Password</label>
+					<input type="password" class="form-control" id="lblNewPw" name="txtNewPw" title="Enter your NEW password." minlength=8 required="required" />
+				</div>
+				
+				<div class="form-group">
+					<label for="lblConfNewPw" class="col-form-label">Confirm New Password</label>
+					<input type="password" class="form-control" id="lblConfNewPw" name="txtConfNewPw" title="Enter again your NEW password." minlength=8 required="required" />
+				</div>
+				
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-outline-danger" name="btnAct" value="Account" id="btnAccCred">Update</button>
+				</div>
+			</form>

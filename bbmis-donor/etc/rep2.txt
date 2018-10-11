@@ -1,0 +1,11 @@
+Blood Type Count in Blood Bag:
+SELECT bt.stfBloodType AS 'Blood Type', COUNT(bb.intBloodTypeId) AS 'Blood Bag Count'
+FROM tblbloodtype bt
+JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId
+GROUP BY 1
+
+Blood Type Count in Donors:
+SELECT bt.stfBloodType AS 'Blood Type', COUNT(c.intBloodTypeId) AS 'Donor Count'
+FROM tblbloodtype bt
+JOIN tblclient c ON bt.intBloodTypeId = c.intBloodTypeId
+GROUP BY 1

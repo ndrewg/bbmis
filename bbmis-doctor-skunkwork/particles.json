@@ -1,0 +1,37 @@
+{
+  "particles": {
+    "number" : {
+      "value" : 100
+    },
+    "color" : {
+      "value" : "#F6505C"
+    },
+    "shape" : {
+      "type" : "image",
+      "image" : {
+        "src" : "images/rbc.png"
+      },
+      "stroke" : {
+        "width" : 1,
+        "color" : "#eee"
+      }
+    },
+    "size" : {
+      "value" : 15,
+      "random": true,
+      "anim": {
+        "enable": false,
+        "speed": 80,
+        "size_min": 0.1,
+        "sync": false
+      }
+    },
+    "opacity" : {
+      "value" : 0.5,
+      "random" : true,
+      "anim" : {
+        "enable" : true
+      }
+    }
+  }
+}

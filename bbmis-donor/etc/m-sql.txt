@@ -1,0 +1,836 @@
+SELECT CONCAT(c.strClientFirstName, ' ', c.strClientLastName) AS 'Client Name', d.intDonationId AS 'Latest Donation'
+FROM tblclient c
+JOIN tbldonation d ON c.intClientId = d.intClientId 
+WHERE c.intClientId IN (SELECT d1.intClientId FROM tbldonation d1)
+UNION
+SELECT CONCAT(strClientFirstName, ' ', strClientLastName) AS 'Client Name', d.intDonationId AS 'Latest Donation'
+FROM tblclient c
+JOIN tbldonation d ON c.intClientId = d.intClientId 
+WHERE c.intClientId NOT IN (SELECT d2.intClientId FROM tbldonation d2)
+
+Annual:
+SELECT YEAR(dtmDateStored), COUNT(intBloodBagId)
+FROM tblbloodbag
+GROUP BY YEAR(dtmDateStored)
+ORDER BY 1 ASC
+
+SELECT DATE_FORMAT(dtmDateStored, '%Y'), COUNT(intBloodBagId)
+FROM tblbloodbag
+GROUP BY DATE_FORMAT(dtmDateStored, '%Y')
+ORDER BY 1 ASC
+
+Current Year
+SELECT YEAR(dtmDateStored), COUNT(intBloodBagId)
+FROM tblbloodbag
+WHERE YEAR(dtmDateStored) = DATE_FORMAT(NOW(), '%Y')
+
+SELECT DATE_FORMAT(NOW(), '%Y'), COUNT(intBloodBagId)
+FROM tblbloodbag
+WHERE YEAR(dtmDateStored) = DATE_FORMAT(NOW(), '%Y')
+
+Monthly:
+Numerical - Annual
+SELECT MONTH(dtmDateStored), COUNT(intBloodBagId)
+FROM tblbloodbag
+GROUP BY YEAR(dtmDateStored), MONTH(dtmDateStored)
+ORDER BY 1 ASC
+
+Alphabetic - Annual
+SELECT DATE_FORMAT(dtmDateStored, '%M %Y'), COUNT(intBloodBagId)
+FROM tblbloodbag
+GROUP BY DATE_FORMAT(dtmDateStored, '%M %Y')
+ORDER BY 1 ASC
+
+Numerical - Current Year
+SELECT MONTH(dtmDateStored), COUNT(intBloodBagId)
+FROM tblbloodbag
+WHERE YEAR(dtmDateStored) = DATE_FORMAT(NOW(), '%Y')
+GROUP BY MONTH(dtmDateStored)
+ORDER BY 1 ASC
+
+Alphabetic - Current Year
+SELECT DATE_FORMAT(dtmDateStored, '%M'), COUNT(intBloodBagId)
+FROM tblbloodbag
+WHERE YEAR(dtmDateStored) = DATE_FORMAT(NOW(), '%Y')
+GROUP BY DATE_FORMAT(dtmDateStored, '%M')
+ORDER BY 1 ASC
+
+Weekly:
+Numerical - Monthly-Annual
+SELECT WEEK(dtmDateStored), COUNT(intBloodBagId)
+FROM tblbloodbag
+GROUP BY YEAR(dtmDateStored), MONTH(dtmDateStored)
+ORDER BY 1 ASC
+
+Alphabetic - 'Week' . Numerical . YEAR
+SELECT DATE_FORMAT(dtmDateStored, 'Week %u, %Y'), COUNT(intBloodBagId)
+FROM tblbloodbag
+GROUP BY DATE_FORMAT(dtmDateStored, '%u, %Y')
+ORDER BY 1 ASC
+
+Alphabetic - Current Month and Year
+SELECT DATE_FORMAT(dtmDateStored, 'Week %u, %Y'), COUNT(intBloodBagId)
+FROM tblbloodbag
+GROUP BY DATE_FORMAT(dtmDateStored, '%u, %Y')
+ORDER BY 1 ASC
+
+Daily:
+Military
+SELECT DATE_FORMAT(dtmDateStored, '%k'), COUNT(intBloodBagId)
+FROM tblbloodbag
+WHERE DATE_FORMAT(dtmDateStored, '%Y') = DATE_FORMAT(NOW(), '%Y')
+AND DATE_FORMAT(dtmDateStored, '%m') = DATE_FORMAT(NOW(), '%m')
+AND DATE_FORMAT(dtmDateStored, '%d') = DATE_FORMAT(NOW(), '%d')
+ORDER BY 1 DESC;
+
+With AM/PM
+SELECT DATE_FORMAT(dtmDateStored, '%l%p'), COUNT(intBloodBagId)
+FROM tblbloodbag
+WHERE DATE_FORMAT(dtmDateStored, '%Y') = DATE_FORMAT(NOW(), '%Y')
+AND DATE_FORMAT(dtmDateStored, '%m') = DATE_FORMAT(NOW(), '%m')
+AND DATE_FORMAT(dtmDateStored, '%d') = DATE_FORMAT(NOW(), '%d')
+ORDER BY 1 DESC;
+
+--Weekly - Numerical - Monthly-Annual
+SELECT WEEK(dtmDateStored), COUNT(intBloodBagId)
+FROM tblbloodbag
+GROUP BY YEAR(dtmDateStored), WEEK(dtmDateStored)
+ORDER BY 1 ASC;
+
+--Weekly - Name - Annual
+SELECT DATE_FORMAT(dtmDateStored, 'Week %U, %Y'), COUNT(intBloodBagId)
+FROM tblbloodbag
+GROUP BY DATE_FORMAT(dtmDateStored, '%Y'), DATE_FORMAT(dtmDateStored, '%U')
+ORDER BY 1 ASC;
+
+SELECT DISTINCT(me.dtmExamTaken), ss.dtmDateScreened, bv.intBloodVolume
+FROM tbldonation d
+JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId
+JOIN tblphysicalexam pe ON me.intDonationId = pe.intDonationId
+JOIN tblbloodvolume bv ON pe.intBloodVolumeId = bv.intBloodVolumeId
+JOIN tblserologicalscreening ss ON pe.intDonationId = ss.intDonationId
+WHERE d.intDonationId = (SELECT d1.intDonationId FROM tbldonation d1 WHERE d.intClientId = 10)
+
+UPDATE tblmedicalexam
+SET stfAnswerRemarks = 'Correct'
+WHERE 
+
+Changelog (9-11)
+
+tblbloodbag:
+intBloodBagSerialNo -> strBloodBagSerialCode (TEXT)
+boolIsExpired -> stfBloodBagStatus (ENUM(Fresh, Expired)) - proposal
+-strBloodBagVolume
++intBloodVolumeId
+
+tblbloodcomponent:
++intDeferralDay
+strBloodComponentName -> strBloodComponent
+
++tblbloodstatus (pending):
++intBloodStatusId
++strBloodStatus
++stfBloodStatusStatus
+
++tblbloodvolume:
++intBloodVolumeId
++intBloodVolume
++stfBloodVolumeStatus
+
+tbldisease:
+strDiseaseName -> strDisease
+
+tblinitialscreening:
+strInitialScreeningResult -> strBloodComponentResult
+strInitialScreeningRemarks -> strBloodComponentRemarks
+strInitialScreeningScreener -> strBloodComponentScreener
+strInitialScreeningVerifier -> strBloodComponentVerifier
+stfClientInitialScreeningRemarks -> stfClientInitialScreeningStatus
++intUnitId (pending)
+-intEmployeeId
+
+tblmedicalexam:
+stfClientMedicalExamStatus -> stfClientAnswerRemarks
+
+tblphysicalexam:
+stfExamRemarks -> stfMedicalStatRemarks
+stfClientPhysicalExamStatus -> stfClientPhysicalExamRemarks
+-stfBloodAmount
++intBloodVolumeId
++intUnitId (pending)
+intEmployeeId = Blood Bank Officer
+
+Proposals to tblphysicalexam:
+with stfClientPhysicalExamRemarks:
+stfMedicalStatRemarks -> Accepted -> Passed -> stfClientPhysicalExamRemarks
+stfMedicalStatRemarks -> Temp./Perm. Deferred -> Failed -> stfClientPhysicalExamRemarks
+
+without stfClientInitialScreeningRemarks:
+stfMedicalExamRemarks -> Accepted -> View Report(Passed)
+stfMedicalExamRemarks -> Temp./Perm. Deferred -> View Report(Failed)
+
+tblserologicalscreening:
+strSerologicalScreeningRemarks -> strDiseaseRemarks
+strSerologicalScreeningScreener -> strDiseaseScreener
+strSerologicalScreeningVerifier -> strDiseaseVerifier
+stfDonorSerologicalScreeningStatus -> stfDonorSerologicalScreeningRemarks
+-intEmployeeId
+ 
++tblunit (pending):
++intUnitId
++strUnit
++stfMeasurementUnit
++stfUnitStatus
+
+tblrequest:
+boolIsClientRequested -> stfRequestStatus
+intIsEmpAccepted -> stfRequestFeedback
+boolIsClientUpdated -> stfUpdateStatus
+
+QUERIES:
+
+UPDATE Client from Applicant to Donor IF Client has a record in Serological Screening
+UPDATE tblclient
+SET stfClientType = 'Donor'
+WHERE intClientId IN (
+	SELECT intClientId
+	FROM tbldonation
+	WHERE intDonationId IN (
+		SELECT intDonationId
+		FROM tblserologicalscreening
+	)
+)
+
+VIEW tblbloodvolume (first column lang)
+SELECT intBloodVolume
+FROM tblbloodvolume
+ORDER BY intBloodVolume ASC;
+Actions (second column)
+
+$qryFetchBloodBagCount = mysqli_query($conn, "SELECT s.strStorageName, COUNT(bb.intBloodBagId) FROM tblstorage s JOIN tblbloodbag bb ON s.intStorageId = bb.intStorageId")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// $qryDateCheck = mysqli_query($conn, "SELECT DATE_ADD(me.dtmExamChecked, INTERVAL 7 DAY) AS 'Date Available', NOW() AS 'Date Now' FROM tblclient c JOIN tbldonation d ON c.intClientId = d.intClientId JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId WHERE c.intClientId = $varDbId AND me.intDonationId = (SELECT me1.intDonationId FROM tblmedicalexam me1 WHERE c.intClientId = $varDbId ORDER BY me1.intDonationId DESC LIMIT 1 OFFSET 0) LIMIT 1 OFFSET 0");
+	
+	// $qryCheckMedicalExamStatus = mysqli_query($conn, "SELECT stfClientMedicalExamStatus, COUNT(stfClientMedicalExamStatus) AS 'Remarks Count' FROM tblmedicalexam WHERE intClientId = $varDbId AND intDonationId = (SELECT me2.intDonationId FROM tblmedicalexam AS me2 WHERE me2.intClientId = $varDbId ORDER BY intDonationId DESC LIMIT 1 OFFSET 0) GROUP BY stfClientMedicalExamStatus");
+
+UPDATE tblquestion
+SET strQuestionTopic = "Female-exclusive"
+WHERE boolForSex = 1
+
+UPDATE tblquestion
+SET strQuestionTopic = "Condition"
+WHERE intQuestionId BETWEEN 4 AND 26
+
+UPDATE tblquestion
+SET strQuestionType = "Date"
+WHERE txtQuestion LIKE "%Kailan%" AND strQuestionTopic = "Female-exclusive"
+
+UPDATE tblquestion
+SET strQuestionType = "Quantity"
+WHERE txtQuestion LIKE "%Gaano karami%" AND strQuestionTopic = "Condition"
+
+//latest version
+SELECT intQuestionId, txtQuestion, intQuestionVersion, strQuestionType FROM tblquestion WHERE strQuestionTopic = 'History' AND intQuestionVersion = (SELECT intQuestionVersion FROM tblquestion ORDER BY DESC);
+
+-if question/s is/are changed, matik na na next version na tas isasama na rin yung mga natirang tanong as bagong version
+
+-tbldonor -> tblapplicant
+-sms/email
+
+ALTER TABLE tbldonor
+CHANGE strDonorFirstName strClientFirstName VARCHAR(80)
+CHANGE strDonorMiddleName strClientMiddleName VARCHAR(80)
+CHANGE strDonorLastName strClientLastName VARCHAR(80)
+CHANGE strDonorContact strClientContact VARCHAR(80)
+CHANGE strDonorUsername strClientUsername VARCHAR(80)
+CHANGE strDonorPassword strClientPassword VARCHAR(80)
+CHANGE strDonorImageDir strClientImageDir TEXT
+CHANGE strDonorSex strClientSex
+
+-all no answer button on doctor's checking
+
+-doctor/s encodes exam questions, need to be linked
+
+
+tblClient
+birthday
+dropdown options in every field of birthday OR DATE input type sa web
+if dropdown, sa year dapat automatic na yung pinakaunang year is yung current year or dependent sa age limit
+
+occupation
+what if kapag hooker, prosti, etc.
+irereport rin ba sa mga doktor na ganun ang trabaho nila para may exclusive appointment sila para pagusapan yung problema
+
+tblIS, tblSS
+issue sa fk
+
+6-27
+
+general
+lahat ng mga attributes na may 'donor', replaced na ng 'client' bukod sa tblserologicalscreening
++tbldoctor, tblstaff, tblusers
+
+tblbloodbag
+?mag add ba tayo ng bukod na attribute for ABO at Rhesus(Rh)?
+?strBloodStatus - ano pa yung mga status bukod sa crossmatched? gagawin kong ENUM para restricted lang sya sa mga fixed statuses.
+
+tblbloodcomponent
++components name added
+
+tblclient
+tbldonor -> tblclient
+middle name - pwede na null
++image directory - text
++civil status - varchar -> enum(Married, Widowed, Separated, Divorced, Single) reference nyan is nasa comment
+?birthday - mismong input date na lang ba to or gagawing dropdown options sa month, day at year?
+?occupation - kapag occupation nila is sex-related, mag aalarm yun sa staffs at magkakaroon ng exclusive appointment?
+
+tbldisease
++diseases name added
+
+ssswedddplll,udfhgoierhio23
+
+SELECT u.strUserName, c.strClientFirstName
+FROM tbluser u JOIN tblclient c
+ON u.intUserId = c.intUserId
+
+SELECT strClientFirstName + ' ' + strClientMiddleName + ' ' + strClientLastName AS 'Client Full Name'
+FROM tblclient;
+
+SELECT CONCAT(strClientFirstName, ' ', strClientMiddleName, ' ', strClientLastName) AS 'Client Full Name' FROM tblclient;
+
+SELECT CONCAT(strClientFirstName, ' ', strClientMiddleName, ' ', strClientLastName) AS 'Client Full Name'
+FROM tblclient
+WHERE
+
+SELECT CONCAT(strClientFirstName, ' ', strClientMiddleName, ' ', strClientLastName) AS 'Client Full Name' FROM tblclient WHERE CONCAT(strClientFirstName, ' ', strClientLastName) LIKE '%Xanderp Bro%' OR CONCAT(strClientFirstName, ' ', strClientMiddleName, ' ', strClientLastName) LIKE '%Xanderp Bro%'
+
+Changelog 7-6:
+tblinitialscreening:
+dtmDateScreened -> datDateScreened
+
+-tblScreening
+
+tblserologicalscreening:
++strPhlebotomist
+
+tblmedicalexam:
+stfAnswer -> stfAnswerYn
+-strAnswerAdd
++datAnswerDate
++intAnswerQuantity
++strAnswerString
+
+tblquestion:
+strAcceptableAnswer -> strAccAnswerYn
+strAccAnswerDate
+intAccAnswerQuantity
+strAccAnswerString
+
+intStaffId, intDoctorId -> tblphysicalexam, tblinitialscreening, tblserologicalscreening
+
+q1
+q2
+q3
+.
+.
+.
+qn
+if(sex = female)
+	q-female exclusive1
+	q-female exclusive2
+	q-female exclusive3
+	.
+	.
+	.
+	q-female exclusiven
+	submit button
+else
+	submit button
+	
+SELECT txtQuestion FROM tblquestion WHERE stfQuestionCategory = (SELECT DISTINCT(stfQuestionCategory) FROM tblquestion LIMIT 1 OFFSET 0)
+
+UPDATE tblquestion
+SET stfQuestionCategory = "Medical History"
+WHERE BETWEEN 1 AND 3;
+
+
+UPDATE tblquestion
+SET stfQuestionCategory = "Medical Condition"
+WHERE stfQuestionCategory = "";
+
+
+
+stfQuestionType:
+Basic Types: Yn, Date, Qua, Str
+Combinations: Yn-Date, Yn-Qua-Str, Date-Qua, Qua-Str
+
+need natin yung Basic Types para sa susunod na LIKE query mamaya, so eto paano kunin yung mga 'distinct' na types
+
+SELECT stfQuestionType FROM tblquestion WHERE stfQuestionType NOT LIKE '%-%'
+SELECT DISTINCT(stfQuestionType) FROM tblquestion WHERE stfQuestionType NOT LIKE '%-%'
+
+so sa result set is yung basic types na nga:  Yn, Date, Qua, Str
+
+habang nirerender yung mga tanong, kinukuha rin yung mga types so eto na yung checking,
+
+while($rowQue = mysqli_fetch_assoc($qryQue))	{ //fetching of questions
+	$varQueId = $rowQue["intQuestionId"];
+	$varQue = $rowQue["txtQuestion"];
+	$varQueType = $rowQue["stfQuestionType"];
+	
+	$qryQueUqType = mysqli_fetch_assoc($conn, "SELECT DISTINCT(stfQuestionType) FROM tblquestion WHERE stfQuestionType NOT LIKE '%-%'");
+	$qryCountQueUqType = mysqli_num_rows($qryQueUqType); // 4
+	
+	for($y=0; $y<$qryCountQueUqType; $y++)	{
+		$qryQueType = mysqli_query($conn, "SELECT DISTINCT(stfQuestionCategory) FROM tblquestion LIMIT 1 OFFSET $x");
+	}
+}
+
+SELECT CONCAT(c.strClientFirstName, ' ', c.strClientLastName) AS 'Client Full Name'
+FROM tblclient AS c
+JOIN tblmedicalexam AS m ON c.intClientId = m.intClientId
+JOIN tblphysicalexam AS p ON m.intClientId = p.intClientId
+JOIN tblinitialscreening AS i ON p.intClientId = i.intClientId
+JOIN tblserologicalscreening AS s ON i.intClientId = s.intClientId
+WHERE m.dtmExamTaken BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 90 DAY)
+AND p.dtmExamTaken BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 90 DAY)
+AND i.dtmDateScreened BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 90 DAY)
+AND s.dtmDateScreened BETWEEN NOW() AND DATE_ADD(NOW(), INTERVAL 90 DAY);
+
+Changelog 7-18
+
+General:
+dat(DATE)/dtm(DATETIME) -> dtm(TIMESTAMP)
+
+tblbloodcomponent
++stfBloodComponentStatus ENUM('Able', 'Unable')
+
+tbldisease
++stfDiseaseStatus ENUM('Able', 'Unable')
+
+-tbldoctor
+
+tblstaff -> tblemployee
+
+Changelog 2 7-18
+
+tbluser
+-stfUserType
+
+tblclient
++stfClientType
+
+tblemployee
++stfEmployeeType
+
+tblphysicalexam, tblinitialscreening, tblserologicalscreening
+-intStaffId
+-intDoctorId
++intEmployeeId
+
+Changelog 3 7-18
+
+tblphysicalexam
++stfDeferralBloodAmount
++txtDeferralReason
++txtDeferralInstructions
+
+SELECT CONCAT(strClientFirstName, ' ', strClientLastName) AS 'Client Full Name'
+FROM tblclient
+WHERE intClientId IN (SELECT intClientId FROM tblmedicalexam)
+AND intClientId IN (SELECT intClientId FROM tblphysicalexam)
+AND intClientId IN (SELECT intClientId FROM tblinitialscreening)
+AND intClientId NOT IN (SELECT intClientId FROM tblserologicalscreening)
+
+7-27
+
+update status ng bloodbag into not crossmatch(pagkasave kasi ng sero dapat ganun status niya)
+
+
+
+select ng mga bloodbag sa storage
+select ng mga bloodbag na may date_add para may sorting
+
+SELECT *
+FROM tblbloodbag AS b
+JOIN tblstorage AS s ON b.intBloodBagId = s.intBloodBagId
+WHERE DATEDIFF(NOW(), s.dtmDateStored) < 35
+GROUP BY b.stfBloodStatus
+ORDER BY DATEDIFF(NOW(), s.dtmDateStored) ASC;
+
+(jonathan)
+-pag may record na sa lahat ng screening wala nang add record dapat 3 months bago payagan ulit.
+-add storage
+-add blood type
+
+(Mel)
+-gawing naka href yung mga tabs
+-gawin yung storage
+-gawin yung view
+
+(pbro)
+-check survey
+-queries
+
+(tris)
+-gawin sa visio yung mga nagawang act. diagram
+
+ALTER TABLE tblbloodtype
+AUTO_INCREMENT = (SELECT intBloodTypeId FROM tblbloodtype ORDER BY intBloodTypeId DESC LIMIT 1 OFFSET 0)
+
+Changelog (8-1)
+
+tblbloodbag:
++stfBloodBagSerialNo: (temp)
+
+-stfBloodType
+-stfBloodTypeRhesus
+-stfBloodDispatchment
+
++intBloodTypeId
++intBloodDispatchmentId
+
+tblbloodtype*:
++strBloodType: length = 3
++stfBloodTypeRhesus: enum('positive', 'negative')
++unique constraint: uqBloodType(strBloodType, stfBloodTypeRhesus) - unique sila as pair
+fyi: possible new blood type: P -> https://typep.weebly.com/type-p
+
++tblblooddispatchment*:
++intBloodDispatchmentId
++strBloodDispatchment
+
+tblphysicalexam:
+-stfDeferredBloodAmount
+-txtDeferralReason
+-txtDeferralInstructions
+
++intDeferralId
+
++tblphysicalexamdef*: (temp)
++intDeferralId
++stfDeferredBloodAmount: 250cc, 450cc
++txtDeferralReason
++txtDeferralInstructions
+
+tblbloodcomponent:
+unique: stfBloodComponentName
+
+tbldisease:
+unique: stfDiseaseName
+
+tblstorage:
++strStorageName (temp)
+
+tblclientreq <- tblaccreq
+
+tblclientreq:
+intClientReqId <- intAccReqId
+intIsEmpAccepted <- boolIsEmpAccepted
+
+
+UPDATE tbluser
+SET strUserImageDir = REPLACE(strUserImageDir, 'assets/', 'assets/images/')
+
+SELECT DATE_ADD(NOW(), INTERVAL -30 DAY), DATE_ADD(NOW(), INTERVAL -61 DAY), DATE_ADD(NOW(), INTERVAL -92 DAY), DATE_ADD(NOW(), INTERVAL -123 DAY), DATE_ADD(NOW(), INTERVAL -154 DAY)
+
+Changelog (8-4)
+
+tblbloodbag:
++intStorageId
++dtmDateStored
+
+tblinitialscreening:
+stfClientInitialScreeningStatus:
++ENUM('Unchecked', 'Unscreened')
++Default: Unscreened
+
+tblmedicalexam:
+stfClientMedicalExamStatus:
++ENUM('Unchecked')
++Default: Unchecked
+
+tblphysicalexam:
++stfBloodAmount
+stfClientPhysicalExamStatus:
++ENUM('Unchecked')
++Default: Unchecked
+
+tblphysicalexamdef:
++intClientId
+-stfDeferralBloodAmount
+
+tblserologicalscreening:
+stfDonorSerologicalScreeningStatus
++ENUM('Unchecked', 'Unscreened')
++Default: Unscreened
+
+tblstorage:
+-dtmDateStored
+strStorageName:
++Values: (Crossmatched, Stocked, Under Quarantined)
++intStorageCapacity INT(3):
++Values: 250
+
+tbluser:
+strUserImageDir:
+assets/profileImg -> assets/images/profileImg
+
+FYI (for Panels):
+
+Physical Exam
+Weight: >50kg
+BP: 90/70-130/80
+Temp.: 37 degrees C
+
+Initial Screening
+WBC: 5-10, 10.5 is also accepted, If exceeded, rest for 3 days.
+Hemo: 130-170(Male), 123-150(Female), If exceeded, rest for 1 week.
+Platelet: 150-400
+Hema: 0.39-0.51(Male), 0.37-0.45(Female)
+
+Serological Screening
+All screenings: < 1.0
+
+Mel
+SELECT *
+FROM tblbloodbag bb
+JOIN tblstorage s ON bb.intStorageId = s.intStorageId
+WHERE DATEDIFF(NOW(), bb.dtmDateStored) <= 35
+GROUP BY s.intStorageId
+ORDER BY bb.dtmDateStored DESC;
+
+J-than
+SELECT CONCAT(strClientFirstName, ' ', strClientMiddleName, ' ', strClientLastName)
+FROM tblclient c
+JOIN tblbloodbag bb ON c.intClientId = bb.intClientId
+WHERE c.intClientId NOT IN (SELECT intClientId from tblbloodbag)
+
+ALTER TABLE `tblmedicalexam` CHANGE `stfClientMedicalExamStatus` `stfClientMedicalExamStatus` ENUM('Correct','Wrong','Unchecked') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'Unchecked';
+
+SELECT CONCAT(c.strClientFirstName, ' ', c.strClientMiddleName, ' ', c.strClientLastName) AS "Client's Full Name"
+FROM tblclient c
+JOIN tblmedicalexam me ON c.intClientId = me.intClientId
+JOIN tblphysicalexam pe ON me.intClientId = pe.intClientId
+JOIN tblinitialscreening ins ON pe.intClientId = ins.intClientId
+JOIN tblserologicalscreening ss ON ins.intClientId = ss.intClientId
+WHERE (me.dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW())
+AND (pe.dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW())
+AND (ins.dtmDateScreened BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW())
+AND (ss.dtmDateScreened BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW())
+
+donors - donated 90 days from now until now
+SELECT CONCAT(c.strClientFirstName, ' ', c.strClientMiddleName, ' ', c.strClientLastName) AS "Client's Full Name"
+FROM tblclient AS c
+JOIN tblmedicalexam AS me ON c.intClientId = me.intClientId
+JOIN tblphysicalexam AS pe ON me.intClientId = pe.intClientId
+JOIN tblinitialscreening AS ins ON pe.intClientId = ins.intClientId
+JOIN tblserologicalscreening AS ss ON ins.intClientId = ss.intClientId
+WHERE (me.dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW())
+AND (pe.dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW())
+AND (ins.dtmDateScreened BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW())
+AND (ss.dtmDateScreened BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW())
+
+failed initial screening - WBC
+SELECT CONCAT(c.strClientFirstName, ' ', c.strClientMiddleName, ' ', c.strClientLastName) AS "Client's Full Name"
+FROM tblclient AS c
+JOIN tblinitialscreening AS ins ON c.intClientId = ins.intClientId
+JOIN tblbloodcomponent AS bc ON ins.intBloodComponentId = bc.intBloodComponentId
+WHERE bc.intBloodComponentId = 2
+AND ins.dtmDateScreened BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY);
+
+failed initial screening - Hemoglobin
+SELECT CONCAT(c.strClientFirstName, ' ', c.strClientMiddleName, ' ', c.strClientLastName) AS "Client's Full Name"
+FROM tblclient AS c
+JOIN tblinitialscreening AS ins ON c.intClientId = ins.intClientId
+JOIN tblbloodcomponent AS bc ON ins.intBloodComponentId = bc.intBloodComponentId
+WHERE bc.intBloodComponentId = 3
+AND ins.dtmDateScreened BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY);
+
+SELECT CONCAT(c.strClientFirstName, ' ', c.strClientMiddleName, ' ', c.strClientLastName) AS "Client's Full Name"
+FROM tblclient AS c
+JOIN tblmedicalexam AS me ON c.intClientId = me.intClientId
+WHERE me.dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW()
+
+SELECT intClientId FROM tblclient WHERE intClientId IN (SELECT intClientId FROM tblRequest WHERE intClientId = 10);
+
+Changelog: (8-11)
+
+tblbloodcomponent:
+stfBloodComponentStatus:
+ENUM(Able, Unable) -> ENUM(Active, Inactive)
+
+tbldisease:
+stfDiseaseStatus:
+ENUM(Able, Unable) -> ENUM(Active, Inactive)
+
+tblblooddispatchment:
+stfBloodDispatchment:
++value: 'Patient'
+
+(dtmDispatchmentTimer < 30 minutes, stfBloodDispatchment = 'Patient') = (boolIsExpired = 1)
+
+tblbloodtype:
+stfBloodType:
++value: 'Undefined'
+stfBloodTypeRhesus:
++ENUM('Undefined')
+
+tblclient:
++intBloodTypeId: default: 1(Undefined)
+
+tblmedicalexam:
+strClientMedicalExamStatus:
+ENUM(Passed, Failed) -> ENUM(Correct, Wrong, Unchecked)
+Default: Unchecked
+
+tblquestion:
++boolVersionInUse: ENUM(0, 1)
+
++tblquestioncategory:
+stfQuestionCategory ENUM(Active, Inactive)
+
+tblrequest:
+boolIsClientRequested ENUM(No Request, Requested)
+Default: No Request
+intIsEmpAccepted ENUM(Unnotified, Granted, Rejected)
+Default: Unnotified
+boolIsClientUpdated ENUM(Updated, Not Updated)
+Default: Not Updated
+
+SELECT dtmDateUpdated FROM tblrequest WHERE dtmDateUpdated BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW() ORDER BY dtmDateUpdated DESC LIMIT 1 OFFSET 0
+
+SELECT TIMESTAMPDIFF(day, '2018-02-08', NOW()) AS 'wow' FROM tblrequest WHERE intClientId = 10
+
+SELECT DISTINCT(`strMedicalExamCode`), `stfClientMedicalExamStatus` FROM tblmedicalexam WHERE intClientId = 10 ORDER BY strMedicalExamCode DESC LIMIT 1 OFFSET 0
+
+view unnotified requests
+SELECT CONCAT(c.strClientFirstName, ' ', c.strClientMiddleName, ' ', c.strClientLastName) AS "Client's Full Name"
+FROM tblclient AS c
+JOIN tblrequest AS r ON c.intClientId = r.intClientId
+WHERE r.boolIsEmpAccepted = 'Unnotified';
+
+SELECT me1.stfClientMedicalExamStatus, COUNT(me1.stfClientMedicalExamStatus)
+FROM tblmedicalexam AS me1
+WHERE me1.intClientId = 10
+AND me.strMedicalExamCode = (SELECT me2.strMedicalExamCode FROM tblmedicalexam AS me2 ORDER BY me2.strMedicalExamCode DESC LIMIT 1 OFFSET 0)
+GROUP BY stfClientMedicalExamStatus
+
+
+SELECT c.intClientId
+FROM tblclient c
+JOIN tbldonation d ON c.intClientId = d.intClientId
+JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId
+JOIN tblphysicalexam pe ON me.intDonationId = pe.intDonationId
+JOIN tblinitialscreening ins ON pe.intDonationId = ins.intDonationId
+JOIN tblserologicalscreening ss ON ins.intDonationId = ss.intDonationId
+WHERE c.intClientId = 1
+AND d.stfDonationRemarks = 'Complete'
+AND d.strDonationCode = (SELECT strDonationCode FROM tbldonation WHERE intClientId = 1 ORDER BY strDonationCode DESC LIMIT 1 OFFSET 0)
+AND d.strDonationCode IN (SELECT me.intDonationId FROM tblmedicalexam me)
+AND d.strDonationCode IN (SELECT pe.intDonationId FROM tblphysicalexam pe)
+AND d.strDonationCode IN (SELECT ins.intDonationId FROM tblinitialscreening ins)
+AND d.strDonationCode IN (SELECT ss.intDonationId FROM tblserologicalscreening ss)
+AND me.dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW()
+AND pe.dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW()
+AND ins.dtmDateScreened BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW()
+AND ss.dtmDateScreened BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW()
+
+SELECT c.intClientId
+FROM tblclient c
+JOIN tbldonation d ON c.intClientId = d.intClientId
+JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId
+JOIN tblphysicalexam pe ON me.intDonationId = pe.intDonationId
+JOIN tblinitialscreening ins ON pe.intDonationId = ins.intDonationId
+WHERE c.intClientId = 1
+AND d.stfDonationRemarks = 'Incomplete'
+AND d.strDonationCode = (SELECT strDonationCode FROM tbldonation WHERE intClientId = 1 ORDER BY strDonationCode DESC LIMIT 1 OFFSET 0)
+AND d.strDonationCode IN (SELECT me.intDonationId FROM tblmedicalexam me)
+AND d.strDonationCode IN (SELECT pe.intDonationId FROM tblphysicalexam pe)
+AND d.strDonationCode IN (SELECT ins.intDonationId FROM tblinitialscreening ins)
+AND me.dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW()
+AND pe.dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW()
+AND ins.dtmDateScreened BETWEEN DATE_SUB(NOW(), INTERVAL 7 DAY) AND NOW()
+AND ins.intBloodComponentId = (SELECT intBloodComponentId FROM tblbloodcomponent WHERE strBloodComponentName = "White Blood Cell (WBC)")
+
+SELECT c.intClientId
+FROM tblclient c
+JOIN tbldonation d ON c.intClientId = d.intClientId
+JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId
+JOIN tblphysicalexam pe ON me.intDonationId = pe.intDonationId
+JOIN tblinitialscreening ins ON pe.intDonationId = ins.intDonationId
+WHERE c.intClientId = 1
+AND d.stfDonationRemarks = 'Incomplete'
+AND d.strDonationCode = (SELECT strDonationCode FROM tbldonation WHERE intClientId = 1 ORDER BY strDonationCode DESC LIMIT 1 OFFSET 0)
+AND d.strDonationCode IN (SELECT me.intDonationId FROM tblmedicalexam me)
+AND d.strDonationCode IN (SELECT pe.intDonationId FROM tblphysicalexam pe)
+AND d.strDonationCode IN (SELECT ins.intDonationId FROM tblinitialscreening ins)
+AND me.dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW()
+AND pe.dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW()
+AND ins.dtmDateScreened BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW()
+AND ins.intBloodComponentId = (SELECT intBloodComponentId FROM tblbloodcomponent WHERE strBloodComponentName = "Hemoglobin")
+
+SELECT me.stfClientMedicalExamStatus, COUNT(me.stfMedicalExamStatus) AS 'Remarks Count'
+FROM tblclient c
+JOIN tbldonation d ON c.intClientId = d.intClientId
+JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId
+WHERE c.intClientId = 10
+AND me.intDonationId = (SELECT me2.intDonationId FROM tblmedicalexam AS me2 WHERE me2.intClientId = 10 ORDER BY intDonationId DESC LIMIT 1 OFFSET 0)
+GROUP BY stfClientMedicalExamStatus");
+
+SELECT DISTINCT(`stfClientMedicalExamStatus`)
+FROM tblmedicalexam
+WHERE `intDonationId` = (SELECT `intDonationId` FROM tblmedicalexam ORDER BY intDonationId DESC LIMIT 1)
+
+SELECT c.intClientId
+FROM tblclient c
+JOIN tbldonation d1 ON c.intClientId = d1.intClientId
+JOIN tblmedicalexam me ON d1.intDonationId = me.intDonationId
+WHERE me.intDonationId IN (SELECT d2.intDonationId FROM tbldonation d2)
+AND me.intDonationId IN (SELECT d2.intDonationId FROM tbldonation d2)
+AND d.stfDonationRemarks = 'Incomplete'
+
+SELECT DISTINCT(c.intClientId), d.intDonationId
+FROM tblclient c
+JOIN tbldonation d ON c.intClientId = d.intClientId
+JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId
+JOIN tblphysicalexam pe ON me.intDonationId = pe.intDonationId
+JOIN tblinitialscreening ins ON pe.intDonationId = ins.intDonationId
+JOIN tblserologicalscreening ss ON ins.intDonationId = ss.intDonationId
+WHERE d.intDonationRemarks = 'Incomplete'
+AND intClientId = 10
+AND 'Correct' = me.stfMedicalExamRemarks
+AND 
+
+SELECT DISTINCT(me.intDonationId), me.dtmExamChecked,  DATE_ADD(me.dtmExamChecked, INTERVAL 7 DAY) AS 'Date Available', NOW() AS 'Date Now' FROM tblclient c JOIN tbldonation d ON c.intClientId = d.intClientId JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId WHERE c.intClientId = 10 AND me.intDonationId = (SELECT me1.intDonationId FROM tblmedicalexam me1 WHERE c.intClientId = 10 ORDER BY me1.intDonationId DESC LIMIT 1 OFFSET 0)
+
+SELECT DISTINCT(me.intDonationId), me.dtmExamChecked AS 'Date Checked', DATE_ADD(me.dtmExamChecked, INTERVAL 7 DAY) AS 'Date Available', NOW() AS 'Date Now' FROM tblclient c JOIN tbldonation d ON c.intClientId = d.intClientId JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId WHERE c.intClientId = 10 AND me.intDonationId = (SELECT me1.intDonationId FROM tblmedicalexam me1 WHERE c.intClientId = 10 ORDER BY me1.intDonationId DESC LIMIT 1 OFFSET 0)
+
+SELECT boolIsAllowed
+FROM tblclient
+WHERE intClientId = $varDbId
+
+if($varAvailability == 0)	{}
+if($varAvailability == 1)	{}
+
+deferral days -> tbldonation
+
+SELECT DISTINCT(me.intDonationId), me.dtmExamChecked AS 'Date Checked', DATE_ADD(me.dtmExamChecked, INTERVAL 7 DAY) AS 'Date Available', NOW() AS 'Date Now' FROM tblclient c JOIN tbldonation d ON c.intClientId = d.intClientId JOIN tblmedicalexam me ON d.intDonationId = me.intDonationId WHERE c.intClientId = 10 AND me.intDonationId = (SELECT me1.intDonationId FROM tblmedicalexam me1 WHERE c.intClientId = 10 ORDER BY me1.intDonationId DESC LIMIT 1 OFFSET 0)
+
+TRUNCATE tbldonation;
+TRUNCATE tblmedicalexam;

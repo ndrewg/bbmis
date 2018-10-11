@@ -1,0 +1,62 @@
+Daily:
+-Military
+SELECT DATE_FORMAT(dtmDateStored, '%k') AS 'Hour', COUNT(intBloodBagId) AS 'Blood Bag Count'
+FROM tblbloodbag
+WHERE DATE_FORMAT(dtmDateStored, '%Y') = DATE_FORMAT(NOW(), '%Y')
+AND DATE_FORMAT(dtmDateStored, '%m') = DATE_FORMAT(NOW(), '%m')
+AND DATE_FORMAT(dtmDateStored, '%d') = DATE_FORMAT(NOW(), '%d')
+ORDER BY 1 DESC;
+
+-With AM/PM
+SELECT DATE_FORMAT(dtmDateStored, '%l %p') AS 'Hour', COUNT(intBloodBagId) AS 'Blood Bag Count'
+FROM tblbloodbag
+WHERE DATE_FORMAT(dtmDateStored, '%Y') = DATE_FORMAT(NOW(), '%Y')
+AND DATE_FORMAT(dtmDateStored, '%m') = DATE_FORMAT(NOW(), '%m')
+AND DATE_FORMAT(dtmDateStored, '%d') = DATE_FORMAT(NOW(), '%d')
+ORDER BY 1 DESC;
+
+Weekly:
+SELECT DATE_FORMAT(dtmDateStored, '%W') AS 'Day', COUNT(intBloodBagId) AS 'Blood Bag Count'
+FROM tblbloodbag
+WHERE DATE_FORMAT(dtmDateStored, '%Y') = DATE_FORMAT(NOW(), '%Y')
+AND DATE_FORMAT(dtmDateStored, '%m') = DATE_FORMAT(NOW(), '%m')
+GROUP BY 1
+ORDER BY 1 ASC;
+
+Monthly:
+-Numerical - Annual
+SELECT MONTH(dtmDateStored) AS 'Month', COUNT(intBloodBagId) AS 'Blood Bag Count'
+FROM tblbloodbag
+GROUP BY YEAR(dtmDateStored), MONTH(dtmDateStored)
+ORDER BY 1 ASC;
+
+-Alphabetic - Annual
+SELECT DATE_FORMAT(dtmDateStored, '%M %Y') AS 'Month Year', COUNT(intBloodBagId) AS 'Blood Bag Count'
+FROM tblbloodbag
+GROUP BY DATE_FORMAT(dtmDateStored, '%M %Y')
+ORDER BY 1 ASC;
+
+-Numerical - Current Year
+SELECT MONTH(dtmDateStored) AS 'Month', COUNT(intBloodBagId) AS 'Blood Bag Count'
+FROM tblbloodbag
+WHERE YEAR(dtmDateStored) = DATE_FORMAT(NOW(), '%Y')
+GROUP BY MONTH(dtmDateStored)
+ORDER BY 1 ASC;
+
+--Alphabetic - Current Year
+SELECT DATE_FORMAT(dtmDateStored, '%M') AS 'Month', COUNT(intBloodBagId) AS 'Blood Bag Count'
+FROM tblbloodbag
+WHERE YEAR(dtmDateStored) = DATE_FORMAT(NOW(), '%Y')
+GROUP BY DATE_FORMAT(dtmDateStored, '%M')
+ORDER BY 1 ASC;
+
+--Annual:
+SELECT YEAR(dtmDateStored) AS 'Year', COUNT(intBloodBagId) AS 'Blood Bag Count'
+FROM tblbloodbag
+GROUP BY YEAR(dtmDateStored)
+ORDER BY 1 ASC;
+
+SELECT DATE_FORMAT(dtmDateStored, '%Y') AS 'Year', COUNT(intBloodBagId) AS 'Blood Bag Count'
+FROM tblbloodbag
+GROUP BY DATE_FORMAT(dtmDateStored, '%Y')
+ORDER BY 1 ASC;

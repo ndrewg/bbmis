@@ -1,0 +1,100 @@
+>Donor related
+*Donor count for the month and day per Blood Type
+*Count ng nagfail per blood Component at Disease
+*List of names ng nagfail per blood Component at Disease
+*Count ng donor per age
+*Count ng donor per gender
+
+>Blood Related
+*Count ng Remaining Blood bag per type
+*Count ng Critical Blood bag per type
+*Count ng naka out na Blood bag per type
+*Top Donors/Regular Donors
+*wastage
+
+Donor Count - Donated:
+SELECT COUNT(*) AS 'Donor Count'
+FROM tbldonation
+WHERE stfDonationRemarks = 'Complete'
+
+Blood Type Count in Donors:
+SELECT bt.stfBloodType AS 'Blood Type', COUNT(c.intBloodTypeId) AS 'Donor Count'
+FROM tblbloodtype bt
+JOIN tblclient c ON bt.intBloodTypeId = c.intBloodTypeId
+GROUP BY 1
+
+Blood Component - Failed Client Count:
+SELECT bc.strBloodComponent, COUNT(*) AS 'Failed Client Count'
+FROM tblbloodcomponent bc
+JOIN tblinitialscreening ins ON bc.intBloodComponentId = ins.intBloodComponentId
+WHERE ins.strBloodComponentRemarks = 'Failed'
+GROUP BY 1
+
+Blood Component - Failed Client List:
+SELECT CONCAT(c.strClientFirstName, ' ', c.strClientLastName) AS 'Client Full Name'
+FROM tblclient c
+JOIN tbldonation d ON c.intClientId = d.intClientId 
+JOIN tblinitialscreening ins ON d.intDonationId = ins.intDonationId
+WHERE ins.strBloodComponentRemarks = 'Failed'
+GROUP BY 1
+
+Disease - Failed Client Count:
+SELECT d.strDisease, COUNT(*) AS 'Failed Client Count'
+FROM tbldisease d
+JOIN tblserologicalscreening ss ON d.intDiseaseId = ss.intDiseaseId
+WHERE ss.strDiseaseRemarks = 'Failed'
+GROUP BY 1
+
+Disease - Failed Client List:
+SELECT CONCAT(c.strClientFirstName, ' ', c.strClientLastName) AS 'Client Full Name'
+FROM tblclient c
+JOIN tbldonation d ON c.intClientId = d.intClientId 
+JOIN tblserologicalscreening ss ON d.intDonationId = ss.intDonationId
+WHERE ss.strDiseaseRemarks = 'Failed'
+GROUP BY 1
+
+Count Client per Age:
+SELECT TIMESTAMPDIFF(YEAR, datClientBirthday, NOW()) AS 'Client Age', COUNT(*) AS 'Client Count'
+FROM tblclient
+GROUP BY 1
+ORDER BY 1 ASC;
+
+Count Client per Sex:
+SELECT stfClientSex AS 'Client Sex', COUNT(*) AS 'Client Count'
+FROM tblclient
+GROUP BY 1;
+
+Remaining Blood Bag Count:
+SELECT bt.stfBloodType, COUNT(*) AS 'Blood Bag Count'
+FROM tblbloodtype bt
+JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId
+JOIN tblstorage s ON bb.intStorageId = s.intStorageId
+JOIN tblstoragetype st ON s.intStorageTypeId = st.intStorageTypeId
+WHERE st.strStorageType = 'Stocked'
+
+Critical Blood Bag Count:
+SELECT bt.stfBloodType, COUNT(*) AS 'Blood Bag Count'
+FROM tblbloodtype bt
+JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId
+JOIN tblbloodstatus s ON bb.intBloodStatusId = s.intBloodStatusId
+WHERE s.strBloodStatus = 'Critical'
+AND TIMESTAMPDIFF(DAY, bb.dtmDateStored, NOW()) > s.intStartDayRange
+AND TIMESTAMPDIFF(DAY, bb.dtmDateStored, NOW()) < s.intEndDayRange
+
+Out-displaced Blood Bag Count:
+SELECT bt.stfBloodType, COUNT(*) AS 'Blood Bag Count'
+FROM tblbloodtype bt
+JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId
+WHERE bb.stfBloodDispatchment = 'Out'
+
+Top Donor:
+SELECT CONCAT(c.strClientFirstName, ' ', c.strClientLastName) AS 'Client Full Name', COUNT(*) AS 'Total Donations'
+FROM tblclient c
+JOIN tbldonation d ON c.intClientId = d.intClientId
+ORDER BY 1 DESC;
+
+Wastage:
+SELECT COUNT(*) AS 'Wasted Blood Bags'
+FROM tblbloodbag
+WHERE stfIsBloodBagExpired = 'Yes'
+AND TIMESTAMPDIFF(DAY, dtmDateStored, NOW()) > 35;

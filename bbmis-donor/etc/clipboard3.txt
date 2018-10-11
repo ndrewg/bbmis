@@ -1,0 +1,66 @@
+require('assets/fpdf/fpdf.php');
+
+	class PDF extends FPDF	{
+		// Page header
+		function Header()	{
+				// Logo
+				$this -> Image('assets/images/logo-a1.png', 10, 6);
+				// Arial bold 15
+				$this -> SetFont('Arial', 'B', 20);
+				// Move to the right
+				// Title
+				$this -> Cell(50);
+				$this -> Cell(75, 10, 'Medical Exam Interview Sheet', 0, 1, 'C');
+				$this -> SetFont('Arial', '', 10);
+				$this -> Cell(37);
+				$this -> Cell(75, 2, 'Version 3.00', 0, 0, 'L');
+				// Line break
+				$this -> Ln(25);
+		}
+
+		// Page footer
+		function Footer()	{
+				// Position at 1.5 cm from bottom
+				$this -> SetY(-15);
+				// Arial italic 8
+				$this -> SetFont('Arial', 'I', 8);
+				// Page number
+				$this -> Cell(0, 10, 'Page '.$this->PageNo().'/{nb}',0,0,'C');
+		}
+	}
+
+	// Instanciation of inherited class
+	$pdf = new PDF('P', 'mm', 'Letter');
+	$pdf ->  SetMargins(12.7, 12.7, 12.7);
+	$pdf -> AliasNbPages();
+	$pdf -> AddPage();
+	$pdf -> SetFont('Times','',12);
+	
+	$pdf -> SetAutoPageBreak(true, 15);
+	
+	$qryFetchItemAns = mysqli_query($conn, "
+		SELECT q.txtQuestion, me.stfAnswerYn, me.strAnswerString, me.datAnswerDate, me.intAnswerQuantity
+		FROM tblquestion q
+		JOIN tblmedicalexam me ON q.intQuestionId = me.intQuestionId
+		WHERE me.intDonationId = (
+			SELECT me1.intDonationId
+			FROM tbldonation d
+			JOIN tblmedicalexam me1 ON d.intDonationId = me1.intDonationId
+			WHERE d.intClientId = $varDbId
+			LIMIT 1
+		)
+	");
+	
+	$varCount = 1;
+	
+	while($rowItemAns = mysqli_fetch_assoc($qryFetchItemAns))	{
+		$pdf -> Cell(20, 5, $varCount, 1);
+		$pdf -> Cell(30, 5, $rowItemAns["txtQuestion"], 1);
+		$pdf -> Cell(33, 5, $rowItemAns["stfAnswerYn"], 1);
+		$pdf -> Cell(50, 5, $rowItemAns["strAnswerString"], 1);
+		$pdf -> Cell(60, 5, $rowItemAns["datAnswerDate"], 1);
+		$pdf -> Cell(62, 5, $rowItemAns["intAnswerQuantity"], 1, 1);
+		$varCount++;
+	}
+	
+	$pdf -> Output();
