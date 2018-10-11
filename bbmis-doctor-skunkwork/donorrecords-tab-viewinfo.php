@@ -138,8 +138,8 @@ if(mysqli_num_rows($timesrejectedseroqry) > 0){
               <label class="mr-3" id="timesrejectedsero">Serological Screening: <?php echo $donationrejsero ?> </label>
             </div>
             <!-- client image -->
-            <div class="col-md-4 container-fluid" style="margin-top: 10px; margin-bottom: 10px; box-shadow: 0 0 1px 0 #d1d1d1; padding: 15px;">
-              <img src = "../img/<?php echo $image ?>" style = "width:200px; height:200px;">
+            <div class="col-md-4 container-fluid text-center" style="margin-top: 10px; margin-bottom: 10px; box-shadow: 0 0 1px 0 #d1d1d1; padding: 15px;">
+              <img src = "../img/<?php echo $image ?>" class="ml-auto mr-auto" style = "width:200px; height:200px; border-radius: 100px;">
             </div>
             <div class="col-md-3" style="margin: 10px 0 10px 0;">
 
