@@ -33,22 +33,24 @@
 			while($row = mysqli_fetch_assoc($qryCheckUser))	{
 				$varUserId = $row["intUserId"];
 				$varUserPw = $row["strUserPassword"];
+				
+				// echo $varUserId;
 
 				if($varUserPw == $varPw)	{
 					$qryJoinView1 = mysqli_query($conn, "
-					SELECT c.stfClientType
+					SELECT c.intClientId, c.stfClientType
 					FROM tblclient c
 					JOIN tbluser u ON c.intUserId = u.intUserId
-					WHERE u.intUserId = '$varUserId'
-					AND c.intUserId = '$varUserId'");
+					WHERE c.intUserId = '$varUserId'");
 					
 					while($row = mysqli_fetch_assoc($qryJoinView1))	{
+						$varDbId = $row["intClientId"];
 						$varRole = $row["stfClientType"];
 					}
 
 					if($varRole == "Donor" || $varRole == "Applicant")	{
 						session_start();
-						$_SESSION["sessId"] = $varUserId;
+						$_SESSION["sessId"] = $varDbId;
 						//Client type is equal to Donor or Applicant. Successful login. Session added.
 						echo 1;
 					}
