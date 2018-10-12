@@ -61,7 +61,9 @@
 					</div>
 				</div>
 				<div class="card-footer text-center p-2" style="border-radius: 0px 0px 25px 25px">
-					Donation Code: 120180911
+					<?php
+						include "fetchDonationCode.php";
+					?>
 				</div>
 			</div>
 			
@@ -137,45 +139,51 @@
 						$("#idPeRemarks").css("color", "#46B8DA");
 					}
 					else if(varObj.pe == '1')	{
+						$("#idPeBtn").addClass("active");
 						$("#idPeRemarks").addClass("font-weight-bold");
 						$("#idPeRemarks").text("Passed");
 						$("#idPeRemarks").css("color", "#5CB85C");
 					}
 					else if(varObj.pe == '2')	{
+						$("#idPeBtn").addClass("active");
 						$("#idPeRemarks").addClass("font-weight-bold");
 						$("#idPeRemarks").text("Failed");
 						$("#idPeRemarks").css("color", "#D4403B");
 					}
 					
 					//Initial Screening
-					if(varObj.pe == '0')	{
+					if(varObj.is == '0')	{
 						$("#idIsRemarks").addClass("font-weight-bold");
 						$("#idIsRemarks").text("Unscreened");
 						$("#idIsRemarks").css("color", "#46B8DA");
 					}
-					else if(varObj.pe == '1')	{
+					else if(varObj.is == '1')	{
+						$("#idIsBtn").addClass("active");
 						$("#idIsRemarks").addClass("font-weight-bold");
 						$("#idIsRemarks").text("Passed");
 						$("#idIsRemarks").css("color", "#5CB85C");
 					}
-					else if(varObj.pe == '2')	{
+					else if(varObj.is == '2')	{
+						$("#idIsBtn").addClass("active");
 						$("#idIsRemarks").addClass("font-weight-bold");
 						$("#idIsRemarks").text("Failed");
 						$("#idIsRemarks").css("color", "#D4403B");
 					}
 					
 					//Serological Screening
-					if(varObj.pe == '0')	{
+					if(varObj.ss == '0')	{
 						$("#idSsRemarks").addClass("font-weight-bold");
 						$("#idSsRemarks").text("Unscreened");
 						$("#idSsRemarks").css("color", "#46B8DA");
 					}
-					else if(varObj.pe == '1')	{
+					else if(varObj.ss == '1')	{
+						$("#idSsBtn").addClass("active");
 						$("#idSsRemarks").addClass("font-weight-bold");
 						$("#idSsRemarks").text("Passed");
 						$("#idSsRemarks").css("color", "#5CB85C");
 					}
-					else if(varObj.pe == '2')	{
+					else if(varObj.ss == '2')	{
+						$("#idSsBtn").addClass("active");
 						$("#idSsRemarks").addClass("font-weight-bold");
 						$("#idSsRemarks").text("Failed");
 						$("#idSsRemarks").css("color", "#D4403B");
