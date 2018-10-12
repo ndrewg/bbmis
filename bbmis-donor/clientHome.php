@@ -114,18 +114,26 @@
 						$("#idMeRemarks").css("color", "#D4403B");
 					}
 					else if(varObj.me == '3')	{
-						$("#idMeBtn").addClass("active");
-						$("#idMeRemarks").addClass("font-weight-bold");
-						$("#idMeRemarks").text("Checking Error");
-						$("#idMeRemarks").css("color", "#46B8DA");
-					}
-					else if(varObj.me == '4')	{
+						//Male - Unchecked
 						$("#idMeBtn").addClass("active");
 						$("#idMeRemarks").addClass("font-weight-bold");
 						$("#idMeRemarks").text("Unchecked");
 						$("#idMeRemarks").css("color", "#46B8DA");
 					}
+					else if(varObj.me == '4')	{
+						//Female - Checking Error
+						$("#idMeBtn").addClass("active");
+						$("#idMeRemarks").addClass("font-weight-bold");
+						$("#idMeRemarks").text("Checking Error");
+						$("#idMeRemarks").css("color", "#46B8DA");
+					}
 					else if(varObj.me == '5')	{
+						$("#idMeBtn").addClass("active");
+						$("#idMeRemarks").addClass("font-weight-bold");
+						$("#idMeRemarks").text("Unchecked");
+						$("#idMeRemarks").css("color", "#46B8DA");
+					}
+					else if(varObj.me == '6')	{
 						$("#idMeBtn").addClass("active");
 						$("#idMeRemarks").addClass("font-weight-bold");
 						$("#idMeRemarks").text("Expired");

@@ -6,7 +6,16 @@
 			<script type='text/javascript'>
 				document.getElementById('spnStatus').innerHTML = 'Passed';
 				document.getElementById('spnStatus').style.color = '#5CB85C';
-				swal('Congratulations!', 'You passed the medical exam! Please proceed to Initial Screening process.', 'success');
+				swal({
+					title: 'Congratulations!',
+					text: 'You passed the medical exam! Please print this PDF and present this to your blood bank for Physical Exam within three(3) days.',
+					icon: 'success',
+					buttons: ['OK', 'Generate PDF']
+				}).then((willGenerate) => {
+					if(willGenerate)	{
+						window.location.href = 'genIntSheetAnsPdf.php'
+					}
+				});
 			</script>
 			<button type='button' id='btnPassed' class='form-control btn btn-outline-danger m-auto btn-lg'>
 				<i class='fa fa-file-pdf'></i>
@@ -109,6 +118,14 @@
 		";
 	}
 	
+	$qryCliSex = mysqli_query($conn, "
+		SELECT stfClientSex
+		FROM tblclient
+		WHERE intClientId = $varDbId
+	");
+	$rowCliSex = mysqli_fetch_assoc($qryCliSex);
+	$varCliSex = $rowCliSex["stfClientSex"];
+	
 	//Checks if the client has existing donation.
 	$qryDonationCheck = mysqli_query($conn, "
 		SELECT *
@@ -191,7 +208,12 @@
 						}
 						else	{
 							//Error if there are foreign remark except the valid remarks.
-							ntfErr();
+							if($varCliSex == 'Male')	{
+								ntfUnchk();
+							}
+							else if($varCliSex == 'Female')	{
+								ntfErr();
+							}
 						}
 					}
 					

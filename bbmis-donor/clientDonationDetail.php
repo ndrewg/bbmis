@@ -19,10 +19,16 @@
 		ORDER BY 1 DESC
 		LIMIT 1
 	");
+	$rowFetchRecDon = mysqli_fetch_assoc($qryFetchRecDon);
+	$varRecDonId = $rowFetchRecDon["intDonationId"];
 	
-	while($rowFetchRecDon = mysqli_fetch_assoc($qryFetchRecDon))	{
-		$varRecDonId = $rowFetchRecDon["intDonationId"];
-	}
+	$qryCliSex = mysqli_query($conn, "
+		SELECT stfClientSex
+		FROM tblclient
+		WHERE intClientId = $varDbId
+	");
+	$rowCliSex = mysqli_fetch_assoc($qryCliSex);
+	$varCliSex = $rowCliSex["stfClientSex"];
 	
 	if(isset($varRecDonId))	{
 		$qryFetchMeRemarks = mysqli_query($conn, "
@@ -51,7 +57,14 @@
 			}
 			else	{
 				//Error if there are foreign remark except the valid remarks.
-				$objDonProg -> me = 3;
+					if($varCliSex == 'Male')	{
+						//Unchecked
+						$objDonProg -> me = 3;
+					}
+					else if($varCliSex == 'Female')	{
+						//Checking Error
+						$objDonProg -> me = 4;
+					}
 			}
 		}
 		
@@ -63,10 +76,10 @@
 				$objDonProg -> me = 2;
 			}
 			else if(in_array('Unchecked', $varMeRemarks))	{
-				$objDonProg -> me = 4;
+				$objDonProg -> me = 5;
 			}
 			else if(in_array('Expired', $varMeRemarks))	{
-				$objDonProg -> me = 5;
+				$objDonProg -> me = 6;
 			}
 		}
 		

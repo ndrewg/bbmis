@@ -17,7 +17,15 @@
 	
 	$varQueCount = mysqli_num_rows($qryQueId);
 	
-	$varInsertDon = mysqli_query($conn, "
+	$qryCliSex = mysqli_query($conn, "
+		SELECT stfClientSex
+		FROM tblclient
+		WHERE intClientId = $varDbId
+	");
+	$rowCliSex = mysqli_fetch_assoc($qryCliSex);
+	$varCliSex = $rowCliSex["stfClientSex"];
+	
+	$qryInsertDon = mysqli_query($conn, "
 		INSERT INTO tbldonation(intClientId)
 		VALUES($varDbId)
 	");
@@ -29,10 +37,8 @@
 		ORDER BY intDonationId DESC
 		LIMIT 1
 	");
-	
-	while($rowDistDon = mysqli_fetch_assoc($qryDistDon))	{
-		$varDonId = $rowDistDon["intDonationId"];
-	}
+	$rowDistDon = mysqli_fetch_assoc($qryDistDon);
+	$varDonId = $rowDistDon["intDonationId"];
 
 	while($rowQueId = mysqli_fetch_assoc($qryQueId))	{
 		$varQueId = $rowQueId["intQuestionId"];
@@ -69,6 +75,14 @@
 			INSERT INTO tblmedicalexam(intDonationId, intQuestionId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString)
 			VALUES($varDonId, $varQueId, '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr')
 		");
+		
+		if($varCliSex == 'Male')	{
+			$qryMaleFemExcRem = mysqli_query($conn, "
+				UPDATE tblmedicalexam
+				SET stfAnswerRemarks = 'Correct', dtmExamChecked = NOW()
+				WHERE intQuestionId IN (SELECT intQuestionId FROM tblquestion WHERE intQuestionCategoryId = 3 AND boolVersionInUse = '1');
+			");
+		}
 	}
 	
 	echo 1;

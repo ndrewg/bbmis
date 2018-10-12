@@ -26,17 +26,9 @@
 
 		<div class="container border mt-sm-4 mb-sm-4">
 			<div class="col-10 m-auto mt-sm-4 p-4 text-center">
-<<<<<<< HEAD
-				<div class='border'>
-					<img src="assets/images/profileImg/<?php echo $varImg;?>" id='idClntImg' style="width: 150px; border-radius: 75px;" />
+				<div>
+					<img src="../img/<?php echo $varImg;?>" id='idClntImg' style="width: 150px; border-radius: 75px;" />
 				</div>
-				<div class='border m-auto'>
-					<i id="btnHover" class='fa fa-pen text-white p-4 m-auto' style="border-radius: 75px; background-color: rgba(0,0,0,0.25);"></i>
-				</div>
-				<input type="file" style="display: none;" />
-=======
-				<img src="../img/<?php echo $varImg;?>" style="width: 150px; border-radius: 75px;" />
->>>>>>> f9ce10002288cd4c0a2e8cb2ccbbbbde21d2c037
 				<h4 class="h4 mt-sm-4">
 				<?php
 					if($varMname == "")	{
@@ -185,16 +177,4 @@
 			</div>
 		</div>
 	</body>
-<<<<<<< HEAD
-	<script>
-		$("#idClntImg").on("mouseover", function()	{
-			$("#btnHover").fadeIn();
-		});
-		$("#btnHover").on("mouseout", function()	{
-			$("#btnHover").fadeOut();
-		});
-	</script>
 </html>
-=======
-</html>
->>>>>>> f9ce10002288cd4c0a2e8cb2ccbbbbde21d2c037
