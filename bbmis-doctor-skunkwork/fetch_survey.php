@@ -270,7 +270,7 @@
       $('#editsurveyitem').on('show.bs.modal', function(e) {
         $("#save_changes").show();
         var rowid = $(e.relatedTarget).data('id');
-        alert(rowid);
+        //alert(rowid);
         var question = $('#question'+rowid).val();
         var type = $('#type'+rowid).val();
         var category = $('#category'+rowid).val();

@@ -15,7 +15,7 @@ $columns = array('d.intDonationId',
 
 if(isset($_POST['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter AND ItemOnHandStatus = 1
 	 $query .= "
- 		 WHERE d.intClientId = '$clientid' AND (d.intDonationId LIKE '%".$requestData['search']['value']."%')
+ 		 WHERE d.intClientId = '$clientid' AND (d.intDonationId LIKE '%".$requestData['search']['value']."%') GROUP BY d.intDonationId  
  		";
 }
 
@@ -26,7 +26,8 @@ if(isset($_POST["order"]))
 }
 else
 {
- $query .= ' ORDER BY d.intDonationId ASC ';
+
+ 	$query .= ' ORDER BY d.intDonationId ASC ';
 }
 
 $query1 = '';
@@ -69,6 +70,7 @@ function get_all_data($connections)
 FROM tbldonation d
 JOIN tblmedicalexam m ON d.intDonationId = m.intDonationId
 	WHERE d.intClientId = '$clientid'
+	GROUP BY d.intDonationId
 ";
  $result = mysqli_query($connections, $query);
  return mysqli_num_rows($result);

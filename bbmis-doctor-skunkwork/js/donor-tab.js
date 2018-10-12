@@ -38,7 +38,7 @@ $(document).ready(function(){
       var btype = $(e.relatedTarget).data('btype');
       var status = $(e.relatedTarget).data('status');
       var age = $(e.relatedTarget).data('age');
-      alert(btype);
+    //  alert(btype);
       $("#clientId").val(rowid);
       $("#clientfname").val(fname);
       $("#clientminit").val(mname);

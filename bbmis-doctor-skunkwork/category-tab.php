@@ -324,7 +324,7 @@
 
       $(document).on("show.bs.modal", "#editSurveyCategoryModal", function(e){
         var rowid = $(e.relatedTarget).data('id');
-        alert(rowid);
+        //alert(rowid);
         $.ajax({
           type: "POST",
           url: 'survey-related/fetch_surveycategory.php',
@@ -339,7 +339,7 @@
 
       $(document).on("show.bs.modal", "#viewSurveyCategoryModal", function(e){
         var rowid = $(e.relatedTarget).data('id');
-        alert(rowid);
+        //alert(rowid);
         $.ajax({
           type: "POST",
           url: 'survey-related/fetch_surveycategory.php',
@@ -354,7 +354,7 @@
 
       $(document).on("show.bs.modal","#viewSurveyCategoryModal_enable", function(e){
         var rowid = $(e.relatedTarget).data('id');
-        alert(rowid);
+        //alert(rowid);
         $.ajax({
           type: "POST",
           url: 'survey-related/fetch_surveycategory.php',

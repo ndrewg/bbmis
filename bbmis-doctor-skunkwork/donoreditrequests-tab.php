@@ -144,7 +144,7 @@
 
     $(document).on("show.bs.modal", "#viewRequestModal", function(e){
       var rowid = $(e.relatedTarget).data('id');
-      alert(rowid);
+      //alert(rowid);
       $.ajax({
         type: "POST",
         url: 'people-related/fetch_request.php',

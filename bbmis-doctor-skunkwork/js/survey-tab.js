@@ -42,14 +42,14 @@ function savesurvey(){
       if(confirm_input == true){
       $.ajax({
         type: "POST",
-        url: 'save_survey.php',
+        url: 'survey-related/save_survey.php',
         data: {formdata:formdata,
                 rowCount:rowCount},
         dataType: "json",
         success:function(data){
           console.log(data);
           alert("You have just created a new survey. Version :"+data.decQuestionVersion);
-           window.location.href = ".././survey-tab.php";
+           window.location.href = "survey-tab.php";
         }
       });
     }

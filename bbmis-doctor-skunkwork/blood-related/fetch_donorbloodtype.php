@@ -1,7 +1,7 @@
 <?php
 include("../connections.php");
 //parse_str($_POST["formdata"], $params);
-$donorname = $_POST["donor"];
+$donorname = mysqli_real_escape_string($connections,$_POST["donor"]);
 
   $bloodtypeIdqry = mysqli_query($connections,"SELECT bt.intBloodTypeId,stfBloodType,stfBloodTypeRhesus
                                                 FROM tblbloodtype bt JOIN tblclient c ON bt.intBloodTypeId = c.intBloodTypeId

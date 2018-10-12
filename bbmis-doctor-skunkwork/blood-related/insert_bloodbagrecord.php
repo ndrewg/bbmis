@@ -1,6 +1,6 @@
 <?php
 include("../connections.php");
-parse_str($_POST["formdata"], $params);
+parse_str(mysqli_real_escape_string($connections, $_POST["formdata"]), $params);
 function sanitize($string){
   return filter_var($string,FILTER_SANITIZE_STRING, FILTER_FLAG_STRIP_HIGH);
 }
@@ -16,12 +16,15 @@ $sanitized_serialno = sanitize($bloodid);
 
 if($sanitized_serialno && $donorname){
 
+
 $check_ifseroremaining = mysqli_query($connections,"SELECT *
 FROM tblclient c
 LEFT JOIN tblbloodbag bb ON c.intClientId = bb.intClientId JOIN tbldonation d ON d.intClientId = c.intClientId
 WHERE c.intClientId NOT IN (SELECT intClientId from tblbloodbag where stfIsBloodBagExpired = 'No')
 AND  stfDonationRemarks = 'Incomplete'
-AND CONCAT(strClientFirstName, ' ', strClientMiddleName, ' ', strClientLastName) LIKE '$donorname'");
+AND stfDonationStatus = 'Able'
+AND CONCAT(strClientFirstName, ' ', strClientMiddleName, ' ', strClientLastName) LIKE '$donorname'
+");
 
 $viewbloodbagserial = mysqli_query($connections,"SELECT *
   FROM tblbloodbag

@@ -5,7 +5,8 @@ parse_str(mysqli_real_escape_string($connections, $_POST["formdata"]), $params);
 $id = $params['clientId_phys'];
 settype($id,'int');
 $weight = $params['donorweight'];
-$Bp = $params['donorbloodpressure'];
+$Bp_s = $params['donorbloodpressure_systole'];
+$Bp_d = $params['donorbloodpressure_diastole'];
 $Pr = $params['donorpulserate'];
 $Temp = $params['donortemperature'];
 $GenApp = $params['donorgenapp'];
@@ -30,7 +31,7 @@ while($donation = mysqli_fetch_assoc($donationidqry)){
 }
 
 if($date_1 <= $datenow_1){
-if ($weight && $Bp && $Pr && $Temp && $GenApp && $heent && $HnL ){
+if ($weight && $Bp_s && $Bp_d && $Pr && $Temp && $GenApp && $heent && $HnL ){
       if($remarks == 'Temporarily Deferred' || $remarks == 'Permanently Deferred'){
           $savedefferal  =  mysqli_query($connections,"INSERT INTO tbldeferral (intClientId,	txtDeferralReason,	txtDeferralInstructions)
                                       VALUES ('$id','$reason','$instruction') ");
@@ -73,7 +74,7 @@ if ($weight && $Bp && $Pr && $Temp && $GenApp && $heent && $HnL ){
 
           $status = 'Passed';
           mysqli_query($connections, "INSERT INTO tblphysicalexam(intDonationId,intEmployeeId, decClientWeight, strClientBloodPressure, strClientPulseRate, decClientTemperature, txtClientGenAppearance, txtClientHEENT, txtClientHeartLungs,stfMedicalStatRemarks, dtmExamTaken,intBloodVolumeId,stfClientPhysicalExamRemarks)
-          VALUES ('$donation_id','$varEmpId','$weight', '$Bp', '$Pr', '$Temp', '$GenApp', '$heent', '$HnL','$remarks','$date','$volumeid','$status')");
+          VALUES ('$donation_id','$varEmpId','$weight', '$Bp_s/$Bp_d', '$Pr', '$Temp', '$GenApp', '$heent', '$HnL','$remarks','$date','$volumeid','$status')");
 
           $is_saved = mysqli_query($connections,"SELECT * FROM tblphysicalexam WHERE intDonationId = '$donation_id'");
 

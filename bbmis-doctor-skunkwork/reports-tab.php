@@ -352,6 +352,7 @@ GROUP BY 1");
                     <td>No records</td>
                     <td></td>
                   </tr>
+                  </table>
                   ";
                   echo $output;
                 }
@@ -392,6 +393,7 @@ GROUP BY 1");
                     <td>No records</td>
                     <td></td>
                   </tr>
+                  </table>
                   ";
                   echo $output;
                 }
@@ -612,6 +614,7 @@ GROUP BY 1");
                     <td>No records</td>
                     <td></td>
                   </tr>
+                  </table>
                   ";
                   echo $output;
                 }
@@ -652,6 +655,7 @@ GROUP BY 1");
                     <td>No records</td>
                     <td></td>
                   </tr>
+                  </table>
                   ";
                   echo $output;
                 }

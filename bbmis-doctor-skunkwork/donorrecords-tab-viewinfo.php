@@ -100,7 +100,7 @@ if(mysqli_num_rows($timesrejectedseroqry) > 0){
           include "fetchEmpAcc.php";
           include "employeeNavbar.php";
          ?>
-        <h5 style='color:rgb(250,250,250); font-family:"Nunito-Regular"; margin-top:10px;'>Blood Component</h5>
+        <h5 style='color:rgb(250,250,250); font-family:"Nunito-Regular"; margin-top:10px;'>Donor Records</h5>
       </div>
       <!-- SIDE NAVIGATION -->
       <?php

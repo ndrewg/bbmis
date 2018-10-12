@@ -150,7 +150,7 @@
 
 					for($x=0; $x<$qryCountQueCtg; $x++)	{
 						$qryQueCtg = mysqli_query($connections, "
-							SELECT DISTINCT(qc.stfQuestionCategory)
+							SELECT DISTINCT(qc.stfQuestionCategory), qc.intQuestionCategoryId
 							FROM tblquestion q
 							JOIN tblquestioncategory qc ON q.intQuestionCategoryId = qc.intQuestionCategoryId
 							WHERE decQuestionVersion = (
@@ -163,9 +163,10 @@
 
 						while($rowCtg = mysqli_fetch_assoc($qryQueCtg))	{
 							$varQueCtg = $rowCtg["stfQuestionCategory"];
+							$varQueCtgId = $rowCtg["intQuestionCategoryId"];
 
 							if($varSex == 'Male')	{
-								if($varQueCtg == 'Female-exclusive')	{
+								if($varQueCtgId == 3)	{
 									//break;
 									continue;
 								}

@@ -12,7 +12,7 @@ $columns = array(
 
 if(isset($_POST['search']['value']) ) {   // if there is a search parameter, $requestData['search']['value'] contains search parameter AND ItemOnHandStatus = 1
 	 $query .= "
- 		WHERE stfQuestionCategoryStatus = 'Inctive' AND (stfQuestionCategory LIKE '%".$requestData['search']['value']."%')
+ 		WHERE stfQuestionCategoryStatus = 'Inactive' AND (stfQuestionCategory LIKE '%".$requestData['search']['value']."%')
  		";
 }
 

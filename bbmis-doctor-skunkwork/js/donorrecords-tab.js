@@ -164,7 +164,7 @@ $(document).ready(function(){
     $('#editdonorinfo').on('show.bs.modal', function(e) {
 
       var rowid = $(e.relatedTarget).data('id');
-      alert(rowid);
+      //alert(rowid);
       $.ajax({
         type: "POST",
         url: 'people-related/fetch_donorinfo.php',
@@ -199,7 +199,7 @@ $(document).ready(function(){
         if(confirm_input == true)
         {
           $.ajax({
-            url: "people-related/edit_donorrecord.php",
+            url: "people-related/edit_donorrecord2.php",
             method: "POST",
             data: {formdata : formdata},
             success:function(data){

@@ -452,7 +452,7 @@ $("#btnsaveenablepreservative").click(function(e){
     var fresh = $(e.relatedTarget).data('fresh');
     var neutral = $(e.relatedTarget).data('neutral');
     var critical = $(e.relatedTarget).data('critical');
-    alert(txt);
+    //alert(txt);
     $("#preservative_ID").val(rowid);
     $("#editpreservativeName").val(txt);
     $("#editpreservativeLifespan").val(span);
@@ -469,7 +469,7 @@ $("#btnsaveenablepreservative").click(function(e){
     var fresh = $(e.relatedTarget).data('fresh');
     var neutral = $(e.relatedTarget).data('neutral');
     var critical = $(e.relatedTarget).data('critical');
-    alert(txt);
+    //alert(txt);
     $("#viewpreservative_ID").val(rowid);
     $("#viewpreservativeName").val(txt);
     $("#viewpreservativeLifespan").val(span);
@@ -486,7 +486,7 @@ $("#btnsaveenablepreservative").click(function(e){
     var fresh = $(e.relatedTarget).data('fresh');
     var neutral = $(e.relatedTarget).data('neutral');
     var critical = $(e.relatedTarget).data('critical');
-    alert(txt);
+    //alert(txt);
     $("#viewpreservative_ID_enable").val(rowid);
     $("#viewpreservativeName_enable").val(txt);
     $("#viewpreservativeLifespan_enable").val(span);

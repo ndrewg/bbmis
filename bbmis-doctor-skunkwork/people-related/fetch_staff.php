@@ -5,8 +5,8 @@ $columns = array('strEmployeeFirstName',
 		'strEmployeeMiddleName', 'strEmployeeLastName'
 	 	);
 
-	$query = "SELECT intEmployeeId, strEmployeeFirstName, strEmployeeMiddleName, strEmployeeLastName,stfEmployeeStatus,stfEmployeeType
-		  		FROM tblemployee  ";
+	$query = "SELECT intEmployeeId, strEmployeeFirstName, strEmployeeMiddleName, strEmployeeLastName,stfEmployeeStatus,stfEmployeeType,strUserName,strUserPassword
+		  		FROM tblemployee e JOIN tbluser u ON e.intUserId = u.intUserId  ";
 
 	// datatable column index  => database column name
 
@@ -56,7 +56,7 @@ while($row = mysqli_fetch_array($result)) {  // preparing an array
 	 $sub_array[] =
 	 	'
 		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#editstaffinfo" data-id="'.$row["intEmployeeId"].'" data-fname = "'.$row["strEmployeeFirstName"].'"
-		data-mname="'.$row["strEmployeeMiddleName"].'" data-lname="'.$row["strEmployeeLastName"].'" data-status="'.$row["stfEmployeeStatus"] .'"data-type="'.$row["stfEmployeeType"].'">Edit</button>
+		data-mname="'.$row["strEmployeeMiddleName"].'" data-lname="'.$row["strEmployeeLastName"].'" data-status="'.$row["stfEmployeeStatus"] .'"data-type="'.$row["stfEmployeeType"].'"data-uname="'.$row["strUserName"].'"data-pass="'.$row["strUserPassword"].'">Edit</button>
 	 	'; //<button type="button" name="delete" class="btn btn-danger fa fa-trash btn-sm btnDeleteCultureMedia" id="'.$row["intClientId"].'"></button>
 
 	$data[] = $sub_array;
@@ -66,7 +66,7 @@ while($row = mysqli_fetch_array($result)) {  // preparing an array
 function get_all_data($connections)
 {
  $query = "SELECT strEmployeeFirstName, strEmployeeMiddleName, strEmployeeLastName
-		  		FROM tblemployee ";
+		  		FROM tblemployee e JOIN tbluser u ON e.intUserId = u.intUserId ";
  $result = mysqli_query($connections, $query);
  return mysqli_num_rows($result);
 }

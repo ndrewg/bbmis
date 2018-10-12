@@ -22,6 +22,8 @@ $(document).ready(function(){
       var lname = $(e.relatedTarget).data('lname');
       var status = $(e.relatedTarget).data('status');
       var type = $(e.relatedTarget).data('type');
+      var uname = $(e.relatedTarget).data('uname');
+      var pass = $(e.relatedTarget).data('pass');
       //alert(rowid+fname+status);
       $("#hidden_id").val(rowid);
       $("#edit_lblFirstName").val(fname);
@@ -29,6 +31,8 @@ $(document).ready(function(){
       $("#edit_lblLastName").val(lname);
       $("#edit_optPos").val(type);
       $("#edit_optstat").val(status);
+      $("#view_username").val(uname);
+      $("#view_password").val(pass);
     });
   }
 

@@ -259,7 +259,7 @@ $(document).on("submit", "form[name='form_addnewbloodtype']", function(e){
 
 $(document).on("show.bs.modal", "#editBloodTypeModal", function(e){
   var rowid = $(e.relatedTarget).data('id');
-  alert(rowid);
+  //alert(rowid);
   $.ajax({
     type: "POST",
     url: 'blood-related/fetch_bloodtype.php',
@@ -276,7 +276,7 @@ $(document).on("show.bs.modal", "#editBloodTypeModal", function(e){
 
 $(document).on("show.bs.modal","#viewBloodTypeModal", function(e){
   var rowid = $(e.relatedTarget).data('id');
-  alert(rowid);
+  //alert(rowid);
   $.ajax({
     type: "POST",
     url: 'blood-related/fetch_bloodtype.php',
@@ -293,7 +293,7 @@ $(document).on("show.bs.modal","#viewBloodTypeModal", function(e){
 
 $(document).on("show.bs.modal", "#viewBloodTypeModal_enable", function(e){
   var rowid = $(e.relatedTarget).data('id');
-  alert(rowid);
+  //alert(rowid);
   $.ajax({
     type: "POST",
     url: 'blood-related/fetch_bloodtype.php',

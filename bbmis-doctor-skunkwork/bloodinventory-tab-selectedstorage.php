@@ -140,6 +140,8 @@ if($_GET["storage_id"]){
             </div>
             <label for="donorfullname">Donor Name: </label>
             <input type="text" class="form-control" id="donorfullname" readonly>
+            <input type="hidden" name="hidden_donorid">
+            <input type="hidden" name="hidden_latestdonationid">
             <!-- <label id="donorfullname"></label><br> -->
           </div>
         </div>
@@ -171,13 +173,13 @@ if($_GET["storage_id"]){
             <div class="form-group">
               <input type="hidden" name="hiddenserial" id="hiddenserial">
             </div>
-            <div class="form-check">
+            <div class="form-check" id="div_forpatient">
               <input type="radio" class="form-check-input" name="rbtn_reason" id="forpatient" value="For Patient Use">
               <label for="forpatient" class="form-check-label">
                 For Patient Use
               </label>
             </div>
-            <div class="form-check">
+            <div class="form-check" id="div_lab">
               <input type="radio" class="form-check-input" name="rbtn_reason" id="forlab" value="For laboratory Use">
               <label for="forlab" class="form-check-label">
                 For Laboratory Use
@@ -340,6 +342,8 @@ if($_GET["storage_id"]){
 
     if(storage_type == 'Under Quarantine'){
       $('#btn_movetoquarantine').hide();
+      $('#div_forpatient').hide();
+      $('#div_lab').hide();
     }
     else if (storage_type == 'Stocked') {
       $('#btn_movetostocked').hide();
@@ -471,13 +475,20 @@ if($_GET["storage_id"]){
   // hide reason for dispatchment modal
   $(document).on('show.bs.modal', '#modal_reasonfordispatchment', function(){
     $("#modal_selectedstorage").modal("hide");
+    // $.ajax({
+    //   type: "POST",
+    //   url:,
+    //   success: function(data){
+    //
+    //   }
+    // });
   });
   //release blood bag
   $(document).on("click", "#btn_actualrelease", function(e){
     e.preventDefault();
     var formdata = $('form[name="reasonfordispatchment"]').serialize();
     console.log(formdata);
-    alert(formdata);
+    // alert(formdata);
 
     swal({
       title: "Are you sure?",

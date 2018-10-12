@@ -5,7 +5,7 @@ $columns = array(
 		'stfQuestionCategory'
 	 	);
 
-	$query = "SELECT intQuestionCategoryId, stfQuestionCategory
+	$query = "SELECT intQuestionCategoryId, stfQuestionCategory, boolIsEditable
 		  		FROM tblquestioncategory ";
 
 	// datatable column index  => database column name
@@ -47,10 +47,14 @@ while($row = mysqli_fetch_array($result)) {  // preparing an array
 
 	$sub_array[] = '<div class="update" data-id="'.$row["intQuestionCategoryId"].'"	data-column="stfQuestionCategory">' . $row["stfQuestionCategory"] . '</div>';
 
+	$iseditable = $row['boolIsEditable'];
+
+	if($iseditable == '0'){
+
 	$sub_array[] =
 		'
 		<div class="btn-group">
-		<button type="button" name="edit" class="btn btn-success" id="'.$row["intQuestionCategoryId"].'" data-toggle="modal" data-target="#editSurveyCategoryModal" data-id="'.$row["intQuestionCategoryId"].'"><i class="fa fa-edit"></i> Edit</button>
+		<button type="button" name="edit" class="btn btn-success" id="'.$row["intQuestionCategoryId"].'" data-toggle="modal" data-target="#editSurveyCategoryModal" data-id="'.$row["intQuestionCategoryId"].'" disabled><i class="fa fa-edit" ></i> Edit</button>
 
     <button type="button" name="view" class="btn" id="'.$row["intQuestionCategoryId"].'" data-toggle="modal"
       data-target="#viewSurveyCategoryModal" data-id="'.$row["intQuestionCategoryId"].'"><i class="fas fa-eye"></i> View Details</button>
@@ -60,6 +64,20 @@ while($row = mysqli_fetch_array($result)) {  // preparing an array
     //<button type="button" name="delete" class="btn btn-danger fa fa-trash btn-sm btnDeleteCultureMedia" id="'.$row["intClientId"].'"></button>
 
 	$data[] = $sub_array;
+}
+else if($iseditable == '1'){
+	$sub_array[] =
+	'
+	<div class="btn-group">
+	<button type="button" name="edit" class="btn btn-success" id="'.$row["intQuestionCategoryId"].'" data-toggle="modal" data-target="#editSurveyCategoryModal" data-id="'.$row["intQuestionCategoryId"].'"><i class="fa fa-edit"></i> Edit</button>
+
+	<button type="button" name="view" class="btn" id="'.$row["intQuestionCategoryId"].'" data-toggle="modal"
+		data-target="#viewSurveyCategoryModal" data-id="'.$row["intQuestionCategoryId"].'"><i class="fas fa-eye"></i> View Details</button>
+	</div>
+	';
+	$data[] = $sub_array;
+}
+
 }
 
 

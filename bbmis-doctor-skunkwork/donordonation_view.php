@@ -40,6 +40,7 @@
           $latestdonationID = $row2["intDonationId"];
         }
         }*/
+
          ?>
          <div class="content-container" style="margin-top: 0px">
            <div class="col-md-5">
@@ -52,10 +53,25 @@
         <!--Medical Exam-->
         <div class="content-container"style="margin-top: -20px">
          <?php
+         $qryFetchSheetVer = mysqli_query($connections, "SELECT DISTINCT(q.decQuestionVersion)
+           FROM tblquestion q
+           JOIN tblmedicalexam me ON q.intQuestionId = me.intQuestionId
+           WHERE me.intDonationId = (
+             SELECT me1.intDonationId
+             FROM tbldonation d
+             JOIN tblmedicalexam me1 ON d.intDonationId = me1.intDonationId
+             WHERE d.intDonationId = $id
+             LIMIT 1
+           )
+         ");
+         while ($version = mysqli_fetch_assoc($qryFetchSheetVer) ) {
+           $version_used = $version["decQuestionVersion"];
+         }
         $medicalexamQry = mysqli_query($connections,"SELECT * FROM tblmedicalexam WHERE intDonationId = '$id'");
         if(mysqli_num_rows($medicalexamQry) > 0){
           ?>
-          <h3>Donor Medical Exam</h3>
+
+          <h3>Donor Medical Exam <br><small>version <?php echo $version_used ?></small> </h3>
           <table class='table table-bordered mt-5 text-center' id='tbldonorsurvey'>
             <thead>
               <tr>

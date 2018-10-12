@@ -65,7 +65,7 @@
               ?>
             </table>
           </div>
-          <a href ="survey-related/add_newsurvey.php"><button type = 'button' class='btn btn-outline-danger float-right mt-1' id = "make_survey" style="margin-top: -10px">Make a new Survey</button></a>
+          <a href ="add_newsurvey.php"><button type = 'button' class='btn btn-outline-danger float-right mt-1' id = "make_survey" style="margin-top: -10px">Make a new Survey</button></a>
         </div>
         <!-- end -->
 

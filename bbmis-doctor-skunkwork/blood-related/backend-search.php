@@ -7,8 +7,8 @@ $link = mysqli_connect("localhost", "root", "", "bbmis");
 if($link === false){
     die("ERROR: Could not connect. " . mysqli_connect_error());
 }
-
-if(isset($_REQUEST['term'])){
+$request = mysqli_real_escape_string($link, $_REQUEST['term']);
+if(isset($request)){
     // Prepare a select statement
 // $getlatestdonationIDquery = mysqli_query($connections,"SELECT intDonationId FROM tbldonation WHERE intClientId = '$clientid' ORDER BY intDonationId DESC LIMIT 1 OFFSET 0");
 // while ($row2 = mysqli_fetch_assoc($getlatestdonationIDquery)) {
@@ -27,7 +27,7 @@ if(isset($_REQUEST['term'])){
         mysqli_stmt_bind_param($stmt, "s", $param_term);
 
         // Set parameters
-        $param_term = '%'. $_REQUEST['term'] . '%';
+        $param_term = '%'. $request . '%';
 
         // Attempt to execute the prepared statement
         if(mysqli_stmt_execute($stmt)){

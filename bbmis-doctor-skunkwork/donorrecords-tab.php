@@ -62,7 +62,7 @@
             </div>
           </div>
           <!-- ADDING CLIENT'S PHYSICAL EXAM RESULTS -->
-          <div id="div_donoraddphysical" class="" style="display: none;">
+          <div id="div_donoraddphysical" class="" style="display: none; margin-top: -20px">
             <h4 style="font-family: 'Roboto-Regular'; margin-bottom: 20px;"><span class="badge badge-pill badge-dark mr-3">2</span>Physical Exam</h4><hr>
             <form method="post" name ="adddonorphysrecord" action="savedonorphysexam.php">
               <div class="row">
@@ -75,26 +75,27 @@
                 <div class="col-md-5">
                   <div class="form-group">
                     <label for="donorweight">Weight</label>
-                    <input type="number" class="form-control" placeholder="Weight" id='donorweight' name="donorweight" required>
+                    <input type="number" class="form-control" placeholder="70kg" id='donorweight' name="donorweight" required>
                     <input type ="hidden" name ="clientId_phys" id ="clientId_phys">
                   </div>
                 </div>
                 <div class="col-md-5">
-                  <div class="form-group">
-                    <label for="donorbloodpressure">Blood Pressure</label>
-                    <input type="text" class="form-control" placeholder="Blood Pressure" id='donorbloodpressure' name="donorbloodpressure" required>
+                  <div class="form-inline">
+                    <label for="donorbloodpressure_systole">Blood Pressure</label>
+                    <input type="number" class="form-control" placeholder="120" id='donorbloodpressure_systole' name="donorbloodpressure_systole" required>/
+                    <input type="number" class="form-control" placeholder="80" id='donorbloodpressure_diastole' name="donorbloodpressure_diastole" required>
                   </div>
                 </div>
                 <div class="col-md-5">
                   <div class="form-group">
                     <label for="donorpulserate">Pulse Rate</label>
-                    <input type="text" class="form-control" placeholder="Pulse Rate" id='donorpulserate' name="donorpulserate" required>
+                    <input type="text" class="form-control" placeholder="60-100" id='donorpulserate' name="donorpulserate" required>
                   </div>
                 </div>
                 <div class="col-md-5">
                   <div class="form-group">
                     <label for="donortemperature">Temperature</label>
-                    <input type="number" class="form-control" placeholder="Temperature" id='donortemperature' name='donortemperature' required>
+                    <input type="number" class="form-control" placeholder="39°c" id='donortemperature' name='donortemperature' required>
                   </div>
                 </div>
                 <div class="col-md-9">
@@ -160,7 +161,7 @@
     </div>
     <!-- end of client physical exam results -->
     <!-- add client initial screening results -->
-    <div id="div_donoraddinitial" style="display:none">
+    <div id="div_donoraddinitial" style="display:none; margin-top: -20px">
       <h4 style="font-family: 'Roboto-Regular'; margin-bottom: 20px;"><span class="badge badge-pill badge-dark mr-3">3</span>Initial Screening</h4><hr>
       <form method="POST" name = "adddonorinitexam" action="savedonorinitexam.php">
         <input type="hidden" id="clientId_init" name ="clientId_init">
@@ -533,6 +534,7 @@
 <script type="text/javascript" src="js/donorrecords-tab.js"></script>
 <script type="text/javascript" src="js/waves.min.js"></script>
 <script type="text/javascript" src="js/sweetalert.min.js"></script>
+<script type="text/javascript" src="js/notification.js"></script>
 <script type="text/javascript">
 //add active class to current tab
 $('#donorrecordstab').addClass("active");

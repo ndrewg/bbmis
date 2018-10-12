@@ -157,7 +157,15 @@
                   <span style="color: red;">*</span>
                   <input type="text" class="form-control" id="edit_lblLastName" name="txtLname" required="required" />
                 </div>
-                <div class="form-group col-12">
+                <div class="form-group col-6">
+                  <label for="view_username" class="col-form-label">Username</label>
+                  <input type="text" class="form-control" id="view_username" name="view_username" readonly />
+                </div>
+                <div class="form-group col-6">
+                  <label for="view_password" class="col-form-label">Password</label>
+                  <input type="text" class="form-control" id="view_password" name="view_password" readonly/>
+                </div>
+                <div class="form-group col-6">
                   <label for="lblLastName" class="col-form-label">Image</label>
                   <span style="color: red;">*</span>
                   <input type="file" class="form-control" id="edit_image" name="edit_image"  />

@@ -60,7 +60,7 @@ include("connections.php");
             ?>
           </div>
           <button type="button" class="btn btn-outline-danger float-right" id="btn_addbloodbag" data-toggle="modal" data-target="#modal_addbloodbag"><i class="fas fa-plus"></i> Add Blood Bag</button>
-          <button type="button" class="btn btn-outline-danger float-right mr-2" id="btn_importbloodbags" data-toggle="modal" data-target="#modal_importbloodbag"><i class="fas fa-plus"></i> Import Blood Bags</button>
+          <!-- <button type="button" class="btn btn-outline-danger float-right mr-2" id="btn_importbloodbags" data-toggle="modal" data-target="#modal_importbloodbag"><i class="fas fa-plus"></i> Import Blood Bags</button> -->
         </div>
         <div class="content-container animated fadeIn fast" style="margin-top: -20px">
           <h4 class="mb-3 nunito">Released Blood Bags</h4>

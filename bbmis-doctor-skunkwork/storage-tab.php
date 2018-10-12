@@ -286,7 +286,7 @@
 
   $(document).on("show.bs.modal", "#editBloodStorageModal", function(e){
     var rowid = $(e.relatedTarget).data('id');
-    alert(rowid);
+    //alert(rowid);
     $.ajax({
       type: "POST",
       url: 'storage-related/fetch_storagedetails.php',
@@ -303,7 +303,7 @@
 
   $(document).on("show.bs.modal", "#viewBloodStorageModal", function(e){
     var rowid = $(e.relatedTarget).data('id');
-    alert(rowid);
+    //alert(rowid);
     $.ajax({
       type: "POST",
       url: 'storage-related/fetch_storagedetails.php',
@@ -320,7 +320,7 @@
 
   $(document).on("show.bs.modal", "#viewBloodStorageModal_enable", function(e){
     var rowid = $(e.relatedTarget).data('id');
-    alert(rowid);
+    //alert(rowid);
     $.ajax({
       type: "POST",
       url: 'storage-related/fetch_storagedetails.php',
