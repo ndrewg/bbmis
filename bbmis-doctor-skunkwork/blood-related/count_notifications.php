@@ -24,8 +24,8 @@ while($row_statuscritical = mysqli_fetch_assoc($fetch_statuscritical)){
   settype($critical_endday,"int");
 }
 // notifications query
-$countbloodbagrotten = mysqli_query($connections, " SELECT COUNT(*) as countrotten FROM tblbloodbag tbb JOIN tblbloodtype tbt ON tbb.intBloodTypeId = tbt.intBloodTypeId JOIN tblstorage ts ON ts.intStorageId = tbb.intStorageId WHERE DATEDIFF(NOW(), tbb.dtmDateStored) > $critical_endday " );
-$countbloodbagalmostrotten = mysqli_query($connections, " SELECT COUNT(*) as countalmostrotten FROM tblbloodbag tbb JOIN tblbloodtype tbt ON tbb.intBloodTypeId = tbt.intBloodTypeId JOIN tblstorage ts ON ts.intStorageId = tbb.intStorageId WHERE DATEDIFF(NOW(), tbb.dtmDateStored) <= $critical_endday AND DATEDIFF(NOW(), tbb.dtmDateStored) > $critical_beginday");
+$countbloodbagrotten = mysqli_query($connections, " SELECT COUNT(*) as countrotten FROM tblbloodbag tbb JOIN tblbloodtype tbt ON tbb.intBloodTypeId = tbt.intBloodTypeId JOIN tblstorage ts ON ts.intStorageId = tbb.intStorageId JOIN tblpreservatives tp ON tbb.intPreservativeId = tp.intPreservativeId WHERE DATEDIFF(NOW(), tbb.dtmDateStored) > tp.intPreservativeLifespan AND stfIsBloodBagExpired = 'No' " );
+$countbloodbagalmostrotten = mysqli_query($connections, " SELECT COUNT(*) as countalmostrotten FROM tblbloodbag tbb JOIN tblbloodtype tbt ON tbb.intBloodTypeId = tbt.intBloodTypeId JOIN tblstorage ts ON ts.intStorageId = tbb.intStorageId JOIN tblpreservatives tp ON tbb.intPreservativeId = tp.intPreservativeId WHERE DATEDIFF(NOW(), tbb.dtmDateStored) < intPreservativeLifespan AND DATEDIFF(NOW(), tbb.dtmDateStored) > intPreservativeCriticalPercentage AND intBloodDispatchmentId = 1 AND stfIsBloodBagExpired = 'No'");
 $countincompleteremarks = mysqli_query($connections, " SELECT COUNT(DISTINCT(intClientId)) as countincomplete FROM tbldonation WHERE stfDonationRemarks = 'Incomplete' ");
 $counteditrequests = mysqli_query($connections, " SELECT COUNT(*) as counteditrequests
             FROM tblrequest

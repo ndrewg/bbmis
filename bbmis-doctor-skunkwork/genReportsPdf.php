@@ -1,54 +1,54 @@
 <?php
-	include "connection.php";
+	include "connections.php";
 	// session_start();
 	// $varEmpId = $_SESSION["empId"];
 	$varEmpId = 1;
-	
+
 	require('assets/fpdf/fpdf.php');
-	
+
 	$pdf = new FPDF('P', 'in', 'Letter');
 	$pdf -> SetMargins(0, 0.5, 0);
 	$pdf -> SetFont('Times','',12);
 	$pdf -> AddPage();
-	
-	$pdf -> Image('assets/images/logo-a1.png', 0.35, 0.35, 1.75);
-	
+
+	$pdf -> Image('../img/logo-a1.png', 0.35, 0.35, 1.75);
+
 	$pdf -> SetFont('Arial', 'B', 20);
 	$pdf -> Text(2.25, 0.95, 'Reports');
-	
+
 	$pdf -> Line(0.5, 1.65, 8, 1.65);
-	
+
 	$qryFetchEmpInfo = mysqli_query($connections, "
 		SELECT e.strEmployeeFirstName, e.strEmployeeMiddleName, e.strEmployeeLastName, NOW() AS 'Date Generated'
 		FROM tblemployee e
 		WHERE intEmployeeId = $varEmpId
 	");
-	
+
 	while($rowEmpInfo = mysqli_fetch_assoc($qryFetchEmpInfo))	{
 		$varFname = $rowEmpInfo["strEmployeeFirstName"];
 		$varMname = $rowEmpInfo["strEmployeeMiddleName"];
 		$varLname = $rowEmpInfo["strEmployeeLastName"];
-		
+
 		if($varMname == '')	{
 			$varFullName1 = $varLname . ', ' . $varFname;
 		}
 		else	{
 			$varFullName1 = $varLname . ', ' . $varFname . ' ' . $varMname;
 		}
-		
+
 		$varDateNow  = $rowEmpInfo["Date Generated"];
-		
+
 		$pdf -> SetFont('Arial', '', 12.5);
 		$pdf -> Text(0.75, 2, 'Name : ' .  strtoupper($varFullName1));
 	}
-	
-	
+
+
 	$pdf -> Text(0.75, 2.25, 'Date Generated : ' . date_format(date_create($varDateNow), 'F d, Y'));
-	
+
 	$pdf -> Line(0.5, 2.50, 8, 2.50);
-	
+
 	$pdf -> Ln(2.25);
-	
+
 	//Remaining Blood Bag per Blood Type
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
@@ -59,8 +59,8 @@
 	$pdf -> SetTextColor(0, 0, 0);
 	$pdf -> Cell(3.75, 0.3, 'Blood Type', 1, 0, 'C');
 	$pdf -> Cell(3.75, 0.3, 'Count', 'TRB', 1, 'C');
-	
-	$reports_remaining = mysqli_query($connections,  " 
+
+	$reports_remaining = mysqli_query($connections,  "
 		SELECT bt.stfBloodType, COUNT(intBloodBagId) AS 'count_remaining'
 		FROM tblbloodtype bt
 		JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId
@@ -83,7 +83,7 @@
 		$pdf -> Cell(7.5, 0.3, 'No remaining blood bags.', 1, 1, 'C');
 	}
 	$pdf -> Ln(0.25);
-	
+
 	//Waster Blood Bag per Blood Type
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
@@ -94,7 +94,7 @@
 	$pdf -> SetTextColor(0, 0, 0);
 	$pdf -> Cell(3.75, 0.3, 'Blood Type', 1, 0, 'C');
 	$pdf -> Cell(3.75, 0.3, 'Count', 'TRB', 1, 'C');
-	
+
 	$reports_wastage = mysqli_query($connections, " SELECT stfBloodType, COUNT(intBloodBagId) AS 'count_wastage'
 		FROM tblbloodtype bt
 		JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId
@@ -117,7 +117,7 @@
 		$pdf -> Cell(7.5, 0.3, 'No wasted blood bags.', 1, 1, 'C');
 	}
 	$pdf -> Ln(0.25);
-	
+
 	//Daily Blood Bag Count
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
@@ -128,7 +128,7 @@
 	$pdf -> SetTextColor(0, 0, 0);
 	$pdf -> Cell(3.75, 0.3, 'Blood Type', 1, 0, 'C');
 	$pdf -> Cell(3.75, 0.3, 'Count', 'TRB', 1, 'C');
-	
+
 	$daily_count = mysqli_query($connections, "
 		SELECT stfBloodType, COUNT(intBloodBagId) AS 'Daily Count'
 		FROM tblbloodbag bb
@@ -154,7 +154,7 @@
 		$pdf -> Cell(7.5, 0.3, 'No blood bags.', 1, 1, 'C');
 	}
 	$pdf -> Ln(0.25);
-	
+
 	//Weekly Blood Bag Count
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
@@ -165,7 +165,7 @@
 	$pdf -> SetTextColor(0, 0, 0);
 	$pdf -> Cell(3.75, 0.3, 'Blood Type', 1, 0, 'C');
 	$pdf -> Cell(3.75, 0.3, 'Count', 'TRB', 1, 'C');
-	
+
 	$weekly_count = mysqli_query($connections, "
 		SELECT stfBloodType, COUNT(intBloodBagId) AS 'Weekly Count'
 		FROM tblbloodbag bb
@@ -190,7 +190,7 @@
 		$pdf -> Cell(7.5, 0.3, 'No blood bags.', 1, 1, 'C');
 	}
 	$pdf -> Ln(0.25);
-		
+
 	//Monthly Blood Bag Count
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
@@ -201,7 +201,7 @@
 	$pdf -> SetTextColor(0, 0, 0);
 	$pdf -> Cell(3.75, 0.3, 'Blood Type', 1, 0, 'C');
 	$pdf -> Cell(3.75, 0.3, 'Count', 'TRB', 1, 'C');
-	
+
 	$monthly_count = mysqli_query($connections, "
 		SELECT stfBloodType, COUNT(intBloodBagId) AS 'Monthly Count'
 		FROM tblbloodbag bb
@@ -225,7 +225,7 @@
 		$pdf -> Cell(7.5, 0.3, 'No blood bags.', 1, 1, 'C');
 	}
 	$pdf -> Ln(0.25);
-		
+
 	//Yearly Blood Bag Count
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
@@ -236,7 +236,7 @@
 	$pdf -> SetTextColor(0, 0, 0);
 	$pdf -> Cell(3.75, 0.3, 'Blood Type', 1, 0, 'C');
 	$pdf -> Cell(3.75, 0.3, 'Count', 'TRB', 1, 'C');
-	
+
 	$yearly_count = mysqli_query($connections, "
 		SELECT stfBloodType, COUNT(intBloodBagId) AS 'Yearly Count'
 		FROM tblbloodbag bb
@@ -259,7 +259,7 @@
 		$pdf -> Cell(7.5, 0.3, 'No blood bags.', 1, 1, 'C');
 	}
 	$pdf -> Ln(0.25);
-	
+
 	//Blood Component Failure Count
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
@@ -270,7 +270,7 @@
 	$pdf -> SetTextColor(0, 0, 0);
 	$pdf -> Cell(3.75, 0.3, 'Blood Component', 1, 0, 'C');
 	$pdf -> Cell(3.75, 0.3, 'Count', 'TRB', 1, 'C');
-	
+
 	$bcfail_count = mysqli_query($connections, "
 		SELECT bc.strBloodComponent, COUNT(*) AS 'Count'
 		FROM tblbloodcomponent bc
@@ -293,7 +293,7 @@
 		$pdf -> Cell(7.5, 0.3, 'No failed blood components.', 1, 1, 'C');
 	}
 	$pdf -> Ln(0.25);
-	
+
 	//Client List - Blood Component Failure
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
@@ -304,7 +304,7 @@
 	$pdf -> SetTextColor(0, 0, 0);
 	$pdf -> Cell(3.75, 0.3, 'Blood Component', 1, 0, 'C');
 	$pdf -> Cell(3.75, 0.3, 'Client Name', 'TRB', 1, 'C');
-	
+
 	$bcfail_list = mysqli_query($connections, "
 		SELECT strBloodComponent, CONCAT(c.strClientFirstName, ' ', c.strClientLastName) AS 'Client Full Name'
 		FROM tblclient c
@@ -331,7 +331,7 @@
 		$pdf -> Cell(7.5, 0.3, 'No failed client in blood components.', 1, 1, 'C');
 	}
 	$pdf -> Ln(0.25);
-	
+
 	//Disease Failure Count
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
@@ -342,7 +342,7 @@
 	$pdf -> SetTextColor(0, 0, 0);
 	$pdf -> Cell(3.75, 0.3, 'Disease', 1, 0, 'C');
 	$pdf -> Cell(3.75, 0.3, 'Count', 'TRB', 1, 'C');
-	
+
 	$difail_count = mysqli_query($connections, "
 		SELECT d.strDisease, COUNT(*) AS 'Count'
 		FROM tbldisease d
@@ -365,7 +365,7 @@
 		$pdf -> Cell(7.5, 0.3, 'No failed disease.', 1, 1, 'C');
 	}
 	$pdf -> Ln(0.25);
-	
+
 	//Client List - Disease Failure
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
@@ -376,7 +376,7 @@
 	$pdf -> SetTextColor(0, 0, 0);
 	$pdf -> Cell(3.75, 0.3, 'Disease', 1, 0, 'C');
 	$pdf -> Cell(3.75, 0.3, 'Client Name', 'TRB', 1, 'C');
-	
+
 	$difail_list = mysqli_query($connections, "
 		SELECT di.strDisease, CONCAT(c.strClientFirstName, ' ', c.strClientLastName) AS 'Client Full Name'
 		FROM tblclient c
@@ -403,7 +403,7 @@
 		$pdf -> Cell(7.5, 0.3, 'No failed client in diseases.', 1, 1, 'C');
 	}
 	$pdf -> Ln(0.25);
-	
+
 	//Client Count per Sex
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
@@ -414,7 +414,7 @@
 	$pdf -> SetTextColor(0, 0, 0);
 	$pdf -> Cell(3.75, 0.3, 'Sex', 1, 0, 'C');
 	$pdf -> Cell(3.75, 0.3, 'Count', 'TRB', 1, 'C');
-	
+
 	$clientsex_count = mysqli_query($connections, "
 		SELECT stfClientSex, COUNT(*) AS 'Client Count'
 		FROM tblclient
@@ -435,7 +435,7 @@
 		$pdf -> Cell(7.5, 0.3, 'No client counted.', 1, 1, 'C');
 	}
 	$pdf -> Ln(0.25);
-	
+
 	//Client Count per Age
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
@@ -446,7 +446,7 @@
 	$pdf -> SetTextColor(0, 0, 0);
 	$pdf -> Cell(3.75, 0.3, 'Age', 1, 0, 'C');
 	$pdf -> Cell(3.75, 0.3, 'Count', 'TRB', 1, 'C');
-	
+
 	$clientage_count = mysqli_query($connections, "
 		SELECT TIMESTAMPDIFF(YEAR, datClientBirthday, NOW()) AS 'Age', COUNT(*) AS 'Count'
 		FROM tblclient
@@ -468,8 +468,8 @@
 		$pdf -> Cell(7.5, 0.3, 'No client counted.', 1, 1, 'C');
 	}
 	$pdf -> Ln(0.25);
-	
+
 	$pdf -> Cell(8.5, 0.3, '---NOTHING FOLLOWS---', 0, 0, 'C');
-	
+
 	$pdf -> Output();
 ?>

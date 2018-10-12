@@ -1,17 +1,27 @@
 <?php
 include("connections.php");
 
-$reports_remaining = mysqli_query($connections,  " SELECT bt.intBloodTypeId,stfBloodType,stfBloodTypeRhesus,COUNT(intBloodBagId) AS 'count_remaining'
+/*$reports_remaining = mysqli_query($connections,  " SELECT bt.intBloodTypeId,stfBloodType,stfBloodTypeRhesus,COUNT(intBloodBagId) AS 'count_remaining'
 FROM tblbloodtype bt
-JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId WHERE stfIsBloodBagExpired ='No' AND intBloodDispatchmentId = '1' GROUP BY bt.intBloodTypeId ");
+JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId WHERE stfIsBloodBagExpired ='No' AND intBloodDispatchmentId = '1' GROUP BY bt.intBloodTypeId ");*/
 $reports_wastage = mysqli_query($connections, " SELECT bt.intBloodTypeId,stfBloodType,stfBloodTypeRhesus,COUNT(intBloodBagId) AS 'count_wastage'
 FROM tblbloodtype bt
 JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId WHERE stfIsBloodBagExpired ='Yes'AND stfTransfusionsuccess = 'No' GROUP BY bt.intBloodTypeId, YEAR(dtmDateStored)");
-$reports_weekly = mysqli_query($connections, " SELECT DATE_FORMAT(dtmDateStored, '%W') AS 'Day', COUNT(intBloodBagId) AS 'Blood Bag Count',stfBloodType
+$reports_daily = mysqli_query($connections, " SELECT DATE_FORMAT(dtmDateStored, '%W') AS 'Day', COUNT(intBloodBagId) AS 'Blood Bag Count',stfBloodType
 FROM tblbloodbag bb JOIN tblbloodtype bt ON bb.intBloodTypeId = bt.intBloodTypeId
 WHERE DATE_FORMAT(dtmDateStored, '%Y') = DATE_FORMAT(NOW(), '%Y')
 AND DATE_FORMAT(dtmDateStored, '%m') = DATE_FORMAT(NOW(), '%m')
 GROUP BY 3");
+
+$weekly_count = mysqli_query($connections, "SELECT stfBloodType, COUNT(intBloodBagId) AS 'Weekly Count'
+  FROM tblbloodbag bb
+  JOIN tblbloodtype bt ON bb.intBloodTypeId = bt.intBloodTypeId
+  WHERE DATE_FORMAT(dtmDateStored, '%Y') = DATE_FORMAT(NOW(), '%Y')
+  AND DATE_FORMAT(dtmDateStored, '%m') = DATE_FORMAT(NOW(), '%m')
+  AND DATE_FORMAT(dtmDateStored, '%U') = DATE_FORMAT(NOW(), '%U')
+  GROUP BY 1
+");
+
 $reports_monthly = mysqli_query($connections,"SELECT DATE_FORMAT(dtmDateStored, '%M %Y') AS 'Month Year', COUNT(intBloodBagId) AS 'Blood Bag Count',stfBloodType
 FROM tblbloodbag bb JOIN tblbloodtype bt ON bb.intBloodTypeId = bt.intBloodTypeId
 GROUP BY 3
@@ -92,7 +102,10 @@ GROUP BY 1");
       <div class="content-container">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-md-4 card card-body text-center mx-auto">
+            <div class="col-md-12">
+              <button type="button" class="btn btn-outline-danger float-right mb-5" id="btn_genpdf"><i class="fas fa-print"></i> Generate pdf</button>
+            </div>
+            <!-- <div class="col-md-4 card card-body text-center mx-auto">
               <h4>Remaining blood bag count</h4>
               <table class='table text-center'>
                 <thead>
@@ -136,6 +149,87 @@ GROUP BY 1");
               echo $output;
             }
                ?>
+            </div> -->
+            <div class="col-md-4 card card-body text-center mx-auto mt-3">
+              <h4>Remaining Blood Bag Count Per Blood Type</h4>
+              <table class='table text-center'>
+                <thead>
+                  <tr>
+                    <th>Blood Type</th>
+                    <th>Blood Bag Count</th>
+                  </tr>
+                </thead>
+                <?php
+                if (mysqli_num_rows($bloodbagpertype) > 0){
+                  $output = "";
+                  while($row = mysqli_fetch_assoc($bloodbagpertype)){
+                    $day = $row["Blood Type"];
+                    $bloodbagamount = $row["Blood Bag Count"];
+                    $output .=
+                    "
+                    <tbody>
+                    <tr>
+                    <td>$day</td>
+                    <td>$bloodbagamount</td>
+                    </tr>
+                    </tbody>
+                    ";
+                  }
+                  $output .= "</table>";
+                  echo $output;
+                }
+                else if (mysqli_num_rows($bloodbagpertype) == 0){
+                  $output =
+                  "
+                  <tr>
+                    <td>No records</td>
+                    <td></td>
+                  </tr>
+                  </table>
+                  ";
+                  echo $output;
+                }
+                 ?>
+            </div>
+            <div class="col-md-4 card card-body text-center mx-auto">
+              <h4>Weekly count of blood bag</h4>
+              <table class="table text-center">
+                <thead>
+                  <tr>
+                    <th>Blood Type</th>
+                    <th>Count</th>
+                  </tr>
+                </thead>
+                <?php
+                if(mysqli_num_rows($weekly_count) > 0){
+                  $output ="";
+                  while($row = mysqli_fetch_assoc($weekly_count)){
+                    $bloodtype = $row["stfBloodType"];
+                    $count = $row["Weekly Count"];
+                    $output .=
+                    "
+                    <tbody>
+                    <tr>
+                    <td>$bloodtype</td>
+                    <td>$count</td>
+                    </tr>
+                    </tbody>
+                    ";
+                  }
+                  $output .= "</table>";
+                  echo $output;
+                }
+                else if (mysqli_num_rows($weekly_count) == 0) {
+                  $output =
+                  "<tr>
+                  <td>No records</td>
+                  <td></td>
+                  </tr>
+                  </table>
+                  ";
+                  echo $output;
+                }
+                 ?>
             </div>
             <div class="col-md-4 card card-body text-center mx-auto">
               <h4>Wastage Report</h4>
@@ -193,9 +287,9 @@ GROUP BY 1");
                   </tr>
                 </thead>
                 <?php
-                if (mysqli_num_rows($reports_weekly) > 0){
+                if (mysqli_num_rows($reports_daily) > 0){
                   $output = "";
-                  while($row = mysqli_fetch_assoc($reports_weekly)){
+                  while($row = mysqli_fetch_assoc($reports_daily)){
                     $day = $row["Day"];
                     $bloodbagamount1 = $row["Blood Bag Count"];
                     $bloodType = $row["stfBloodType"];
@@ -213,7 +307,7 @@ GROUP BY 1");
                   $output .= "</table>";
                   echo $output;
                 }
-                else if (mysqli_num_rows($reports_weekly) == 0){
+                else if (mysqli_num_rows($reports_daily) == 0){
                   $output =
                   "
                   <tr>
@@ -308,47 +402,6 @@ GROUP BY 1");
                   "
                   <tr>
                     <td></td>
-                    <td>No records</td>
-                    <td></td>
-                  </tr>
-                  </table>
-                  ";
-                  echo $output;
-                }
-                 ?>
-            </div>
-            <div class="col-md-4 card card-body text-center mx-auto mt-3">
-              <h4>Remaining Blood Bag Count Per Blood Type</h4>
-              <table class='table text-center'>
-                <thead>
-                  <tr>
-                    <th>Blood Type</th>
-                    <th>Blood Bag Count</th>
-                  </tr>
-                </thead>
-                <?php
-                if (mysqli_num_rows($bloodbagpertype) > 0){
-                  $output = "";
-                  while($row = mysqli_fetch_assoc($bloodbagpertype)){
-                    $day = $row["Blood Type"];
-                    $bloodbagamount = $row["Blood Bag Count"];
-                    $output .=
-                    "
-                    <tbody>
-                    <tr>
-                    <td>$day</td>
-                    <td>$bloodbagamount</td>
-                    </tr>
-                    </tbody>
-                    ";
-                  }
-                  $output .= "</table>";
-                  echo $output;
-                }
-                else if (mysqli_num_rows($bloodbagpertype) == 0){
-                  $output =
-                  "
-                  <tr>
                     <td>No records</td>
                     <td></td>
                   </tr>
@@ -673,6 +726,9 @@ GROUP BY 1");
 <script type="text/javascript" src="js/notification.js"></script>
 <script type="text/javascript">
   $("#reportstab").addClass("active");
+  $(document).on("click","#btn_genpdf", function(e){
+    window.location.href = "genReportsPdf.php";
+  });
 </script>
 </body>
 </html>
