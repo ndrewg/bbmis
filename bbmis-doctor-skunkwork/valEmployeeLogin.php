@@ -40,12 +40,13 @@
 					FROM tblemployee e
 					JOIN tbluser u ON e.intUserId = u.intUserId
 					WHERE u.intUserId = '$varDbId'
-					AND e.intUserId = '$varDbId'");
+					AND e.intUserId = '$varDbId'
+					AND stfEmployeeStatus = 'Active'");
 
 					while($row = mysqli_fetch_assoc($qryJoinView1))	{
 						$varEmpId = $row["intEmployeeId"];
 						$varRole = $row["stfEmployeeType"];
-						
+
 					}
 
 					if(isset($varRole))	{
