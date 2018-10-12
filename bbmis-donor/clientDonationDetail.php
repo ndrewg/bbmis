@@ -109,7 +109,7 @@
 			WHERE intDonationId = $varRecDonId
 		");
 		while($rowIsRemarks = mysqli_fetch_assoc($qryFetchIsRemarks))	{
-			$varIsRemarks = $rowIsRemarks["stfClientInitialExamRemarks"];
+			$varIsRemarks = $rowIsRemarks["stfClientInitialScreeningRemarks"];
 		}
 		if(isset($varIsRemarks))	{
 			if($varIsRemarks == 'Passed')	{
