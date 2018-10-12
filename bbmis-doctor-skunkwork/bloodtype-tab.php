@@ -211,12 +211,6 @@
 $('#bloodtypetab').addClass("active");
 
 $(document).ready(function(){
-  //showstorage();
-  savenewbloodtype();
-  editbloodtype();
-  saveeditedbloodtype();
-  viewbloodtype();
-  viewbloodtype_enable();
   check_expiringbloodbags();
 
   function check_expiringbloodbags(){
@@ -228,142 +222,128 @@ $(document).ready(function(){
       }
     });
   }
+});
 
-function savenewbloodtype(){
-  $("form[name='form_addnewbloodtype']").on('submit',function(e){
-    e.preventDefault();
-    var confirm_input = confirm("Are you sure?");
-    var formdata = $("form[name='form_addnewbloodtype']").serialize();
+$(document).on("submit", "form[name='form_addnewbloodtype']", function(e){
+  e.preventDefault();
+  var confirm_input = confirm("Are you sure?");
+  var formdata = $("form[name='form_addnewbloodtype']").serialize();
 
-    if (confirm_input == true){
-      $.ajax({
-        type: "POST",
-        url: 'blood-related/add_newbloodtype.php',
-        data: {formdata,formdata},
-        success:function(data){
-          if(data == 1){
-            alert("Blood Type Added");
-            $('#addBloodTypeModal').modal('hide');
-            $("#addBloodTypeModal .modal-body input").val("");
-            window.location.href = "bloodtype-tab.php";
-            //$('#divdonoraddsero').show(600);
-          }
-          else if(data == 2){
-            alert("The Blood Type Name You Entered Already Exists, Please check the disabled blood types too.");
-          }
-          else if (data == 3) {
-            alert("Blood Type is not saved");
-          }
+  if (confirm_input == true){
+    $.ajax({
+      type: "POST",
+      url: 'blood-related/add_newbloodtype.php',
+      data: {formdata,formdata},
+      success:function(data){
+        if(data == 1){
+          alert("Blood Type Added");
+          $('#addBloodTypeModal').modal('hide');
+          $("#addBloodTypeModal .modal-body input").val("");
+          window.location.href = "bloodtype-tab.php";
+          //$('#divdonoraddsero').show(600);
         }
-      });
-    }
-    else{
-      alert("Confirmation Cancelled");
-      return false;
-    }
-
-  });
-}
-
-function editbloodtype(){
-  $('#editBloodTypeModal').on('show.bs.modal', function(e) {
-    var rowid = $(e.relatedTarget).data('id');
-    alert(rowid);
-    $.ajax({
-      type: "POST",
-      url: 'blood-related/fetch_bloodtype.php',
-      data: 'rowid=' + rowid,
-      dataType: "json",
-      success: function(data){
-        $('#bloodtype_ID').val(data.intBloodTypeId);
-        $('#editBloodTypeName').val(data.stfBloodType);
-        $('#editBloodTypeRhesus').val(data.stfBloodTypeRhesus);
-        console.log(data);
-      }
-
-    });
-  });
-}
-
-function viewbloodtype(){
-  $('#viewBloodTypeModal').on('show.bs.modal', function(e) {
-    var rowid = $(e.relatedTarget).data('id');
-    alert(rowid);
-    $.ajax({
-      type: "POST",
-      url: 'blood-related/fetch_bloodtype.php',
-      data: 'rowid=' + rowid,
-      dataType: "json",
-      success: function(data){
-        $('#viewbloodtype_ID').val(data.intBloodTypeId);
-        $('#viewBloodTypeName').val(data.stfBloodType);
-        $('#viewBloodRhesusName').val(data.stfBloodTypeRhesus);
-        console.log(data);
-      }
-
-    });
-  });
-}
-
-function viewbloodtype_enable(){
-  $('#viewBloodTypeModal_enable').on('show.bs.modal', function(e) {
-    var rowid = $(e.relatedTarget).data('id');
-    alert(rowid);
-    $.ajax({
-      type: "POST",
-      url: 'blood-related/fetch_bloodtype.php',
-      data: 'rowid=' + rowid,
-      dataType: "json",
-      success: function(data){
-        $('#viewbloodtype_ID_enable').val(data.intBloodTypeId);
-        $('#viewBloodTypeName_enable').val(data.stfBloodType);
-        $('#viewBloodRhesusName_enable').val(data.stfBloodTypeRhesus);
-        console.log(data);
-      }
-
-    });
-  });
-}
-
-function saveeditedbloodtype(){
-  $("form[name='form_editbloodType']").on('submit',function(e){
-    e.preventDefault();
-    var confirm_input = confirm("Are you sure?");
-    var formdata = $("form[name='form_editbloodType']").serialize();
-    console.log(formdata);
-    if (confirm_input == true){
-      $.ajax({
-        type: "POST",
-        url: 'blood-related/edit_bloodtype.php',
-        data: {formdata,formdata},
-        success:function(data){
-          if(data == 1){
-            alert("Blood Type Succesfully Edited");
-            $('#editBloodTypeModal').modal('hide');
-            $("#editBloodTypeModal .modal-body input").val("");
-            window.location.href = "bloodtype-tab.php";
-            //$('#divdonoraddsero').show(600);
-          }
-          else if(data == 2){
-            alert("The Blood Type Name You Entered Already Exists");
-            window.location.href = "bloodtype-tab.php";
-          }
-          else if (data == 3) {
-            alert("Blood Type Name is not Edited");
-            window.location.href = "bloodtype-tab.php";
-          }
+        else if(data == 2){
+          alert("The Blood Type Name You Entered Already Exists, Please check the disabled blood types too.");
         }
-      });
-    }
-    else{
-      alert("Confirmation Cancelled");
-      return false;
-    }
+        else if (data == 3) {
+          alert("Blood Type is not saved");
+        }
+      }
+    });
+  }
+  else{
+    alert("Confirmation Cancelled");
+    return false;
+  }
+});
 
+$(document).on("show.bs.modal", "#editBloodTypeModal", function(e){
+  var rowid = $(e.relatedTarget).data('id');
+  alert(rowid);
+  $.ajax({
+    type: "POST",
+    url: 'blood-related/fetch_bloodtype.php',
+    data: 'rowid=' + rowid,
+    dataType: "json",
+    success: function(data){
+      $('#bloodtype_ID').val(data.intBloodTypeId);
+      $('#editBloodTypeName').val(data.stfBloodType);
+      $('#editBloodTypeRhesus').val(data.stfBloodTypeRhesus);
+      console.log(data);
+    }
   });
-}
+});
 
-$("#btnsavedeletebloodtype").click(function(e){
+$(document).on("show.bs.modal","#viewBloodTypeModal", function(e){
+  var rowid = $(e.relatedTarget).data('id');
+  alert(rowid);
+  $.ajax({
+    type: "POST",
+    url: 'blood-related/fetch_bloodtype.php',
+    data: 'rowid=' + rowid,
+    dataType: "json",
+    success: function(data){
+      $('#viewbloodtype_ID').val(data.intBloodTypeId);
+      $('#viewBloodTypeName').val(data.stfBloodType);
+      $('#viewBloodRhesusName').val(data.stfBloodTypeRhesus);
+      console.log(data);
+    }
+  });
+});
+
+$(document).on("show.bs.modal", "#viewBloodTypeModal_enable", function(e){
+  var rowid = $(e.relatedTarget).data('id');
+  alert(rowid);
+  $.ajax({
+    type: "POST",
+    url: 'blood-related/fetch_bloodtype.php',
+    data: 'rowid=' + rowid,
+    dataType: "json",
+    success: function(data){
+      $('#viewbloodtype_ID_enable').val(data.intBloodTypeId);
+      $('#viewBloodTypeName_enable').val(data.stfBloodType);
+      $('#viewBloodRhesusName_enable').val(data.stfBloodTypeRhesus);
+      console.log(data);
+    }
+  });
+});
+
+$(document).on("submit", "form[name='form_editbloodType']", function(e){
+  e.preventDefault();
+  var confirm_input = confirm("Are you sure?");
+  var formdata = $("form[name='form_editbloodType']").serialize();
+  console.log(formdata);
+  if (confirm_input == true){
+    $.ajax({
+      type: "POST",
+      url: 'blood-related/edit_bloodtype.php',
+      data: {formdata,formdata},
+      success:function(data){
+        if(data == 1){
+          alert("Blood Type Succesfully Edited");
+          $('#editBloodTypeModal').modal('hide');
+          $("#editBloodTypeModal .modal-body input").val("");
+          window.location.href = "bloodtype-tab.php";
+          //$('#divdonoraddsero').show(600);
+        }
+        else if(data == 2){
+          alert("The Blood Type Name You Entered Already Exists");
+          window.location.href = "bloodtype-tab.php";
+        }
+        else if (data == 3) {
+          alert("Blood Type Name is not Edited");
+          window.location.href = "bloodtype-tab.php";
+        }
+      }
+    });
+  }
+  else{
+    alert("Confirmation Cancelled");
+    return false;
+  }
+});
+
+$(document).on("click", "#btnsavedeletebloodtype", function(e){
   e.preventDefault();
   var id = $("#viewbloodtype_ID").val();
   swal({
@@ -376,52 +356,46 @@ $("#btnsavedeletebloodtype").click(function(e){
   //if(confirm_delete == true){
   .then((willApprove) => {
     if (willApprove) {
-    $.ajax({
-      type: "POST",
-      url: 'blood-related/delete_bloodtype.php',
-      data: {id:id},
-      success:function(data){
-        if(data == "deleted"){
-        swal({
-          title: "",
-          text: "The blood type is now disabled",
-          icon: "success",
-          buttons: {text:"Okay"},
-        })
-        .then((willApprove) => {
-          if (willApprove) {
-            window.location.href = "bloodtype-tab.php";
+      $.ajax({
+        type: "POST",
+        url: 'blood-related/delete_bloodtype.php',
+        data: {id:id},
+        success:function(data){
+          if(data == "deleted"){
+            swal({
+              title: "",
+              text: "The blood type is now disabled",
+              icon: "success",
+              buttons: {text:"Okay"},
+            })
+            .then((willApprove) => {
+              if (willApprove) {
+                window.location.href = "bloodtype-tab.php";
+              }
+            });
+          }else{
+            swal({
+              title: "",
+              text: "The blood type is not disabled because "+data+" record/s uses this.",
+              icon: "error",
+              buttons: {text:"Okay"},
+            })
+            .then((willApprove) => {
+              if (willApprove) {
+                window.location.href = "bloodtype-tab.php";
+              }
+            });
           }
-        });
-      }else{
-        swal({
-          title: "",
-          text: "The blood type is not disabled because "+data+" record/s uses this.",
-          icon: "error",
-          buttons: {text:"Okay"},
-        })
-        .then((willApprove) => {
-          if (willApprove) {
-            window.location.href = "bloodtype-tab.php";
-          }
-        });
-      }
-      }
-    });
-/*  }
-  else{
-    alert("Confirmation Cancelled");
-    return false;
-  }*/
-}
-else {
-  swal("","Cancelled","info");
-}
+        }
+      });
+    }
+    else {
+      swal("","Cancelled","info");
+    }
+  });
 });
 
-});
-
-$("#btnsaveenablebloodtype").click(function(e){
+$(document).on("click","#btnsaveenablebloodtype", function(e){
   e.preventDefault();
   var id = $("#viewbloodtype_ID_enable").val();
   var confirm_enable = confirm("Are you sure?");
@@ -440,11 +414,7 @@ $("#btnsaveenablebloodtype").click(function(e){
     alert("Confirmation Cancelled");
     return false;
   }
-
 });
-
-});
-
 </script>
 </body>
 </html>

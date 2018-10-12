@@ -1,6 +1,6 @@
 $(document).ready(function(){
   fetch_donor();
-  savedonorinfo();
+  //savedonorinfo();
   editdonorinfo();
   fetch_banneddonor();
   function fetch_donor(){
@@ -37,6 +37,7 @@ $(document).ready(function(){
       var sex = $(e.relatedTarget).data('sex');
       var btype = $(e.relatedTarget).data('btype');
       var status = $(e.relatedTarget).data('status');
+      var age = $(e.relatedTarget).data('age');
       alert(btype);
       $("#clientId").val(rowid);
       $("#clientfname").val(fname);
@@ -47,12 +48,13 @@ $(document).ready(function(){
       $("#clientsex").val(sex);
       $("#clientbloodtype").val(btype);
       $("#clientcivstat").val(status);
+      $("#clientbday").val(age);
       var bbtype = $('#clientbloodtype').val();
       console.log(bbtype);
     });
   }
 
-  function savedonorinfo(){
+/*  function savedonorinfo(){
     $("form[name = 'editdonor' ]").submit(function(e){
       e.preventDefault();
       var clientocc = $("#clientocc").val();
@@ -90,7 +92,7 @@ $(document).ready(function(){
         alert("Invalid Contact");
       }
     });
-  }
+  }*/
 /*  $image_crop = $('#image_demo').croppie({
     enableExif:true,
     viewport:{
@@ -133,5 +135,22 @@ $(document).ready(function(){
 
 $("#fileimg").change(function() {
   readURL(this);
+});
+
+function readURL2(input) {
+
+if (input.files && input.files[0]) {
+  var reader = new FileReader();
+
+  reader.onload = function(e) {
+    $('#imageprev2').attr('src', e.target.result);
+  }
+
+  reader.readAsDataURL(input.files[0]);
+}
+}
+
+$("#clientimage").change(function() {
+readURL2(this);
 });
 });

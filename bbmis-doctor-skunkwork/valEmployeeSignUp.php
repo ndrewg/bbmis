@@ -17,12 +17,12 @@
 
 		else	{
 			//parse_str($_POST["formdata"], $params);
-			$varFname = ucwords(strtolower(ltrim(rtrim($_REQUEST["txtFname"]))));
-			$varMname = ucwords(strtolower(ltrim(rtrim($_REQUEST["txtMname"]))));
-			$varLname = ucwords(strtolower(ltrim(rtrim($_REQUEST["txtLname"]))));
-			$varPos = $_REQUEST["optPos"];
-			$varUn = strtolower(ltrim(rtrim($_REQUEST["txtUn"])));
-			$varPw = $_REQUEST["txtPw"];
+			$varFname = ucwords(strtolower(ltrim(rtrim(mysqli_real_escape_string($connections,$_REQUEST["txtFname"])))));
+			$varMname = ucwords(strtolower(ltrim(rtrim(mysqli_real_escape_string($connections,$_REQUEST["txtMname"])))));
+			$varLname = ucwords(strtolower(ltrim(rtrim(mysqli_real_escape_string($connections,$_REQUEST["txtLname"])))));
+			$varPos = mysqli_real_escape_string($connections,$_REQUEST["optPos"]);
+			$varUn = strtolower(ltrim(rtrim(mysqli_real_escape_string($connections,$_REQUEST["txtUn"]))));
+			$varPw = mysqli_real_escape_string($connections,$_REQUEST["txtPw"]);
 		}
 	}
 
@@ -42,7 +42,7 @@
 			if($fileSize < 1000000){
 				$fileNameNew = uniqid('', true).".".$fileActualExt;/*gagawin niyang integer na unique*/
 
-				$fileDestination = 'images/profileImg/'.$fileNameNew;
+				$fileDestination = '../img/'.$fileNameNew;
 				move_uploaded_file($fileTmpName, $fileDestination);/*yung unang paramter kung saan galing which is yung temporary location, yung second parameter kung saan ililipat*/
 				header("Location:staff-tab.php");
 

@@ -186,11 +186,6 @@
 
   $(document).ready(function(){
     // functions
-    save_newdisease();
-    edit_disease();
-    save_editeddisease();
-    view_disease();
-    viewdisease_enable();
     check_expiringbloodbags();
 
     function check_expiringbloodbags(){
@@ -202,299 +197,282 @@
         }
       });
     }
+  });
 
-    function save_newdisease(){
-      $("form[name='form_adddisease']").on('submit',function(e){
-        e.preventDefault();
-        // var confirm_input = confirm("Are you sure?");
-        var formdata = $("form[name='form_adddisease']").serialize();
-        swal({
-          title: "Are you sure?",
-          text: "You are about to add this disease",
-          icon: "info",
-          buttons:true,
-        })
-        .then((willApprove) => {
-          if (willApprove) {
-            $.ajax({
-              type: "POST",
-              url: 'disease-related/add_newdisease.php',
-              data: {formdata,formdata},
-              success:function(data){
-                if(data == 1){
-                  // alert("Blood Component Added");
-                  swal({
-                    title:"",
-                    text: "Disease Added",
-                    icon: "success",
-                    buttons:{text:"Okay"},
-                  })
-                  .then((willApprove) => {
-                    if (willApprove) {
-                      $('#addnewdiseaseModal').modal('hide');
-                      $("#addnewdiseaseModal .modal-body input").val("");
-                      window.location.href = "disease-tab.php";
-                    }
-                  });
-                  //$('#divdonoraddsero').show(600);
-                }
-                else if(data == 2){
-                  swal({
-                    title: "",
-                    text: "The Disease you entered already exists, Please check the disabled diseases too.",
-                    icon: "warning",
-                    buttons:{text:"Okay"},
-                  })
-                  .then((willApprove) => {
-                    if (willApprove) {
-                      window.location.href = "disease-tab.php";
-                    }
-                  });
-                }
-                else if (data == 3) {
-                  swal({
-                    title: "",
-                    text: "Disease is not saved",
-                    icon: "error",
-                    buttons:{text:"Okay"},
-                  })
-                  .then((willApprove) => {
-                    if (willApprove) {
-                      window.location.href = "disease-tab.php";
-                    }
-                  });
-                }
-              }
-            });
-          }
-          else {
-            swal("","Cancelled","info");
-          }
-        });
-      });
-    }
-
-    function edit_disease(){
-      $('#editDiseaseModal').on('show.bs.modal', function(e) {
-        var rowid = $(e.relatedTarget).data('id');
-        // alert(rowid);
+  $(document).on("submit", "form[name='form_adddisease']", function(e){
+    e.preventDefault();
+    // var confirm_input = confirm("Are you sure?");
+    var formdata = $("form[name='form_adddisease']").serialize();
+    swal({
+      title: "Are you sure?",
+      text: "You are about to add this disease",
+      icon: "info",
+      buttons:true,
+    })
+    .then((willApprove) => {
+      if (willApprove) {
         $.ajax({
           type: "POST",
-          url: 'disease-related/fetch_diseasedetails.php',
-          data: 'rowid=' + rowid,
-          dataType: "json",
-          success: function(data){
-            $('#disease_ID').val(data.intDiseaseId);
-            $('#editDiseaseName').val(data.strDisease);
-          }
-
-        });
-      });
-    }
-
-    function view_disease(){
-      $('#viewDiseaseModal').on('show.bs.modal', function(e) {
-        var rowid = $(e.relatedTarget).data('id');
-        // alert(rowid);
-        $.ajax({
-          type: "POST",
-          url: 'disease-related/fetch_diseasedetails.php',
-          data: 'rowid=' + rowid,
-          dataType: "json",
-          success: function(data){
-            $('#viewdisease_ID').val(data.intDiseaseId);
-            $('#viewDiseaseName').val(data.strDisease);
-          }
-
-        });
-      });
-    }
-
-    function viewdisease_enable(){
-      $('#viewDiseaseModal_enable').on('show.bs.modal', function(e) {
-        var rowid = $(e.relatedTarget).data('id');
-        // alert(rowid);
-        $.ajax({
-          type: "POST",
-          url: 'disease-related/fetch_diseasedetails.php',
-          data: 'rowid=' + rowid,
-          dataType: "json",
-          success: function(data){
-            $('#viewdisease_ID_enable').val(data.intDiseaseId);
-            $('#viewDiseaseName_enable').val(data.strDisease);
-          }
-
-        });
-      });
-    }
-
-    function save_editeddisease(){
-      $("form[name='form_editdisease']").on('submit',function(e){
-        e.preventDefault();
-        // var confirm_input = confirm("Are you sure?");
-        var formdata = $("form[name='form_editdisease']").serialize();
-        console.log(formdata);
-        swal({
-          title: "Are you sure?",
-          text: "You are about to edit this disease",
-          icon: "info",
-          buttons: true,
-        })
-        .then((willApprove) => {
-          if (willApprove) {
-            $.ajax({
-              type: "POST",
-              url: 'disease-related/edit_disease.php',
-              data: {formdata,formdata},
-              success:function(data){
-                if(data == 1){
-                  // alert("Disease Succesfully Edited");
-                  swal({
-                    title: "",
-                    text: "Disease is successfully edited",
-                    icon: "success",
-                    buttons:{text:"Okay"},
-                  })
-                  .then((willApprove) => {
-                    if (willApprove) {
-                      $('#editDiseaseModal').modal('hide');
-                      $("#editDiseaseModal .modal-body input").val("");
-                      window.location.href = "disease-tab.php";
-                    }
-                  });
-                  //$('#divdonoraddsero').show(600);
-                }
-                else if(data == 2){
-                  swal({
-                    title: "",
-                    text: "The Disease you entered already exists!",
-                    icon: "error",
-                    buttons:{text:"Okay"},
-                  })
-                  .then((willApprove) => {
-                    if (willApprove) {
-                      window.location.href = "disease-tab.php";
-                    }
-                  });
-                  // alert("The Disease You Entered Already Exists");
-                }
-                else if (data == 3) {
-                  swal({
-                    title: "",
-                    text: "Disease is not edited",
-                    icon: "error",
-                    buttons:{text:"Okay"},
-                  })
-                  .then((willApprove) => {
-                    if (willApprove) {
-                      window.location.href = "disease-tab.php";
-                    }
-                  });
-                  // alert("Disease is not Edited");
-                }
-              }
-            });
-          }
-          else {
-            swal("","Cancelled","info");
-          }
-        });
-      });
-    }
-
-    $("#btnsavedeletedisease").click(function(e){
-      e.preventDefault();
-      var id = $("#viewdisease_ID").val();
-      // var confirm_delete = confirm("Are you sure?");
-      swal({
-        title: "Are you sure?",
-        text: "You are about to disable this disease",
-        icon: "info",
-        buttons:true,
-      })
-      .then((willApprove) => {
-        if (willApprove) {
-          $.ajax({
-            type: "POST",
-            url: 'disease-related/disable_disease.php',
-            data: {id:id},
-            success:function(data){
-              if(data == "deleted"){
-              swal({
-                title: "",
-                text: "The disease is now disabled",
-                icon: "success",
-                buttons: {text:"Okay"},
-              })
-              .then((willApprove) => {
-                if (willApprove) {
-                  window.location.href = "disease-tab.php";
-                }
-              });
-            }else{
-              swal({
-                title: "",
-                text: "The disease is not disabled because "+data+" record/s uses this.",
-                icon: "error",
-                buttons: {text:"Okay"},
-              })
-              .then((willApprove) => {
-                if (willApprove) {
-                  window.location.href = "disease-tab.php";
-                }
-              });
-            }
-            }
-          });
-        }
-        else {
-          swal("","Cancelled","info");
-        }
-      });
-
-    });
-
-    $("#btnsaveenabledisease").click(function(e){
-      e.preventDefault();
-      var id = $("#viewdisease_ID_enable").val();
-      // var confirm_enable = confirm("Are you sure?");
-      swal({
-        title: "Are you sure?",
-        text: "You are about to enable this disease",
-        icon: "info",
-        buttons: true,
-      })
-      .then((willApprove) => {
-        if (willApprove) {
-          $.ajax({
-            type: "POST",
-            url: 'disease-related/enable_disease.php',
-            data: {id:id},
-            success:function(data){
+          url: 'disease-related/add_newdisease.php',
+          data: {formdata,formdata},
+          success:function(data){
+            if(data == 1){
+              // alert("Blood Component Added");
               swal({
                 title:"",
-                text: "Disease is now enabled",
+                text: "Disease Added",
                 icon: "success",
-                buttons:{text:"Okay"}
+                buttons:{text:"Okay"},
+              })
+              .then((willApprove) => {
+                if (willApprove) {
+                  $('#addnewdiseaseModal').modal('hide');
+                  $("#addnewdiseaseModal .modal-body input").val("");
+                  window.location.href = "disease-tab.php";
+                }
+              });
+              //$('#divdonoraddsero').show(600);
+            }
+            else if(data == 2){
+              swal({
+                title: "",
+                text: "The Disease you entered already exists, Please check the disabled diseases too.",
+                icon: "warning",
+                buttons:{text:"Okay"},
               })
               .then((willApprove) => {
                 if (willApprove) {
                   window.location.href = "disease-tab.php";
                 }
               });
-              // alert("Disease has been enabled");
             }
-          });
-        }
-        else {
-          swal("","Cancelled","info");
-        }
-      });
+            else if (data == 3) {
+              swal({
+                title: "",
+                text: "Disease is not saved",
+                icon: "error",
+                buttons:{text:"Okay"},
+              })
+              .then((willApprove) => {
+                if (willApprove) {
+                  window.location.href = "disease-tab.php";
+                }
+              });
+            }
+          }
+        });
+      }
+      else {
+        swal("","Cancelled","info");
+      }
     });
   });
 
-  $('#sidebar a').click(function(){ $('a').removeClass("active"); $(this).addClass("active"); });
+  $(document).on("show.bs.modal", "#editDiseaseModal", function(e){
+    var rowid = $(e.relatedTarget).data('id');
+    // alert(rowid);
+    $.ajax({
+      type: "POST",
+      url: 'disease-related/fetch_diseasedetails.php',
+      data: 'rowid=' + rowid,
+      dataType: "json",
+      success: function(data){
+        $('#disease_ID').val(data.intDiseaseId);
+        $('#editDiseaseName').val(data.strDisease);
+      }
+    });
+  });
 
+  $(document).on("show.bs.modal", "#viewDiseaseModal", function(e){
+    var rowid = $(e.relatedTarget).data('id');
+    // alert(rowid);
+    $.ajax({
+      type: "POST",
+      url: 'disease-related/fetch_diseasedetails.php',
+      data: 'rowid=' + rowid,
+      dataType: "json",
+      success: function(data){
+        $('#viewdisease_ID').val(data.intDiseaseId);
+        $('#viewDiseaseName').val(data.strDisease);
+      }
+    });
+  });
+
+  $(document).on("show.bs.modal", "#viewDiseaseModal_enable", function(e){
+    var rowid = $(e.relatedTarget).data('id');
+    // alert(rowid);
+    $.ajax({
+      type: "POST",
+      url: 'disease-related/fetch_diseasedetails.php',
+      data: 'rowid=' + rowid,
+      dataType: "json",
+      success: function(data){
+        $('#viewdisease_ID_enable').val(data.intDiseaseId);
+        $('#viewDiseaseName_enable').val(data.strDisease);
+      }
+    });
+  });
+
+  $(document).on("submit", "form[name='form_editdisease']", function(e){
+    e.preventDefault();
+    // var confirm_input = confirm("Are you sure?");
+    var formdata = $("form[name='form_editdisease']").serialize();
+    console.log(formdata);
+    swal({
+      title: "Are you sure?",
+      text: "You are about to edit this disease",
+      icon: "info",
+      buttons: true,
+    })
+    .then((willApprove) => {
+      if (willApprove) {
+        $.ajax({
+          type: "POST",
+          url: 'disease-related/edit_disease.php',
+          data: {formdata,formdata},
+          success:function(data){
+            if(data == 1){
+              // alert("Disease Succesfully Edited");
+              swal({
+                title: "",
+                text: "Disease is successfully edited",
+                icon: "success",
+                buttons:{text:"Okay"},
+              })
+              .then((willApprove) => {
+                if (willApprove) {
+                  $('#editDiseaseModal').modal('hide');
+                  $("#editDiseaseModal .modal-body input").val("");
+                  window.location.href = "disease-tab.php";
+                }
+              });
+              //$('#divdonoraddsero').show(600);
+            }
+            else if(data == 2){
+              swal({
+                title: "",
+                text: "The Disease you entered already exists!",
+                icon: "error",
+                buttons:{text:"Okay"},
+              })
+              .then((willApprove) => {
+                if (willApprove) {
+                  window.location.href = "disease-tab.php";
+                }
+              });
+              // alert("The Disease You Entered Already Exists");
+            }
+            else if (data == 3) {
+              swal({
+                title: "",
+                text: "Disease is not edited",
+                icon: "error",
+                buttons:{text:"Okay"},
+              })
+              .then((willApprove) => {
+                if (willApprove) {
+                  window.location.href = "disease-tab.php";
+                }
+              });
+              // alert("Disease is not Edited");
+            }
+          }
+        });
+      }
+      else {
+        swal("","Cancelled","info");
+      }
+    });
+  });
+
+  $(document).on("click", "#btnsavedeletedisease", function(e){
+    e.preventDefault();
+    var id = $("#viewdisease_ID").val();
+    // var confirm_delete = confirm("Are you sure?");
+    swal({
+      title: "Are you sure?",
+      text: "You are about to disable this disease",
+      icon: "info",
+      buttons:true,
+    })
+    .then((willApprove) => {
+      if (willApprove) {
+        $.ajax({
+          type: "POST",
+          url: 'disease-related/disable_disease.php',
+          data: {id:id},
+          success:function(data){
+            if(data == "deleted"){
+            swal({
+              title: "",
+              text: "The disease is now disabled",
+              icon: "success",
+              buttons: {text:"Okay"},
+            })
+            .then((willApprove) => {
+              if (willApprove) {
+                window.location.href = "disease-tab.php";
+              }
+            });
+          }else{
+            swal({
+              title: "",
+              text: "The disease is not disabled because "+data+" record/s uses this.",
+              icon: "error",
+              buttons: {text:"Okay"},
+            })
+            .then((willApprove) => {
+              if (willApprove) {
+                window.location.href = "disease-tab.php";
+              }
+            });
+          }
+          }
+        });
+      }
+      else {
+        swal("","Cancelled","info");
+      }
+    });
+  });
+
+  $(document).on("click", "#btnsaveenabledisease", function(e){
+    e.preventDefault();
+    var id = $("#viewdisease_ID_enable").val();
+    // var confirm_enable = confirm("Are you sure?");
+    swal({
+      title: "Are you sure?",
+      text: "You are about to enable this disease",
+      icon: "info",
+      buttons: true,
+    })
+    .then((willApprove) => {
+      if (willApprove) {
+        $.ajax({
+          type: "POST",
+          url: 'disease-related/enable_disease.php',
+          data: {id:id},
+          success:function(data){
+            swal({
+              title:"",
+              text: "Disease is now enabled",
+              icon: "success",
+              buttons:{text:"Okay"}
+            })
+            .then((willApprove) => {
+              if (willApprove) {
+                window.location.href = "disease-tab.php";
+              }
+            });
+            // alert("Disease has been enabled");
+          }
+        });
+      }
+      else {
+        swal("","Cancelled","info");
+      }
+    });
+  });
   </script>
 </body>
 </html>

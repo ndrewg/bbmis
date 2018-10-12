@@ -30,17 +30,13 @@
 
           </div>
         </div>
-      </div>
-
-      <div class="col-md-10 offset-md-2">
-        <div class="content-container">
+        <div class="content-container" style="margin-top: -20px">
           <h4 style="font-family:'Nunito-Regular'">Expected Donors</h4>
           <div id="tblexpecteddonor">
 
           </div>
         </div>
       </div>
-
     </div>
   </div>
   <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>

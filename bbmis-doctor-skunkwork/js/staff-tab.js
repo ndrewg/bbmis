@@ -1,7 +1,7 @@
 $(document).ready(function(){
   fetch_staff();
   editstaffinfo();
-  ajax_edit();
+  //ajax_edit();
   function fetch_staff(){
     var dataTable = $('#tbl_staff').DataTable({
       "processing" : true,
@@ -32,7 +32,7 @@ $(document).ready(function(){
     });
   }
 
-  function ajax_edit(){
+/*  function ajax_edit(){
     $("form[name='editemployee']").on('submit',function(e){
       e.preventDefault();
       var formdata = $("form[name='editemployee']").serialize();
@@ -54,7 +54,7 @@ $(document).ready(function(){
 
     });
 
-  }
+  }*/
 /*  $image_crop = $('#image_demo').croppie({
     enableExif:true,
     viewport:{
@@ -97,5 +97,22 @@ $(document).ready(function(){
 
 $("#fileimg").change(function() {
   readURL(this);
+});
+
+function readURL2(input) {
+
+if (input.files && input.files[0]) {
+  var reader = new FileReader();
+
+  reader.onload = function(e) {
+    $('#imageprev2').attr('src', e.target.result);
+  }
+
+  reader.readAsDataURL(input.files[0]);
+}
+}
+
+$("#edit_image").change(function() {
+readURL2(this);
 });
 });

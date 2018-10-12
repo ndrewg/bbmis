@@ -216,10 +216,6 @@
   $('#storagetab').addClass("active");
 
   $(document).ready(function(){
-    savenewstorage();
-    editstorage();
-    viewstorage();
-    viewstorage_enable();
     check_expiringbloodbags();
 
     function check_expiringbloodbags(){
@@ -231,185 +227,174 @@
         }
       });
     }
+  });
 
-    function savenewstorage(){
-      $("form[name='form_addnewbloodstorage']").on('submit',function(e){
-        e.preventDefault();
-        // var confirm_input = confirm("Are you sure?");
-        var formdata = $("form[name='form_addnewbloodstorage']").serialize();
+  $(document).on("submit", "form[name='form_addnewbloodstorage']", function(e){
+    e.preventDefault();
+    // var confirm_input = confirm("Are you sure?");
+    var formdata = $("form[name='form_addnewbloodstorage']").serialize();
 
-        swal({
-          title: "Are you sure?",
-          text: "You are about to add a new storage",
-          icon: "info",
-          buttons: true
-        })
-        .then((willApprove) => {
-          if (willApprove) {
-            $.ajax({
-              type: "POST",
-              url: "storage-related/add_newstorage.php",
-              data: {formdata, formdata},
-              success: function(data){
-                console.log(data);
-                if (data == "1"){
-                  swal({
-                    title: "",
-                    text: "Storage added",
-                    icon: "success",
-                    buttons: {text: "Okay"},
-                  })
-                  .then((willApprove) => {
-                    if (willApprove) {
-                      $("#addBloodStorageModal .modal-body input").val("");
-                      $("#addBloodStorageModal").modal("hide");
-                      window.location.href = "storage-tab.php";
-                    }
-                  });
-                }
-                else if (data == "2") {
-                  swal("","Storage already exists, Please check the disabled storages too.","warning");
-                }
-                else if (data == "3"){
-                  swal("","Please select storage type","error");
-                }
-                else if (data == "4"){
-                  swal("","Please set storage capacity", "error");
-                }
-                else if (data == "5"){
-                  swal("","something wrong","error");
-                }
-              }
-            });
-          }
-          else {
-            swal("","Cancelled");
-          }
-        });
-      });
-    }
-
-    function editstorage(){
-      $('#editBloodStorageModal').on('show.bs.modal', function(e) {
-        var rowid = $(e.relatedTarget).data('id');
-        alert(rowid);
+    swal({
+      title: "Are you sure?",
+      text: "You are about to add a new storage",
+      icon: "info",
+      buttons: true
+    })
+    .then((willApprove) => {
+      if (willApprove) {
         $.ajax({
           type: "POST",
-          url: 'storage-related/fetch_storagedetails.php',
-          data: 'rowid=' + rowid,
-          dataType: "json",
+          url: "storage-related/add_newstorage.php",
+          data: {formdata, formdata},
           success: function(data){
-            $('#bloodstorage_ID').val(data.intStorageId);
-            $('#editBloodStorageName').val(data.strStorageName);
-            $('#editBloodStorageCapacity').val(data.intStorageCapacity);
             console.log(data);
-          }
-
-        });
-      });
-    }
-
-    function viewstorage(){
-      $('#viewBloodStorageModal').on('show.bs.modal', function(e) {
-        var rowid = $(e.relatedTarget).data('id');
-        alert(rowid);
-        $.ajax({
-          type: "POST",
-          url: 'storage-related/fetch_storagedetails.php',
-          data: 'rowid=' + rowid,
-          dataType: "json",
-          success: function(data){
-            $('#viewbloodstorage_ID').val(data.intStorageId);
-            $('#viewBloodStorageName').val(data.strStorageName);
-            $('#viewBloodStorageCapacity').val(data.intStorageCapacity);
-            console.log(data);
-          }
-
-        });
-      });
-    }
-
-    function viewstorage_enable(){
-      $('#viewBloodStorageModal_enable').on('show.bs.modal', function(e) {
-        var rowid = $(e.relatedTarget).data('id');
-        alert(rowid);
-        $.ajax({
-          type: "POST",
-          url: 'storage-related/fetch_storagedetails.php',
-          data: 'rowid=' + rowid,
-          dataType: "json",
-          success: function(data){
-            $('#viewbloodstorage_ID_enable').val(data.intStorageId);
-            $('#viewBloodStorageName_enable').val(data.strStorageName);
-            $('#viewBloodStorageCapacity_enable').val(data.intStorageCapacity);
-            console.log(data);
-          }
-
-        });
-      });
-    }
-
-    $("#btnsavedeletestorage").click(function(e){
-      e.preventDefault();
-      var id = $("#viewbloodstorage_ID").val();
-      swal({
-        title: "Are you sure?",
-        text: "You are about to disable this storage",
-        icon: "warning",
-        buttons: true,
-      })
-      .then((willApprove) => {
-        if (willApprove) {
-          $.ajax({
-            type: "POST",
-            url: "storage-related/disable_storage.php",
-            data: {id:id},
-            success: function (data){
-              if (data == '1'){
-                swal("Can't disable storage","Storage has blood bags in it! Move it to another storage first", "warning");
-              }
-              else if (data == '2'){
-                swal({
-                  title: "Success!",
-                  text: "Storage is now disabled",
-                  icon: "success",
-                  buttons: {text:"Okay"},
-                })
-                .then((willApprove) => {
-                  if (willApprove) {
-                    window.location.href= "storage-tab.php";
-                  }
-                });
-              }
+            if (data == "1"){
+              swal({
+                title: "",
+                text: "Storage added",
+                icon: "success",
+                buttons: {text: "Okay"},
+              })
+              .then((willApprove) => {
+                if (willApprove) {
+                  $("#addBloodStorageModal .modal-body input").val("");
+                  $("#addBloodStorageModal").modal("hide");
+                  window.location.href = "storage-tab.php";
+                }
+              });
             }
-          });
-        }
-        else {
-          swal("","Cancelled");
-        }
-      });
-    });
-
-    $("#btnsaveenablestorage").click(function(e){
-      e.preventDefault();
-      var id = $("#viewbloodstorage_ID_enable").val();
-      var confirm_enable = confirm("Are you sure?");
-      if(confirm_enable == true){
-        $.ajax({
-          type: "POST",
-          url: 'storage-related/enable_storage.php',
-          data: {id:id},
-          success:function(data){
-            alert("Storage has been enabled");
-            window.location.href = "storage-tab.php";
+            else if (data == "2") {
+              swal("","Storage already exists, Please check the disabled storages too.","warning");
+            }
+            else if (data == "3"){
+              swal("","Please select storage type","error");
+            }
+            else if (data == "4"){
+              swal("","Please set storage capacity", "error");
+            }
+            else if (data == "5"){
+              swal("","something wrong","error");
+            }
           }
         });
       }
-      else{
-        alert("Confirmation Cancelled");
-        return false;
+      else {
+        swal("","Cancelled");
       }
     });
+  });
+
+  $(document).on("show.bs.modal", "#editBloodStorageModal", function(e){
+    var rowid = $(e.relatedTarget).data('id');
+    alert(rowid);
+    $.ajax({
+      type: "POST",
+      url: 'storage-related/fetch_storagedetails.php',
+      data: 'rowid=' + rowid,
+      dataType: "json",
+      success: function(data){
+        $('#bloodstorage_ID').val(data.intStorageId);
+        $('#editBloodStorageName').val(data.strStorageName);
+        $('#editBloodStorageCapacity').val(data.intStorageCapacity);
+        console.log(data);
+      }
+    });
+  });
+
+  $(document).on("show.bs.modal", "#viewBloodStorageModal", function(e){
+    var rowid = $(e.relatedTarget).data('id');
+    alert(rowid);
+    $.ajax({
+      type: "POST",
+      url: 'storage-related/fetch_storagedetails.php',
+      data: 'rowid=' + rowid,
+      dataType: "json",
+      success: function(data){
+        $('#viewbloodstorage_ID').val(data.intStorageId);
+        $('#viewBloodStorageName').val(data.strStorageName);
+        $('#viewBloodStorageCapacity').val(data.intStorageCapacity);
+        console.log(data);
+      }
+    });
+  });
+
+  $(document).on("show.bs.modal", "#viewBloodStorageModal_enable", function(e){
+    var rowid = $(e.relatedTarget).data('id');
+    alert(rowid);
+    $.ajax({
+      type: "POST",
+      url: 'storage-related/fetch_storagedetails.php',
+      data: 'rowid=' + rowid,
+      dataType: "json",
+      success: function(data){
+        $('#viewbloodstorage_ID_enable').val(data.intStorageId);
+        $('#viewBloodStorageName_enable').val(data.strStorageName);
+        $('#viewBloodStorageCapacity_enable').val(data.intStorageCapacity);
+        console.log(data);
+      }
+    });
+  });
+
+  $(document).on("click", "#btnsavedeletestorage", function(e){
+    e.preventDefault();
+    var id = $("#viewbloodstorage_ID").val();
+    swal({
+      title: "Are you sure?",
+      text: "You are about to disable this storage",
+      icon: "warning",
+      buttons: true,
+    })
+    .then((willApprove) => {
+      if (willApprove) {
+        $.ajax({
+          type: "POST",
+          url: "storage-related/disable_storage.php",
+          data: {id:id},
+          success: function (data){
+            if (data == '1'){
+              swal("Can't disable storage","Storage has blood bags in it! Move it to another storage first", "warning");
+            }
+            else if (data == '2'){
+              swal({
+                title: "Success!",
+                text: "Storage is now disabled",
+                icon: "success",
+                buttons: {text:"Okay"},
+              })
+              .then((willApprove) => {
+                if (willApprove) {
+                  window.location.href= "storage-tab.php";
+                }
+              });
+            }
+          }
+        });
+      }
+      else {
+        swal("","Cancelled");
+      }
+    });
+  });
+
+  $(document).on("click", "#btnsaveenablestorage", function(e){
+    e.preventDefault();
+    var id = $("#viewbloodstorage_ID_enable").val();
+    var confirm_enable = confirm("Are you sure?");
+    if(confirm_enable == true){
+      $.ajax({
+        type: "POST",
+        url: 'storage-related/enable_storage.php',
+        data: {id:id},
+        success:function(data){
+          alert("Storage has been enabled");
+          window.location.href = "storage-tab.php";
+        }
+      });
+    }
+    else{
+      alert("Confirmation Cancelled");
+      return false;
+    }
   });
 
   //actual deletion of storage

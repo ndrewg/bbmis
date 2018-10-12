@@ -89,6 +89,11 @@ $check_ifhasrecordwithinninetydays = mysqli_query($connections,"SELECT c.intClie
 																					WHERE intDonationId = '$latestdonationID'
 																					AND `stfAnswerRemarks` = 'Wrong'
 																					AND `dtmExamTaken` BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW()");
+$unchecked_survey = mysqli_query($connections,"SELECT *
+																				 FROM `tblmedicalexam`
+																				 WHERE intDonationId = '$latestdonationID'
+																				 AND `stfAnswerRemarks` = 'Unchecked'
+																				 AND `dtmExamTaken` BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW()");
 
  $failed_BC = mysqli_query($connections,"SELECT *
 																					FROM `tblinitialscreening`
@@ -141,6 +146,7 @@ $checkifpwedenaulit = mysqli_query($connections,"SELECT *
 
  																								if(mysqli_num_rows($check_ifhasrecordwithinninetydays) == 0){
 																									  if(mysqli_num_rows($failed_BC) == 0 AND mysqli_num_rows($failed_survey) == 0){
+																											if(mysqli_num_rows($unchecked_survey) == 0){
 																									    //  if(mysqli_num_rows($failed_hemo) == 0){
 																									            if(mysqli_num_rows($check_ifnophys) > 0){
 
@@ -169,7 +175,7 @@ $checkifpwedenaulit = mysqli_query($connections,"SELECT *
 																									else if (mysqli_num_rows($checkifpwedenaulit) > 0){
 																										$sub_array[3] =
 																										'
-																										<a href = "fetchIntSheetQuestions.php?client_id='.$row["intClientId"].'"><button type="button" class="btn btn-primary btnAddrecord" data-id="'.$row["intClientId"].'">Add record</button></a>
+																										<a href = "fetchIntSheetQuestions-table.php?client_id='.$row["intClientId"].'"><button type="button" class="btn btn-primary btnAddrecord" data-id="'.$row["intClientId"].'">Add record</button></a>
 																								    <button type="button" class="btn ml-2" data-toggle="modal" data-target="#editdonorinfo" data-id="'.$row["intClientId"].'">Edit</button>
 																								    <a class="btn btn-default btn-sm ml-2 btn_viewrec" data-id="'.$row["intClientId"].'" href="donorrecords-tab-viewinfo.php?id='.$row["intClientId"].'">View</a>
 
@@ -184,6 +190,14 @@ $checkifpwedenaulit = mysqli_query($connections,"SELECT *
 																									';
 																							}*/
 																						}else{
+																							$sub_array[3] =
+																							'
+																							<a href = "fetch_donorsurveyanswers.php?rowid='.$latestdonationID.'" ><button type="button" class="btn btn-primary btnchecksurvey"  name = "check_survey">Check Survey</button></a>
+																							<button type="button" class="btn ml-2" data-toggle="modal" data-target="#editdonorinfo" data-id="'.$row["intClientId"].'">Edit</button> <a class="btn btn-default ml-2 btn_viewrec" data-id="'.$row["intClientId"].'" href="donorrecords-tab-viewinfo.php?id='.$row["intClientId"].'">View</a>
+
+																							';
+																						}
+																						}else{////--------------------------------------------
 																							$sub_array[3] =
 																								'
 																								<button type = "button" class ="btn btn-success" disabled>Record Complete</button>
@@ -217,7 +231,7 @@ else{
 
 	$sub_array[3] =
 		'
-		<a href = "fetchIntSheetQuestions.php?client_id='.$row["intClientId"].'"><button type="button" class="btn btn-primary btnAddrecord" data-id="'.$row["intClientId"].'">Add record</button></a>
+		<a href = "fetchIntSheetQuestions-table.php?client_id='.$row["intClientId"].'"><button type="button" class="btn btn-primary btnAddrecord" data-id="'.$row["intClientId"].'">Add record</button></a>
     <button type="button" class="btn ml-2" data-toggle="modal" data-target="#editdonorinfo" data-id="'.$row["intClientId"].'">Edit</button>
     <a class="btn btn-default btn-sm ml-2 btn_viewrec" data-id="'.$row["intClientId"].'" href="donorrecords-tab-viewinfo.php?id='.$row["intClientId"].'">View</a>
 

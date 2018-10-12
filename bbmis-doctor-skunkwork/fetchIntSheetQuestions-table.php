@@ -33,19 +33,19 @@
 				<?php
 					include("connections.php");
 					$varQueCount = 1;
-					// $varDbId = $_GET["client_id"];
-					$varDbId = 1;
+				 $varDbId = $_GET["client_id"];
+					//$varDbId = 1;
 				?>
-				
+
 				<input type="hidden" name="hidden_id" value="<?php echo $varDbId;?>" />
-				
+
 				<?php
 					$qryDistQueCtg = mysqli_query($connections, "
 					SELECT DISTINCT(qc.stfQuestionCategory)
 					FROM tblquestion q
 					JOIN tblquestioncategory qc ON q.intQuestionCategoryId = qc.intQuestionCategoryId
 					");
-					
+
 					$qryCountQueCtg = mysqli_num_rows($qryDistQueCtg);
 
 					$qryCliSex = mysqli_query($connections, "SELECT stfClientSex FROM tblclient WHERE intClientId = $varDbId");
@@ -132,22 +132,22 @@
 								</div>
 						";
 					}
-					
+
 					function btnRems($varQueId)	{
 						echo "
 							<div class='btn-group-toggle text-center w-100 form-group mb-sm-3' data-toggle='buttons'>
 								<label id='btnYn$varQueId' class='btn btn-outline-success btn-lg form-control col-12 mb-sm-3' value='Yes'>
-									<input type='radio' name='updatestatus$varQueId' value='Yes' autocomplete='off' required='required' />
+									<input type='radio' name='updatestatus$varQueId' value='Correct' autocomplete='off' required='required' />
 										<i class='fa fa-check fa-2x'></i>
 								</label>
 								<label id='btnYn$varQueId' class='btn btn-outline-danger btn-lg form-control col-12' value='No'>
-									<input type='radio' name='updatestatus$varQueId' value='No' autocomplete='off' required='required' />
+									<input type='radio' name='updatestatus$varQueId' value='Wrong' autocomplete='off' required='required' />
 										<i class='fa fa-times fa-2x'></i>
 								</label>
 							</div>
 						";
 					}
-					
+
 					for($x=0; $x<$qryCountQueCtg; $x++)	{
 						$qryQueCtg = mysqli_query($connections, "
 							SELECT DISTINCT(qc.stfQuestionCategory)
@@ -160,7 +160,7 @@
 								)
 							LIMIT 1 OFFSET $x
 						");
-						
+
 						while($rowCtg = mysqli_fetch_assoc($qryQueCtg))	{
 							$varQueCtg = $rowCtg["stfQuestionCategory"];
 
@@ -179,7 +179,7 @@
 										</td>
 									</tr>
 							";
-							
+
 							$qryQue = mysqli_query($connections, "
 								SELECT q.intQuestionId, q.txtQuestion, q.stfQuestionType
 								FROM tblquestion q
@@ -229,9 +229,9 @@
 										</td>
 										<td class='align-middle text-center' style='width: 10%;'>
 							";
-							
+
 							btnRems($varQueId);
-							
+
 							echo "
 										</td>
 									</tr>

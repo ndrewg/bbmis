@@ -6,7 +6,7 @@
 
   <div class='container-fluid pt-3'>
     <div class='container text-center'>
-      <img src="images/ablirdp.jpg" class="img-fluid" alt="donor image" style="width:45px; border-radius:60px; margin-top:10px; vertical-align: center;">
+      <img src='../img/<?php echo $varImg ?>' class="img-fluid" alt="donor image" style="width:50px; height: 50px; border-radius:60px; margin-top:10px; vertical-align: center;">
     </div>
     <div class='container text-center'>
       <div class='container'>
@@ -37,13 +37,13 @@
     <div class="collapse show" id="maintenance-tabs">
       <a href="bloodtype-tab.php" class="nav-link nav-item" id="bloodtypetab"><i class="fas fa-heartbeat"></i> Blood Type</a>
       <a href="bloodcomponent-tab.php" class="nav-link nav-item" id="bloodcomponenttab"><img src="css/glyphicon/si-glyph-blood-bag.svg" style="width:20px;"> Blood Component</a>
-      <a href="preservatives-tab.php" class="nav-link nav-item" id="preservativetab"><img src="css/glyphicon/si-glyph-blood-bag.svg" style="width:20px;"> Preservative</a>
+      <a href="preservatives-tab.php" class="nav-link nav-item" id="preservativetab"><i class="fas fa-pills"></i> Preservative</a>
       <a href="disease-tab.php" class="nav-link nav-item" id="diseasetab"><img src="css/glyphicon/si-glyph-heart-delete.svg" style="width:17px;"> Disease</a>
       <a href="donoreditrequests-tab.php" class="nav-link nav-item" id="donoreditrequeststab"><img src="css/glyphicon/si-glyph-document-checked.svg" style="width: 17px" alt=""> Donor Edit Requests</a>
       <a href="survey-tab.php" class="nav-link nav-item" id="surveytab"><i class="fas fa-file-alt mr-1"></i> Survey</a>
       <a href="category-tab.php" class="nav-link nav-item" id="surveycategorytab"><i class="far fa-file-alt"></i> Survey Category</a>
       <a href="storage-tab.php" class="nav-link nav-item" id="storagetab"><i class="fas fa-box-open"></i> Storage</a>
-      <a href="staff-tab.php" class="nav-link nav-item" id="stafftab"><i class="fas fa-user-cog mr-1"></i> Staff</a>
+      <a href="staff-tab.php" class="nav-link nav-item" id="stafftab"><i class="fas fa-user-md mr-1"></i> Staff</a>
       <a href="donor-tab.php" class="nav-link nav-item" id="donortab"><i class="fas fa-user-cog mr-1"></i> Donor</a>
     </div>
     <h6 class="collapsibleheader" data-toggle="collapse" data-target="#transaction-tabs" aria-expanded="false" aria-controls="transaction-tabs">Transaction</h6>
@@ -51,7 +51,6 @@
       <a href="donorrecords-tab.php" class="nav-link nav-item" id="donorrecordstab"><i class="fas fa-file-medical-alt mr-1"></i> Donor Records</a>
       <a href="bloodinventory-tab.php" class="nav-link nav-item" id="bloodinventorytab"><i class="fas fa-first-aid mr-1"></i> Blood Inventory</a>
     </div>
-    <a href="queries-tab.php" class="nav-link nav-item" id="queriestab"><i class="fas fa-search-plus"></i> Queries</a>
     <a href="reports-tab.php" class="nav-link nav-item" id="reportstab"><i class="fas fa-file-medical"></i> Reports</a>
     <!-- <h6 class="collapsibleheader" data-toggle="collapse" data-target="#queriesreports-tabs" aria-expanded="false" aria-controls="queriesreports-tabs">Queries and Reports</h6> -->
     <!-- <div class="collapse show" id="queriesreports-tabs">
@@ -77,6 +76,8 @@
     $('#stafftab').hide();
     $('#collapsibleheader').hide();
     $('#maintenance-tab').hide();
+    $('#donortab').hide();
+    $('#preservativetab').hide();
   }
 // });
 </script>

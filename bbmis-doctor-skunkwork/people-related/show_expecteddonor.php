@@ -9,7 +9,8 @@ $expected_donor = mysqli_query($connections,"SELECT DISTINCT(d.intDonationId), c
                                                 WHERE d.intDonationId NOT IN (SELECT intDonationId FROM tblmedicalexam WHERE stfAnswerRemarks = 'Wrong' OR stfAnswerRemarks ='Unchecked')
                                                 AND d.intDonationId NOT IN(SELECT intDonationId FROM tblphysicalexam)
                                                 AND stfDonationRemarks = 'Incomplete'
-                                                AND dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW()");
+                                                AND dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW()
+                                                GROUP BY 1");
 
             if(mysqli_num_rows($expected_donor) > 0){
 

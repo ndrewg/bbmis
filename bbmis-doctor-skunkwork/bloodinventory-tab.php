@@ -213,28 +213,12 @@ include("connections.php");
   <script type="text/javascript" src="js/waves.min.js"></script>
   <script type="text/javascript" src="js/notification.js"></script>
   <script type="text/javascript" src="js/sweetalert.min.js"></script>
-  <!-- <script type="text/javascript">
-  $(document).ready(function(){
-    count_notifications();
-    //count notification
-    function count_notifications(){
-      $.ajax({
-        url: "blood-related/count_notifications.php",
-        success: function (data){
-          $('.count').html(data);
-        }
-      });
-    }
-  });
-  </script> -->
   <script type="text/javascript">
   $(document).ready(function(){
     //add active class to current tab
     $('#bloodinventorytab').addClass("active");
 
     //functions
-    livedonorsearch();
-    insert_bloodbagrecord();
     fetchreleasedbloodbags();
     fetchrottenbloodbags();
     check_expiringbloodbags();
@@ -260,84 +244,6 @@ include("connections.php");
         }
       });
     }
-    //
-    function insert_bloodbagrecord(){
-      $("form[name = 'addbloodbag' ]").submit(function(e){
-        e.preventDefault();
-        var formdata = $(this).serialize();
-        var confirm_input = confirm("Are you sure?");
-        console.log(formdata);
-
-        if(confirm_input == true)
-        {
-          $.ajax({
-            url: "blood-related/insert_bloodbagrecord.php",
-            method: "POST",
-            data: {formdata,formdata},
-            success: function(data){
-              console.log(data);
-              if (data == '1'){
-                alert('Insert Succesful.');
-                console.log(data);
-                $(".modal-body input").val("");
-                $(".modal-body select").val("");
-                $('#addbloodmodal').modal("hide");
-                $('#bloodtype').text("");
-              }
-              else if (data == '2'){
-                alert('Donor has undefined bloodtype. Please update his/her record.');
-              }
-              else if (data == '3'){
-                alert('Please check the donor serialno because there is already a bloodbag with the same serial.');
-              }
-              else if(data == '4'){
-                alert('Please check the donor name, Because the donor already has a blood bag in the record.');
-              }
-              else if(data == '5'){
-                alert('Donor not found. Please register the donor first.');
-              }
-              else if(data == '6'){
-                alert('Donor has no current transaction');
-              }
-              else if(data == '7'){
-                alert('Donor has no Blood Volume');
-              }
-              else if(data == '8'){
-                alert('Cannot insert to storage. Storage Full.');
-              }
-              else if(data == '9'){
-                alert('Please fill out all the fields.');
-              }
-              else if(data =='10') {
-                alert('Storage full!');
-              }
-            }//success
-          });
-        }//end of if confirm_input
-        else{
-          alert("Confirmation Cancelled.");
-          return false;
-        }
-      });
-    }
-
-    function livedonorsearch(){
-      $('#blooddonor').keyup(function(){
-        /* Get input value on change */
-        var inputVal = $(this).val();
-        var resultDropdown = $(this).siblings(".result");
-
-        console.log(inputVal);
-        if(inputVal.length){
-          $.get("blood-related/backend-search.php", {term: inputVal}).done(function(data){
-            // Display the returned data in browser
-            resultDropdown.html(data);
-          });
-        } else{
-          resultDropdown.empty();
-        }
-      });
-    }
 
     function fetchrottenbloodbags(){
       $.ajax({
@@ -351,6 +257,81 @@ include("connections.php");
       });
     }
   });
+
+  $(document).on("submit", "form[name='addbloodbag']", function(e){
+    e.preventDefault();
+    var formdata = $(this).serialize();
+    var confirm_input = confirm("Are you sure?");
+    console.log(formdata);
+
+    if(confirm_input == true)
+    {
+      $.ajax({
+        url: "blood-related/insert_bloodbagrecord.php",
+        method: "POST",
+        data: {formdata,formdata},
+        success: function(data){
+          console.log(data);
+          if (data == '1'){
+            alert('Insert Succesful.');
+            console.log(data);
+            $(".modal-body input").val("");
+            $(".modal-body select").val("");
+            $('#addbloodmodal').modal("hide");
+            $('#bloodtype').text("");
+          }
+          else if (data == '2'){
+            alert('Donor has undefined bloodtype. Please update his/her record.');
+          }
+          else if (data == '3'){
+            alert('Please check the donor serialno because there is already a bloodbag with the same serial.');
+          }
+          else if(data == '4'){
+            alert('Please check the donor name, Because the donor already has a blood bag in the record.');
+          }
+          else if(data == '5'){
+            alert('Donor not found. Please register the donor first.');
+          }
+          else if(data == '6'){
+            alert('Donor has no current transaction');
+          }
+          else if(data == '7'){
+            alert('Donor has no Blood Volume');
+          }
+          else if(data == '8'){
+            alert('Cannot insert to storage. Storage Full.');
+          }
+          else if(data == '9'){
+            alert('Please fill out all the fields.');
+          }
+          else if(data =='10') {
+            alert('Storage full!');
+          }
+        }//success
+      });
+    }//end of if confirm_input
+    else{
+      alert("Confirmation Cancelled.");
+      return false;
+    }
+  });
+
+  $(document).on("keyup", "#blooddonor", function(e){
+    /* Get input value on change */
+    var inputVal = $(this).val();
+    var resultDropdown = $(this).siblings(".result");
+
+    console.log(inputVal);
+    if(inputVal.length){
+      $.get("blood-related/backend-search.php", {term: inputVal}).done(function(data){
+        // Display the returned data in browser
+        resultDropdown.html(data);
+      });
+    } else{
+      resultDropdown.empty();
+    }
+  });
+
   $(document).on("click", ".result p", function(){
     $(this).parents("#modal_addbloodbag").find('#blooddonor').val($(this).text());
     var donor = $(this).text();

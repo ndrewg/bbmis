@@ -96,54 +96,17 @@ if(mysqli_num_rows($timesrejectedseroqry) > 0){
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-10 fixed-top offset-md-2 header">
-        <button type="button" class="btn float-right text-white text-center" style="background-color: rgb(234,72,127); margin-top: 3px; width: 65px; height: 30px;">Logout</button>
-        <!-- notification -->
-        <div class="dropdown show">
-          <a href="#" class="float-right mr-3 text-white dropdown-toggle" id="notifications" style="margin-top: 10px;" data-toggle="dropdown">
-            <span class="badge badge-pill count" style="border-radius:10px;"></span>
-            <i class="fas fa-bell"></i>
-          </a>
-          <div class="dropdown-menu" aria-labelledby="notifications">
-
-          </div>
-        </div>
-        <h5 style='color:rgb(250,250,250); font-family:"Nunito-Regular"; margin-top:10px;'>Storage</h5>
+         <?php
+          include "fetchEmpAcc.php";
+          include "employeeNavbar.php";
+         ?>
+        <h5 style='color:rgb(250,250,250); font-family:"Nunito-Regular"; margin-top:10px;'>Blood Component</h5>
       </div>
       <!-- SIDE NAVIGATION -->
+      <?php
+        include "employeeSidebar.php";
+      ?>
 
-      <div class="col-md-2 sidebar container-fluid">
-        <div class="system-title">
-          <img class="float-left" src="images/logoinwhite.png" alt="logo" style="width: 75px;">
-          <h4 class="float-left mt-2" style="color:rgb(250,250,250); font-family: 'Nunito-Regular'">Re-Feel</h4>
-        </div>
-        <img src="images/ablirdp.jpg" class="img-fluid" alt="donor image" style="width:45px; border-radius:60px; margin-top:10px;"> <span class="ml-2 donorname">Admin</span>
-        <!-- <p class=""></p> -->
-        <hr>
-        <div class="nav flex-column" id ="sidebar">
-          <h6 class="collapsibleheader" data-toggle="collapse" data-target="#home-tabs" aria-expanded="false" aria-controls="home-tabs">Home</h6>
-          <div class="collapse show" id="home-tabs">
-            <a href="graphs-tab.php" class="nav-link nav-item " id="graphstab"><i class="fas fa-chart-line mr-1"></i> Graphs</a>
-            <a href="donorlist-tab.php" class="nav-link nav-item" id="donorlisttab"><i class="fas fa-list mr-1"></i> Donor List</a>
-          </div>
-          <h6 class="collapsibleheader" id="collapsibleheader" data-toggle="collapse" data-target="#maintenance-tabs" aria-expanded="false" aria-controls="maintenance-tabs">Maintenance</h6>
-          <div class="collapse show" id="maintenance-tabs">
-            <a href="bloodtype-tab.php" class="nav-link nav-item" id="bloodtypetab"><img src="" alt=""> Blood Type</a>
-            <a href="bloodcomponent-tab.php" class="nav-link nav-item" id="bloodcomponenttab"><img src="css/glyphicon/si-glyph-blood-bag.svg" style="width:20px;"> Blood Component</a>
-            <a href="disease-tab.php" class="nav-link nav-item" id="diseasetab"><img src="css/glyphicon/si-glyph-heart-delete.svg" style="width:17px;"> Disease</a>
-            <a href="donoreditrequests-tab.php" class="nav-link nav-item" id="donoreditrequeststab"><img src="css/glyphicon/si-glyph-document-checked.svg" style="width: 17px" alt=""> Donor Edit Requests</a>
-            <a href="survey-tab.php" class="nav-link nav-item" id="surveytab"><i class="fas fa-file-alt mr-1"></i> Survey</a>
-            <a href="category-tab.php" class="nav-link nav-item" id="surveycategorytab"><i class="far fa-file-alt"></i> Survey Category</a>
-            <a href="storage-tab.php" class="nav-link nav-item" id="storagetab"><i class="fas fa-box-open"></i> Storage</a>
-            <a href="staff-tab.php" class="nav-link nav-item" id="stafftab"><i class="fas fa-user-cog mr-1"></i> Staff</a>
-            <a href="donor-tab.php" class="nav-link nav-item" id="donortab"><i class="fas fa-user-cog mr-1"></i> Donor</a>
-          </div>
-          <h6 class="collapsibleheader" data-toggle="collapse" data-target="#transaction-tabs" aria-expanded="false" aria-controls="transaction-tabs">Transaction</h6>
-          <div class="collapse show" id="transaction-tabs">
-            <a href="donorrecords-tab.php" class="nav-link nav-item" id="donorrecordstab"><i class="fas fa-file-medical-alt mr-1"></i> Donor Records</a>
-            <a href="bloodinventory-tab.php" class="nav-link nav-item" id="bloodinventorytab"><i class="fas fa-first-aid mr-1"></i> Blood Inventory</a>
-          </div>
-        </div>
-      </div>
       <!-- END OF SIDE NAVIGATION -->
       <div class="col-md-10 offset-md-2">
         <div class="content-container">
@@ -175,8 +138,8 @@ if(mysqli_num_rows($timesrejectedseroqry) > 0){
               <label class="mr-3" id="timesrejectedsero">Serological Screening: <?php echo $donationrejsero ?> </label>
             </div>
             <!-- client image -->
-            <div class="col-md-4 container-fluid" style="margin-top: 10px; margin-bottom: 10px; box-shadow: 0 0 1px 0 #d1d1d1; padding: 15px;">
-              <img src = "">
+            <div class="col-md-4 container-fluid text-center" style="margin-top: 10px; margin-bottom: 10px; box-shadow: 0 0 1px 0 #d1d1d1; padding: 15px;">
+              <img src = "../img/<?php echo $image ?>" class="ml-auto mr-auto" style = "width:200px; height:200px; border-radius: 100px;">
             </div>
             <div class="col-md-3" style="margin: 10px 0 10px 0;">
 

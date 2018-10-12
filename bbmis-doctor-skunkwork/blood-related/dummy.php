@@ -36,24 +36,28 @@ if(mysqli_num_rows($medicalexamQry) > 0){
 // var_dump($status_medium);
 // var_dump($status_critical);
 
-
+echo phpversion();
  ?>
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
     <title></title>
+    <link rel="stylesheet" href="../css/jquery-ui.css">
   </head>
   <body>
     <form method="post" name="dummy_form">
       <input type="text" name="dummytext" value="">
       <button type="submit" name="button">search</button>
     </form>
+    <input type="text" id="datep">
+    <input type="date" id="daten">
     <div id="result">
 
     </div>
   </body>
-  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="../js/jquery-ui.js"></script>
   <script type="text/javascript">
     $(document).on("submit", "form[name='dummy_form']", function(e){
       let formdata = $(this).serialize()
@@ -65,6 +69,19 @@ if(mysqli_num_rows($medicalexamQry) > 0){
           $('#result').html(data);
         }
       });
+    });
+    $(function(){
+      $('#datep').datepicker({
+        maxDate: 0,
+        dateFormat: 'yy-mm-dd'
+      });
+
+    });
+    $(document).on("change", "#datep", function(e){
+      console.log($(this).val());
+    });
+    $(document).on("change", "#daten", function(e){
+      console.log($(this).val());
     });
   </script>
 </html>

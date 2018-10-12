@@ -260,6 +260,11 @@ $(document).ready(function(){
               $('#donorphysrecord_save').hide(600);
 
             }
+            else if(data == '5'){
+              alert("Insert unsuccesful, The date must not be greater than today's date");
+
+
+            }
           }
         });
       }//confirm
@@ -286,7 +291,7 @@ $(document).ready(function(){
           data: {formdata,formdata},
           success:function(data){
             console.log(data);
-            if(data == 1){
+            if(data == '1'){
               alert("Insert Successful");
               $('#div_donoraddinitial').hide(600);
               $('#div_donoraddserological').show(600);
@@ -301,12 +306,15 @@ $(document).ready(function(){
               });
 
             }
-            else if(data == 2){
+            else if(data == '2'){
               alert("Insert Successful, You will not proceed to Serological Screening because the donor failed in Initial Screening Exam");
               $('#donorinitrecord_save').hide();
             }
-            else if(data == 3){
+            else if(data == '3'){
               alert("Insert Unsuccessful");
+            }
+            else if(data == '4'){
+              alert("Insert Unsuccessful,The date must not be greater than today's date");
             }
 
           }
@@ -382,6 +390,9 @@ $(document).ready(function(){
             else if(data == 4){
               alert("Insert Successful, Choose a storage");
               $('#chooseStorageModal').modal('show');
+            }
+            else if(data == 5){
+              alert("Insert Unsuccessful,The date must not be greater than today's date");
             }
 
           }

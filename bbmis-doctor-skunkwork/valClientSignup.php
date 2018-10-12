@@ -1,18 +1,18 @@
 <?php
 		include("connections.php");
 	//parse_str($_POST["formdata"], $params);
-	$varUn = $_REQUEST["txtUn"];
-	$varPw = $_REQUEST["txtPw"];
-	$varFname = $_REQUEST["txtFname"];
-	$varMname = $_REQUEST["txtMname"];
-	$varLname = $_REQUEST["txtLname"];
-	$varContNo = $_REQUEST["txtContNo"];
-	$varSex = $_REQUEST["optSex"];
-	$varCvlStat = $_REQUEST["optCvlStat"];
-	$varBm = $_REQUEST["txtBm"];
-	$varBd = $_REQUEST["txtBd"];
-	$varBy = $_REQUEST["txtBy"];
-	$varOcc = $_REQUEST["txtOcc"];
+	$varUn = mysqli_real_escape_string($connections,$_REQUEST["txtUn"]);
+	$varPw = mysqli_real_escape_string($connections,$_REQUEST["txtPw"]);
+	$varFname = mysqli_real_escape_string($connections,$_REQUEST["txtFname"]);
+	$varMname = mysqli_real_escape_string($connections,$_REQUEST["txtMname"]);
+	$varLname = mysqli_real_escape_string($connections,$_REQUEST["txtLname"]);
+	$varContNo = mysqli_real_escape_string($connections,$_REQUEST["txtContNo"]);
+	$varSex = mysqli_real_escape_string($connections,$_REQUEST["optSex"]);
+	$varCvlStat = mysqli_real_escape_string($connections,$_REQUEST["optCvlStat"]);
+	$varBm = mysqli_real_escape_string($connections,$_REQUEST["txtBm"]);
+	$varBd = mysqli_real_escape_string($connections,$_REQUEST["txtBd"]);
+	$varBy = mysqli_real_escape_string($connections,$_REQUEST["txtBy"]);
+	$varOcc = mysqli_real_escape_string($connections,$_REQUEST["txtOcc"]);
 
 
 	if($_SERVER["REQUEST_METHOD"] == "POST")	{
@@ -24,18 +24,18 @@
 
 		else	{
 			//parse_str($_POST["formdata"], $params);
-			$varFname = ucwords(strtolower(ltrim(rtrim($_REQUEST["txtFname"]))));
-			$varMname = ucwords(strtolower(ltrim(rtrim($_REQUEST["txtMname"]))));
-			$varLname = ucwords(strtolower(ltrim(rtrim($_REQUEST["txtLname"]))));
-			$varContNo = ltrim(rtrim($_REQUEST["txtContNo"]));
-			$varSex = $_REQUEST["optSex"];
-			$varCvlStat = $_REQUEST["optCvlStat"];
-			$varBm = $_REQUEST["txtBm"];
-			$varBd = $_REQUEST["txtBd"];
-			$varBy = $_REQUEST["txtBy"];
-			$varOcc = ucwords(strtolower(ltrim(rtrim($_REQUEST["txtOcc"]))));
-			$varUn = strtolower(ltrim(rtrim($_REQUEST["txtUn"])));
-			$varPw = $_REQUEST["txtPw"];
+			$varFname = ucwords(strtolower(ltrim(rtrim(mysqli_real_escape_string($connections,$_REQUEST["txtFname"])))));
+			$varMname = ucwords(strtolower(ltrim(rtrim(mysqli_real_escape_string($connections,$_REQUEST["txtMname"])))));
+			$varLname = ucwords(strtolower(ltrim(rtrim(mysqli_real_escape_string($connections,$_REQUEST["txtLname"])))));
+			$varContNo = ltrim(rtrim(mysqli_real_escape_string($connections,$_REQUEST["txtContNo"])));
+			$varSex = mysqli_real_escape_string($connections,$_REQUEST["optSex"]);
+			$varCvlStat = mysqli_real_escape_string($connections,$_REQUEST["optCvlStat"]);
+			$varBm = mysqli_real_escape_string($connections,$_REQUEST["txtBm"]);
+			$varBd = mysqli_real_escape_string($connections,$_REQUEST["txtBd"]);
+			$varBy = mysqli_real_escape_string($connections,$_REQUEST["txtBy"]);
+			$varOcc = ucwords(strtolower(ltrim(rtrim(mysqli_real_escape_string($connections,$_REQUEST["txtOcc"])))));
+			$varUn = strtolower(ltrim(rtrim(mysqli_real_escape_string($connections,$_REQUEST["txtUn"]))));
+			$varPw = mysqli_real_escape_string($connections,$_REQUEST["txtPw"]);
 		}
 	}
 
@@ -55,7 +55,7 @@
 			if($fileSize < 1000000){
 				$fileNameNew = uniqid('', true).".".$fileActualExt;/*gagawin niyang integer na unique*/
 
-				$fileDestination = 'images/profileImg/'.$fileNameNew;
+				$fileDestination = '../img/'.$fileNameNew;
 				move_uploaded_file($fileTmpName, $fileDestination);/*yung unang paramter kung saan galing which is yung temporary location, yung second parameter kung saan ililipat*/
 				//header("Location:donor-tab.php");
 
@@ -110,8 +110,7 @@
 					echo "<script type='text/javascript'>alert('Yowza.')</script>";
 				}
 				else	{
-					$qryAddClient = mysqli_query($connections, "
-					INSERT INTO tblclient(intUserId, strClientFirstName, strClientMiddleName, strClientLastName, strClientContact, stfClientSex, stfClientCivilStatus, datClientBirthday, strClientOccupation)
+					$qryAddClient = mysqli_query($connections, "INSERT INTO tblclient(intUserId, strClientFirstName, strClientMiddleName, strClientLastName, strClientContact, stfClientSex, stfClientCivilStatus, datClientBirthday, strClientOccupation)
 					VALUES('$varDbId', '$varFname', '$varMname', '$varLname', '$varContNo', '$varSex', '$varCvlStat', '$varBy/$varBm/$varBd', '$varOcc')");
 
 					if($qryAddClient)	{

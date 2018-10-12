@@ -193,306 +193,85 @@
   <script type="text/javascript">
   //add active class to current tab
   $('#bloodcomponenttab').addClass("active");
-
   $(document).ready(function(){
     //function declaration
-      savenewbloodcomponent();
-      editbloodcomponent();
-      saveeditedbloodcomponent();
-      viewbloodcomponent();
-      viewbloodcomponent_enable();
-      check_expiringbloodbags();
-      //initialize ripple fx
-      Waves.init();
-      Waves.attach('.button');
 
-      function check_expiringbloodbags(){
-        $.ajax({
-          type: "POST",
-          url: "blood-related/check_expiringbloodbags.php",
-          complete: function(){
-            setTimeout(check_expiringbloodbags, 60000);
-          }
-        });
-      }
+    check_expiringbloodbags();
+    //initialize ripple fx
+    Waves.init();
+    Waves.attach('.button');
 
-    function savenewbloodcomponent(){
-      $("form[name='form_addnewbloodcomponent']").on('submit',function(e){
-        e.preventDefault();
-        // var confirm_input = confirm("Are you sure?");
-        var formdata = $("form[name='form_addnewbloodcomponent']").serialize();
-
-        swal({
-          title: "Are you sure?",
-          text: "You are about to add a blood component",
-          icon: "info",
-          buttons: true,
-        })
-        .then((willApprove) => {
-          if (willApprove){
-            $.ajax({
-              type: "POST",
-              url: 'blood-related/add_newbloodcomponent.php',
-              data: {formdata,formdata},
-              success:function(data){
-                console.log(data);
-                if(data == 1){
-                  // alert("Blood Component Added");
-                  swal({
-                    title: "",
-                    text: "Blood Component Added",
-                    icon: "success",
-                    buttons: {text:"Close"},
-                  })
-                  .then((willApprove) => {
-                    if (willApprove) {
-                      $('#addBloodComponentModal').modal('hide');
-                      $("#addBloodComponentModal .modal-body input").val("");
-                      window.location.href = "bloodcomponent-tab.php";
-                    }
-                  });
-                  // $('#addBloodComponentModal').modal('hide');
-                  // $("#addBloodComponentModal .modal-body input").val("");
-                  // window.location.href = "bloodcomponent-tab.php";
-                  //$('#divdonoraddsero').show(600);
-                }
-                else if(data == 2){
-                  // swal("","The Blood Component You Entered Already Exists","info");
-                  swal({
-                    title: "",
-                    text: "The blood component you're trying to add already exists, Please check the disabled blood components too.",
-                    icon: "warning",
-                    buttons:{text:"Okay"},
-                  })
-                  .then((willApprove) => {
-                    if(willApprove) {
-                      window.location.href = "bloodcomponent-tab.php";
-                    }
-                  });
-                }
-                else if (data == 3) {
-                  // swal("","Blood Component is not saved","info");
-                  swal({
-                    title:"",
-                    text:"Blood Component is not saved!",
-                    icon:"error",
-                    buttons:{text:"OKAY"},
-                  })
-                  .then((willApprove) => {
-                    if (willApprove) {
-                      window.location.href = "bloodcomponent-tab.php";
-                    }
-                  });
-                }
-              }
-            });
-          }
-          else {
-            swal("","Cancelled","info");
-          }
-        });
+    function check_expiringbloodbags(){
+      $.ajax({
+        type: "POST",
+        url: "blood-related/check_expiringbloodbags.php",
+        complete: function(){
+          setTimeout(check_expiringbloodbags, 60000);
+        }
       });
     }
-    function editbloodcomponent(){
-        $('#editBloodComponentModal').on('show.bs.modal', function(e) {
-          var rowid = $(e.relatedTarget).data('id');
-          // alert(rowid);
-          $.ajax({
-            type: "POST",
-            url: 'blood-related/fetch_bloodcomponentdetails.php',
-            data: 'rowid=' + rowid,
-            dataType: "json",
-            success: function(data){
-              $('#bloodcomp_ID').val(data.intBloodComponentId);
-              $('#editBloodComponentName').val(data.strBloodComponent);
-              $('#editBloodComponentDeferral').val(data.intDeferralDay);
+  });
+  
+  $(document).on("submit","form[name='form_addnewbloodcomponent']", function(e){
+    e.preventDefault();
+    // var confirm_input = confirm("Are you sure?");
+    var formdata = $("form[name='form_addnewbloodcomponent']").serialize();
+
+    swal({
+      title: "Are you sure?",
+      text: "You are about to add a blood component",
+      icon: "info",
+      buttons: true,
+    })
+    .then((willApprove) => {
+      if (willApprove){
+        $.ajax({
+          type: "POST",
+          url: 'blood-related/add_newbloodcomponent.php',
+          data: {formdata,formdata},
+          success:function(data){
+            console.log(data);
+            if(data == 1){
+              // alert("Blood Component Added");
+              swal({
+                title: "",
+                text: "Blood Component Added",
+                icon: "success",
+                buttons: {text:"Close"},
+              })
+              .then((willApprove) => {
+                if (willApprove) {
+                  $('#addBloodComponentModal').modal('hide');
+                  $("#addBloodComponentModal .modal-body input").val("");
+                  window.location.href = "bloodcomponent-tab.php";
+                }
+              });
+              // $('#addBloodComponentModal').modal('hide');
+              // $("#addBloodComponentModal .modal-body input").val("");
+              // window.location.href = "bloodcomponent-tab.php";
+              //$('#divdonoraddsero').show(600);
             }
-
-          });
-        });
-      }
-      function viewbloodcomponent(){
-        $('#viewBloodComponentModal').on('show.bs.modal', function(e) {
-          var rowid = $(e.relatedTarget).data('id');
-          // alert(rowid);
-          $.ajax({
-            type: "POST",
-            url: 'blood-related/fetch_bloodcomponentdetails.php',
-            data: 'rowid=' + rowid,
-            dataType: "json",
-            success: function(data){
-              $('#viewbloodcomp_ID').val(data.intBloodComponentId);
-              $('#viewBloodComponentName').val(data.strBloodComponent);
-              $('#viewBloodComponentDeferral').val(data.intDeferralDay);
-            }
-
-          });
-        });
-      }
-      function viewbloodcomponent_enable(){
-        $('#viewBloodComponentModal_enable').on('show.bs.modal', function(e) {
-          var rowid = $(e.relatedTarget).data('id');
-          // alert(rowid);
-          $.ajax({
-            type: "POST",
-            url: 'blood-related/fetch_bloodcomponentdetails.php',
-            data: 'rowid=' + rowid,
-            dataType: "json",
-            success: function(data){
-              $('#viewbloodcomp_ID_enable').val(data.intBloodComponentId);
-              $('#viewBloodComponentName_enable').val(data.strBloodComponent);
-              $('#viewBloodComponentDeferral_enable').val(data.intDeferralDay);
-            }
-
-          });
-        });
-      }
-      function saveeditedbloodcomponent(){
-        $("form[name='form_editbloodcomponent']").on('submit',function(e){
-          e.preventDefault();
-          // var confirm_input = confirm("Are you sure?");
-
-          var formdata = $("form[name='form_editbloodcomponent']").serialize();
-          swal({
-            title: "Are you sure?",
-            text: "You are about to edit this blood component",
-            icon: "warning",
-            buttons: true,
-          })
-          .then((willApprove) => {
-            if (willApprove) {
-              $.ajax({
-                type: "POST",
-                url: 'blood-related/edit_bloodcomponent.php',
-                data: {formdata,formdata},
-                success:function(data){
-                  if(data == 1){
-                    swal({
-                      title: "",
-                      text: "Blood Component Successfully edited",
-                      icon: "success",
-                      buttons:{text:"Okay"},
-                    })
-                    .then((willApprove) => {
-                      $('#editBloodComponentModal').modal('hide');
-                      $("#editBloodComponentModal .modal-body input").val("");
-                      window.location.href = "bloodcomponent-tab.php";
-                    });
-                    // alert("Blood Component Succesfully Edited");
-                    //$('#divdonoraddsero').show(600);
-                  }
-                  else if(data == 2){
-                    swal({
-                      title: "",
-                      text: "The Blood Component you entered already exists!",
-                      icon: "error",
-                      buttons:{text:"Okay"},
-                    })
-                    .then((willApprove) => {
-                      if (willApprove) {
-                        window.location.href = "bloodcomponent-tab.php";
-                      }
-                    });
-                    // alert("The Blood Component You Entered Already Exists");
-                  }
-                  else if (data == 3) {
-                    swal({
-                      title: "",
-                      text: "Blood Component is not edited",
-                      icon: "error",
-                      buttons:{text:"Okay"},
-                    })
-                    .then((willApprove) => {
-                      if (willApprove) {
-                        window.location.href = "bloodcomponent-tab.php";
-                      }
-                    });
-                    // alert("Blood Component is not Edited");
-
-                  }
+            else if(data == 2){
+              // swal("","The Blood Component You Entered Already Exists","info");
+              swal({
+                title: "",
+                text: "The blood component you're trying to add already exists, Please check the disabled blood components too.",
+                icon: "warning",
+                buttons:{text:"Okay"},
+              })
+              .then((willApprove) => {
+                if(willApprove) {
+                  window.location.href = "bloodcomponent-tab.php";
                 }
               });
             }
-            else {
-              swal("","Cancelled","info");
-            }
-          });
-        });
-      }
-      $("#btnsavedeletebloodcomponent").click(function(e){
-        e.preventDefault();
-        var id = $("#viewbloodcomp_ID").val();
-        // var confirm_delete = confirm("Are you sure?");
-        swal({
-          title: "Are you sure?",
-          text: "You are about to disable this blood component",
-          icon: "info",
-          buttons: true,
-        })
-        .then((willApprove) => {
-          if (willApprove) {
-            $.ajax({
-              type: "POST",
-              url: 'blood-related/delete_bloodcomponent.php',
-              data: {id:id},
-              success:function(data){
-                // alert("Blood Component has been disabled");
-                if(data == "deleted"){
-                swal({
-                  title: "",
-                  text: "The blood component is now disabled",
-                  icon: "success",
-                  buttons: {text:"Okay"},
-                })
-                .then((willApprove) => {
-                  if (willApprove) {
-                    window.location.href = "bloodcomponent-tab.php";
-                  }
-                });
-              }else{
-                swal({
-                  title: "",
-                  text: "The blood component is not disabled because "+data+" record/s uses this.",
-                  icon: "error",
-                  buttons: {text:"Okay"},
-                })
-                .then((willApprove) => {
-                  if (willApprove) {
-                    window.location.href = "bloodcomponent-tab.php";
-                  }
-                });
-              }
-              }
-            });
-          }
-          else {
-            swal("","Cancelled","info");
-          }
-        });
-    });
-    $("#btnsaveenablebloodcomponent").click(function(e){
-      e.preventDefault();
-      var id = $("#viewbloodcomp_ID_enable").val();
-      // var confirm_enable = confirm("Are you sure?");
-      swal({
-        title: "Are you sure",
-        text: "You are about to enable this blood component",
-        icon: "info",
-        buttons: true,
-      })
-      .then((willApprove) =>{
-        if (willApprove) {
-          $.ajax({
-            type: "POST",
-            url: 'blood-related/enable_bloodcomponent.php',
-            data: {id:id},
-            success:function(data){
-              // alert("Blood Component has been enabled");
+            else if (data == 3) {
+              // swal("","Blood Component is not saved","info");
               swal({
-                title: "",
-                text: "Blood Component is now enabled!",
-                icons: "success",
-                buttons:{text:"Okay"},
+                title:"",
+                text:"Blood Component is not saved!",
+                icon:"error",
+                buttons:{text:"OKAY"},
               })
               .then((willApprove) => {
                 if (willApprove) {
@@ -500,12 +279,169 @@
                 }
               });
             }
-          });
-        }
-        else {
-          swal("","Cancelled","info");
-        }
-      });
+          }
+        });
+      }
+      else {
+        swal("","Cancelled","info");
+      }
+    });
+  });
+
+  $(document).on("show.bs.modal", "#editBloodComponentModal", function(e){
+    var rowid = $(e.relatedTarget).data('id');
+    // alert(rowid);
+    $.ajax({
+      type: "POST",
+      url: 'blood-related/fetch_bloodcomponentdetails.php',
+      data: 'rowid=' + rowid,
+      dataType: "json",
+      success: function(data){
+        $('#bloodcomp_ID').val(data.intBloodComponentId);
+        $('#editBloodComponentName').val(data.strBloodComponent);
+        $('#editBloodComponentDeferral').val(data.intDeferralDay);
+      }
+    });
+  });
+
+  $(document).on("show.bs.modal", "#viewBloodComponentModal", function(e){
+    var rowid = $(e.relatedTarget).data('id');
+    // alert(rowid);
+    $.ajax({
+      type: "POST",
+      url: 'blood-related/fetch_bloodcomponentdetails.php',
+      data: 'rowid=' + rowid,
+      dataType: "json",
+      success: function(data){
+        $('#viewbloodcomp_ID').val(data.intBloodComponentId);
+        $('#viewBloodComponentName').val(data.strBloodComponent);
+        $('#viewBloodComponentDeferral').val(data.intDeferralDay);
+      }
+    });
+  });
+
+  $(document).on("show.bs.modal", "#viewBloodComponentModal_enable", function(e){
+    var rowid = $(e.relatedTarget).data('id');
+    // alert(rowid);
+    $.ajax({
+      type: "POST",
+      url: 'blood-related/fetch_bloodcomponentdetails.php',
+      data: 'rowid=' + rowid,
+      dataType: "json",
+      success: function(data){
+        $('#viewbloodcomp_ID_enable').val(data.intBloodComponentId);
+        $('#viewBloodComponentName_enable').val(data.strBloodComponent);
+        $('#viewBloodComponentDeferral_enable').val(data.intDeferralDay);
+      }
+    });
+  });
+
+  $(document).on("submit", "form[name='form_editbloodcomponent']", function(e){
+    e.preventDefault();
+    // var confirm_input = confirm("Are you sure?");
+
+    var formdata = $("form[name='form_editbloodcomponent']").serialize();
+    swal({
+      title: "Are you sure?",
+      text: "You are about to edit this blood component",
+      icon: "warning",
+      buttons: true,
+    })
+    .then((willApprove) => {
+      if (willApprove) {
+        $.ajax({
+          type: "POST",
+          url: 'blood-related/edit_bloodcomponent.php',
+          data: {formdata,formdata},
+          success:function(data){
+            if(data == 1){
+              swal({
+                title: "",
+                text: "Blood Component Successfully edited",
+                icon: "success",
+                buttons:{text:"Okay"},
+              })
+              .then((willApprove) => {
+                $('#editBloodComponentModal').modal('hide');
+                $("#editBloodComponentModal .modal-body input").val("");
+                window.location.href = "bloodcomponent-tab.php";
+              });
+              // alert("Blood Component Succesfully Edited");
+              //$('#divdonoraddsero').show(600);
+            }
+            else if(data == 2){
+              swal({
+                title: "",
+                text: "The Blood Component you entered already exists!",
+                icon: "error",
+                buttons:{text:"Okay"},
+              })
+              .then((willApprove) => {
+                if (willApprove) {
+                  window.location.href = "bloodcomponent-tab.php";
+                }
+              });
+              // alert("The Blood Component You Entered Already Exists");
+            }
+            else if (data == 3) {
+              swal({
+                title: "",
+                text: "Blood Component is not edited",
+                icon: "error",
+                buttons:{text:"Okay"},
+              })
+              .then((willApprove) => {
+                if (willApprove) {
+                  window.location.href = "bloodcomponent-tab.php";
+                }
+              });
+              // alert("Blood Component is not Edited");
+
+            }
+          }
+        });
+      }
+      else {
+        swal("","Cancelled","info");
+      }
+    });
+  });
+
+  $(document).on("click", "#btnsavedeletebloodcomponent", function(e){
+    e.preventDefault();
+    var id = $("#viewbloodcomp_ID_enable").val();
+    // var confirm_enable = confirm("Are you sure?");
+    swal({
+      title: "Are you sure",
+      text: "You are about to enable this blood component",
+      icon: "info",
+      buttons: true,
+    })
+    .then((willApprove) =>{
+      if (willApprove) {
+        $.ajax({
+          type: "POST",
+          url: 'blood-related/enable_bloodcomponent.php',
+          data: {id:id},
+          success:function(data){
+            // alert("Blood Component has been enabled");
+            swal({
+              title: "",
+              text: "Blood Component is now enabled!",
+              icons: "success",
+              buttons:{text:"Okay"},
+            })
+            .then((willApprove) => {
+              if (willApprove) {
+                window.location.href = "bloodcomponent-tab.php";
+              }
+            });
+          }
+        });
+      }
+      else {
+        swal("","Cancelled","info");
+      }
     });
   });
   </script>

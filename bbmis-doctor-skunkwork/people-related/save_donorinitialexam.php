@@ -4,6 +4,9 @@ include("../checkSession.php");
 parse_str(mysqli_real_escape_string($connections, $_POST["formdata"]), $params);
 $date = $params["date_init"];
 //$newdate = date_format($date,"Y/m/d");
+$datenow = date('Y-m-d H:i:s');
+$date_1 = new DateTime($date);
+$datenow_1 = new DateTime($datenow);
 
 
 $count_components = mysqli_query($connections,"SELECT COUNT(intBloodComponentId) AS Number_of_Components  FROM tblbloodcomponent WHERE stfBloodComponentStatus = 'Active'");
@@ -11,7 +14,7 @@ $count_components = mysqli_query($connections,"SELECT COUNT(intBloodComponentId)
 while ($row = mysqli_fetch_assoc($count_components)){
   $NumberOfComponents = $row["Number_of_Components"];
 }
-
+if($date_1 <= $datenow_1){
 if ($date){
     for($i=1; $i<=$NumberOfComponents; $i++){
       $id = $params['clientId_init'];
@@ -63,7 +66,10 @@ if ($date){
   }
 }
 else{
-  echo 3;//if di kumpleto yung input
+  echo '3';//if di kumpleto yung input
+}
+}else{
+  echo '4';
 }
 
  ?>

@@ -25,7 +25,7 @@
 				<div class="form-inline my-2 my-lg-0 text-center">
 					<ul class="navbar-nav m-auto">
 						<li class="nav-item border border-danger pt-1 pr-1">
-							<img src="assets/images/profileImg/<?php echo $varImg;?>" style="width: 50px; border-radius: 25px;" />
+							<img src="../img/<?php echo $varImg;?>" style="width: 50px; border-radius: 25px;" />
 						</li>
 						<li class="nav-item dropdown">
 							<button type="button" class="btn btn-danger text-right">
@@ -41,7 +41,7 @@
 							</button>
 							<button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 							</button>
-							
+
 							<div class="dropdown-menu">
 								<!--
 								<a class="dropdown-item" href="#">Profile</a>

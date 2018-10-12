@@ -3,18 +3,20 @@ include("../connections.php");
 include("../checkSession.php");
 
 parse_str(mysqli_real_escape_string($connections, $_POST["formdata"]), $params);
-$date = $params["date_sero"];
 $id = $params['clientId_sero'];
 $bloodbag = $params['bloodbag_underquarantine'];
 settype($id,'int');
-//$newdate = date_format($date,"Y/m/d");
+$date = $params["date_sero"];
+$datenow = date('Y-m-d H:i:s');
+$date_1 = new DateTime($date);
+$datenow_1 = new DateTime($datenow);
 
 $count_disease = mysqli_query($connections,"SELECT COUNT(intDiseaseId) AS Number_of_Diseases  FROM tbldisease WHERE stfDiseaseStatus = 'Active'");
 
 while ($row = mysqli_fetch_assoc($count_disease)){
   $NumberOfDiseases = $row["Number_of_Diseases"];
 }
-
+if($date_1 <= $datenow_1){
 if ($bloodbag != "No Available Blood Bag" && $bloodbag != ""){
   $bloodidQry = mysqli_query($connections,"SELECT intBloodBagId FROM tblbloodbag WHERE strBloodBagSerialNo = '$bloodbag'");
   while($blood = mysqli_fetch_assoc($bloodidQry)){
@@ -76,7 +78,10 @@ if ($bloodbag != "No Available Blood Bag" && $bloodbag != ""){
 
       }
 else{
-  echo 2;
+  echo '2';
+}
+}else{
+  echo '5';
 }
 
  ?>
