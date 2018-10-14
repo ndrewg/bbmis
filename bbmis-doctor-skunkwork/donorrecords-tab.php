@@ -73,47 +73,69 @@
                   </div>
                 </div>
                 <div class="col-md-5">
-                  <div class="form-group">
+                  <!-- <div class="form-group"> -->
                     <label for="donorweight">Weight</label>
-                    <input type="number" class="form-control" placeholder="70kg" id='donorweight' name="donorweight" required>
+                    <div class="input-group">
+                      <input type="number" class="form-control" id='donorweight' name="donorweight" required>
+                      <div class="input-group-append">
+                        <div class="input-group-text">kg</div>
+                      </div>
+                    </div>
                     <input type ="hidden" name ="clientId_phys" id ="clientId_phys">
-                  </div>
+                  <!-- </div> -->
                 </div>
                 <div class="col-md-5">
-                  <div class="form-inline">
-                    <label for="donorbloodpressure_systole">Blood Pressure</label>
-                    <input type="number" class="form-control" placeholder="120" id='donorbloodpressure_systole' name="donorbloodpressure_systole" required>/
-                    <input type="number" class="form-control" placeholder="80" id='donorbloodpressure_diastole' name="donorbloodpressure_diastole" required>
-                  </div>
+                  <label for="donorbloodpressure_systole">Blood Pressure</label>
+                  <!-- <div class="form-group"> -->
+                    <!-- <div class="row"> -->
+                      <div class="input-group">
+                        <input type="number" class="form-control col-md-4" id='donorbloodpressure_systole' name="donorbloodpressure_systole" required>
+                        <input type="number" class="form-control col-md-4" id='donorbloodpressure_diastole' name="donorbloodpressure_diastole" required>
+                        <div class="input-group-append">
+                          <div class="input-group-text">mmHg</div>
+                        </div>
+                      </div>
+                    <!-- </div> -->
+                  <!-- </div> -->
                 </div>
                 <div class="col-md-5">
-                  <div class="form-group">
+                  <!-- <div class="form-group"> -->
                     <label for="donorpulserate">Pulse Rate</label>
-                    <input type="text" class="form-control" placeholder="60-100" id='donorpulserate' name="donorpulserate" required>
-                  </div>
+                    <div class="input-group">
+                      <input type="text" class="form-control" id='donorpulserate' name="donorpulserate" required>
+                      <div class="input-group-append">
+                        <div class="input-group-text">per minute</div>
+                      </div>
+                    </div>
+                  <!-- </div> -->
                 </div>
                 <div class="col-md-5">
-                  <div class="form-group">
+                  <!-- <div class="form-group"> -->
                     <label for="donortemperature">Temperature</label>
-                    <input type="number" class="form-control" placeholder="39°c" id='donortemperature' name='donortemperature' required>
-                  </div>
+                    <div class="input-group">
+                      <input type="number" class="form-control" id='donortemperature' name='donortemperature' required>
+                      <div class="input-group-append">
+                        <div class="input-group-text">°C</div>
+                      </div>
+                    </div>
+                  <!-- </div> -->
                 </div>
                 <div class="col-md-9">
                   <div class="form-group">
                     <label for="donorgenapp">General Appearance</label>
-                    <input type="text" class="form-control" placeholder="General Appearance" id='donorgenapp' name="donorgenapp" required>
+                    <input type="text" class="form-control" id='donorgenapp' name="donorgenapp" required>
                   </div>
                 </div>
                 <div class="col-md-9">
                   <div class="form-group">
                     <label for="donorheent">Head, Ears, Eyes, Nose & Throat (HEENT)</label>
-                    <input type="text" class="form-control" placeholder="HEENT" id='donorheent' name="donorheent" required>
+                    <input type="text" class="form-control" id='donorheent' name="donorheent" required>
                   </div>
                 </div>
                 <div class="col-md-9">
                   <div class="form-group">
                     <label for="donorheartlungs">Heart and Lungs</label>
-                    <input type="text" class="form-control" placeholder="Heart and Lungs" id='donorheartlungs' name="donorheartlungs" required>
+                    <input type="text" class="form-control" id='donorheartlungs' name="donorheartlungs" required>
                   </div>
                 </div>
                 <div class="col-md-9">
