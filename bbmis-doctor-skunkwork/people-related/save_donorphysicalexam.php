@@ -45,7 +45,7 @@ if ($weight && $Bp_s && $Bp_d && $Pr && $Temp && $GenApp && $heent && $HnL ){
             $status = 'Failed';
 
            mysqli_query($connections, "INSERT INTO tblphysicalexam(intDonationId,intEmployeeId, decClientWeight, strClientBloodPressure, strClientPulseRate, decClientTemperature, txtClientGenAppearance, txtClientHEENT, txtClientHeartLungs,stfMedicalStatRemarks, dtmExamTaken,intDeferralId,stfClientPhysicalExamRemarks)
-           VALUES ('$donation_id','$varEmpId','$weight', '$Bp', '$Pr', '$Temp', '$GenApp', '$heent', '$HnL','$remarks','$date','$defferalID','$status')");
+           VALUES ('$donation_id','$varEmpId','$weight', '$Bp_s/$Bp_d', '$Pr', '$Temp', '$GenApp', '$heent', '$HnL','$remarks','$date','$defferalID','$status')");
 
            $is_saved = mysqli_query($connections,"SELECT * FROM tblphysicalexam WHERE intDonationId = '$donation_id'");
 
