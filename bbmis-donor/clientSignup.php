@@ -163,9 +163,10 @@
 					swal({
 						title: "Success!",
 						text: "You are now able to access your account!",
-						type: "success"
+						icon: "success"
 					}).then(function()	{
-						window.location.href = "home.php";
+						$("#modalSignUp").modal("hide");
+						$("#modalSignupImg").modal("show");
 					});
 				}
 				else if (data == 2) {

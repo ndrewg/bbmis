@@ -21,7 +21,7 @@
 		?>
 		<div class="container">
 			<div class="card my-4" style="border-radius: 25px">
-				<div class="card-header bg-danger text-white text-center p-2" style="border-radius: 25px 25px 0px 0px; cursor: pointer;" data-toggle="collapse" href="#divDonRec" role="button" aria-expanded="false" aria-controls="collapseExample">
+				<div class="card-header bg-danger text-white text-center p-2" style="border-radius: 25px 25px 0px 0px; cursor: pointer;" href="#divDonRec">
 					Donation Progress
 				</div>
 				<div class="card-body">

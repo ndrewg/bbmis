@@ -4,19 +4,6 @@
 	$varUn = $params["txtUn"];
 	$varPw = $params["txtPw"];
 
-	/* Validation */
-	if($_SERVER["REQUEST_METHOD"] == "POST")	{
-		if(empty($varUn) || empty($varPw))	{
-			echo "<script type='text/javascript'>alert('Username and password required!')</script>";
-			
-		}
-		else	{
-			parse_str($_POST["formdata"], $params);
-			$varUn = $params["txtUn"];
-			$varPw = $params["txtPw"];
-		}
-	}
-
 	/* Username and Password has value */
 	if($varUn && $varPw)	{
 		$qryCheckUser = mysqli_query($conn, "
