@@ -380,6 +380,18 @@
             $dscreener = $serological["strDiseaseScreener"];
             $dverifier = $serological["strDiseaseVerifier"];
             $dpass = $serological["stfDonorSerologicalScreeningRemarks"];
+            $dbloodbag = $serological["intBloodBagId"];
+
+            $bloodbagQry = mysqli_query($connections,"SELECT strBloodBagSerialNo,dtmDateStored FROM tblbloodbag WHERE intBloodBagId = '$dbloodbag'");
+            if(mysqli_num_rows($bloodbagQry) > 0){
+              while($bags = mysqli_fetch_assoc($bloodbagQry)){
+                $bloodbagserial = $bags["strBloodBagSerialNo"];
+                $datestored = $bags["dtmDateStored"];
+              }
+            }else {
+              $bloodbagserial = 'N/A';
+              $datestored = 'N/A';
+            }
 
 
             $diseaseQry = mysqli_query($connections,"SELECT strDisease FROM tbldisease WHERE intDiseaseId = '$diseaseid'");
@@ -398,6 +410,13 @@
           }
            ?>
              </table>
+             <div class="col-md-5">
+               <div class="form-group">
+                 <label for="bloodbag">Blood bag :</label>
+                 <input type="text" class="form-control" value = "Donor Blood Bag: <?php echo $bloodbagserial?>" readonly>
+                 <input type="text" class="form-control" value = "Date Stored: <?php echo $datestored?>" readonly>
+               </div>
+             </div>
              <br/>
              <br/>
              <br/>

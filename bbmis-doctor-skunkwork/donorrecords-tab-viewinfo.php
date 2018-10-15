@@ -21,6 +21,17 @@ while($donation = mysqli_fetch_assoc($donationidqry)){
  $donation_id = $donation["intDonationId"];
 }}
 
+$latestrequestqry = mysqli_query($connections,"SELECT intClientReqId,txtchanges FROM tblrequest WHERE intClientId = '$clientid' ORDER BY intClientReqId DESC LIMIT 1 OFFSET 0");
+
+if(mysqli_num_rows($latestrequestqry) > 0){
+while($request = mysqli_fetch_assoc($latestrequestqry)){
+ $requestid = $request["intClientReqId"];
+ $changes = $request["txtchanges"];
+}}
+else{
+  $changes = "Profile not yet edited";
+}
+
 $lastdonation = mysqli_query($connections,"SELECT d.intDonationId, m.dtmExamTaken, d.stfDonationRemarks
 FROM tbldonation d
 JOIN tblmedicalexam m ON d.intDonationId = m.intDonationId
@@ -123,7 +134,9 @@ if(mysqli_num_rows($timesrejectedseroqry) > 0){
               <label class="labeldonordiv">Contact: </label>
               <label id='client_contact'> <?php echo $clientcontact ?> </label><br>
               <label class="labeldonordiv">Blood Type: </label>
-              <label id="client_bloodtype"> <?php echo $bloodtype . " " . $bloodrhesus ?> </label>
+              <label id="client_bloodtype"> <?php echo $bloodtype . " " . $bloodrhesus ?> </label><br>
+              <label class="labeldonordiv">Latest Profile Changes : </label><br>
+              <label id="client_changes"> <?php echo $changes ?> </label>
             </div>
             <!-- client donation info -->
             <div class="col-md-4 container-fluid" style="margin-top: 10px; margin-bottom: 10px; box-shadow: 0 0 1px 0 #d1d1d1; padding: 15px;">

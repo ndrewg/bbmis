@@ -52,6 +52,17 @@
                   $changes = $row["txtChanges"];
                   $date_requested = $row["dtmDateRequested"];
 
+                  $latestrequestqry = mysqli_query($connections,"SELECT intClientReqId,txtchanges FROM tblrequest WHERE intClientId = '$clientId' ORDER BY intClientReqId DESC LIMIT 1,1");
+
+                  if(mysqli_num_rows($latestrequestqry) > 0){
+                  while($request = mysqli_fetch_assoc($latestrequestqry)){
+                   $requestid = $request["intClientReqId"];
+                   $changes = $request["txtchanges"];
+                  }}
+                  else{
+                    $changes = "Profile not yet edited";
+                  }
+
                   $getClientName = mysqli_query($connections,"SELECT CONCAT(strClientFirstName, ' ', strClientMiddleName, ' ', strClientLastName) AS Fullname FROM tblclient WHERE intClientId = '$clientId'");
                   while($row2 = mysqli_fetch_assoc($getClientName)){
                     $fullname = $row2["Fullname"];
@@ -62,7 +73,7 @@
                     <td><?php echo $fullname; ?></td>
                     <td><?php echo $date_requested; ?></td>
                     <td><button type='button' name = 'viewRequest' class='btn' data-toggle='modal' data-target='#viewRequestModal'
-                      data-id='<?php echo $reqId; ?>'>View Details</button></td>
+                      data-id='<?php echo $reqId ?>'data-changes='<?php echo $changes ?>'>View Details</button></td>
                     </td>
                   </tr>
                   <?php
@@ -107,6 +118,10 @@
                 <label for="viewDateRequested">Date Requested</label>
                 <input type="text" class="form-control" id='viewDateRequested' name ='viewDateRequested' readonly>
               </div>
+              <div class="form-group">
+                <label for="viewPastEdit">Past Donor Profile Edit</label>
+                <input type="text" class="form-control" id='viewPastEdit' name ='viewPastEdit' readonly>
+              </div>
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-success" id="acceptrequest">Grant</button>
@@ -144,6 +159,9 @@
 
     $(document).on("show.bs.modal", "#viewRequestModal", function(e){
       var rowid = $(e.relatedTarget).data('id');
+      var changes = $(e.relatedTarget).data('changes');
+      console.log(changes+' '+rowid);
+      $('#viewPastEdit').val(changes);
       //alert(rowid);
       $.ajax({
         type: "POST",
@@ -154,6 +172,7 @@
           $('#viewRequestId').val(data.intClientReqId);
           $('#viewDonorName').val(data.Fullname);
           $('#viewDateRequested').val(data.dtmDateRequested);
+
         }
       });
     });
