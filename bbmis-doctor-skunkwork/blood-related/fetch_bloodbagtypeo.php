@@ -73,14 +73,14 @@ if($_POST["storage_id"]){
           JOIN tblstorage ts ON ts.intStorageId = tbb.intStorageId
           JOIN tblbloodvolume tbv ON tbb.intBloodVolumeId = tbv.intBloodVolumeId
           JOIN tblpreservatives tp ON tbb.intPreservativeId = tp.intPreservativeId
-          WHERE tbb.intStorageId = $storage_id AND tbt.stfBloodType = 'O' AND DATEDIFF(NOW(), tbb.dtmDateStored) > tp.intPreservativeNeutralPercentage AND DATEDIFF(NOW(), tbb.dtmDateStored) <= tp.intPreservativeLifespan
+          WHERE tbb.intStorageId = $storage_id AND tbt.stfBloodType = 'O' AND DATEDIFF(NOW(), tbb.dtmDateStored) >= tp.intPreservativeCriticalPercentage AND DATEDIFF(NOW(), tbb.dtmDateStored) <= tp.intPreservativeLifespan
           ORDER BY tbb.dtmDateStored ASC ");
         $fetchbloodbagmedium = mysqli_query($connections, " SELECT strBloodBagSerialNo, dtmDateStored, stfBloodType, stfBloodTypeRhesus, intBloodVolume, TIMESTAMPDIFF(DAY, NOW(), DATE_ADD(dtmDateStored, INTERVAL intPreservativeLifespan DAY)) AS 'Days Remaining' FROM tblbloodbag tbb
           JOIN tblbloodtype tbt ON tbb.intBloodTypeId = tbt.intBloodTypeId
           JOIN tblstorage ts ON ts.intStorageId = tbb.intStorageId
           JOIN tblbloodvolume tbv ON tbb.intBloodVolumeId = tbv.intBloodVolumeId
           JOIN tblpreservatives tp ON tbb.intPreservativeId = tp.intPreservativeId
-          WHERE tbb.intStorageId = $storage_id AND tbt.stfBloodType = 'O' AND DATEDIFF(NOW(), tbb.dtmDateStored) <= tp.intPreservativeNeutralPercentage AND DATEDIFF(NOW(), tbb.dtmDateStored) > tp.intPreservativeFreshPercentage
+          WHERE tbb.intStorageId = $storage_id AND tbt.stfBloodType = 'O' AND DATEDIFF(NOW(), tbb.dtmDateStored) < tp.intPreservativeCriticalPercentage AND DATEDIFF(NOW(), tbb.dtmDateStored) > tp.intPreservativeFreshPercentage
           ORDER BY tbb.dtmDateStored ASC ");
         $fetchbloodbagfresh = mysqli_query($connections, " SELECT strBloodBagSerialNo, dtmDateStored, stfBloodType, stfBloodTypeRhesus, intBloodVolume, TIMESTAMPDIFF(DAY, NOW(), DATE_ADD(dtmDateStored, INTERVAL intPreservativeLifespan DAY)) AS 'Days Remaining' FROM tblbloodbag tbb
           JOIN tblbloodtype tbt ON tbb.intBloodTypeId = tbt.intBloodTypeId
