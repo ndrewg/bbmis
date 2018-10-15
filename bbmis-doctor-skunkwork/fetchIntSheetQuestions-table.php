@@ -30,6 +30,12 @@
 		</div>
 		<div class="container mt-4">
 			<form action="getIntSheetAnswers.php" id='idIntSheet'>
+				<div class="col-md-5">
+					<div class="form-group">
+						<label for="date_med">Date Answered</label>
+						<input type="date" name="date_med" required>
+					</div>
+				</div>
 				<?php
 					include("connections.php");
 					$varQueCount = 1;
@@ -270,8 +276,13 @@
         method: "POST",
         data: {formdata,formdata},
         success: function(data){
+					console.log(data);
+					if(data == "2"){
+						alert("Date Answered must not be greater than the date today!");
+					}else{
           console.log(data);
           window.location.href = 'donorrecords-tab.php';
+				}
         }
       });
     }  else{

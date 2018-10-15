@@ -295,6 +295,7 @@
         </div>
         <div class="col-md-5">
           <div class="form-group">
+            <label for="date_sero">Blood Bag</label>
             <input type="text" id ="bloodbag_underquarantine" class = "form-control" name = "bloodbag_underquarantine" readonly required>
           </div>
         </div>
@@ -382,6 +383,7 @@
           </tbody>
         </table>
         <!--<input type="text" class="form-control" placeholder="Enter Phlebotomist" name = "D_phlebotomist" id = "D_phlebotomist" required>-->
+        <label for="D_phlebotomist">Phlebotomist</label>
         <select class="form-control" name="D_phlebotomist" id="D_phlebotomist" required>
           <?php
           include("connections.php");
