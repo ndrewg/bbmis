@@ -12,7 +12,8 @@ if($sanitized_bloodtypename){
 
     $viewbtname = mysqli_query($connections,"SELECT *
                               FROM tblbloodtype
-                              WHERE stfBloodType  LIKE '%$sanitized_bloodtypename%' ");
+                              WHERE stfBloodType  LIKE '%$sanitized_bloodtypename%'
+                              AND stfBloodTypeRhesus LIKE '%$btrhesus%' ");
 
     if(mysqli_num_rows($viewbtname) <= 0){//if di nageexist yung blood component
 

@@ -211,7 +211,7 @@
       });
     }
   });
-  
+
   $(document).on("submit","form[name='form_addnewbloodcomponent']", function(e){
     e.preventDefault();
     // var confirm_input = confirm("Are you sure?");
@@ -408,6 +408,58 @@
   });
 
   $(document).on("click", "#btnsavedeletebloodcomponent", function(e){
+    e.preventDefault();
+    var id = $("#viewbloodcomp_ID").val();
+    // var confirm_enable = confirm("Are you sure?");
+    swal({
+      title: "Are you sure",
+      text: "You are about to disable this blood component",
+      icon: "info",
+      buttons: true,
+    })
+    .then((willApprove) =>{
+      if (willApprove) {
+        $.ajax({
+          type: "POST",
+          url: 'blood-related/delete_bloodcomponent.php',
+          data: {id:id},
+          success:function(data){
+            // alert("Blood Component has been enabled");
+            if(data == "deleted"){
+            swal({
+              title: "",
+              text: "Blood Component is now disabled!",
+              icons: "success",
+              buttons:{text:"Okay"},
+            })
+            .then((willApprove) => {
+              if (willApprove) {
+                window.location.href = "bloodcomponent-tab.php";
+              }
+            });
+          }else{
+            swal({
+              title: "",
+              text: "The blood component is not disabled because "+data+" record/s uses this.",
+              icons: "error",
+              buttons:{text:"Okay"},
+            })
+            .then((willApprove) => {
+              if (willApprove) {
+                window.location.href = "bloodcomponent-tab.php";
+              }
+            });
+          }
+          }
+        });
+      }
+      else {
+        swal("","Cancelled","info");
+      }
+    });
+  });
+
+  $(document).on("click", "#btnsaveenablebloodcomponent", function(e){
     e.preventDefault();
     var id = $("#viewbloodcomp_ID_enable").val();
     // var confirm_enable = confirm("Are you sure?");
