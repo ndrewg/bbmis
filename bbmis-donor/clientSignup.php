@@ -153,26 +153,36 @@
 		e.preventDefault();
 		var formdata2 = $(this).serialize();
 		console.log(formdata2);
-		$.ajax({
-			url:"valClientSignup.php",
-			type:"POST",
-			data:{formdata2:formdata2},
-			success:function(data){
-				console.log(data);
-				if(data == 1)	{
-					swal({
-						title: "Success!",
-						text: "You are now able to access your account!",
-						icon: "success"
-					}).then(function()	{
-						$("#modalSignUp").modal("hide");
-						$("#modalSignupImg").modal("show");
-					});
-				}
-				else if (data == 2) {
-					swal("Oops!", "Account is already existing. Please signup again.", "error");
-				}
+		
+		swal({
+			title: "Warning.",
+			text: "Are you sure you want to submit your information?",
+			icon: "info",
+			buttons: ['No', 'Yes'],
+		}).then((willSignup) => {
+			if(willSignup)	{
+				$.ajax	({
+					url:"valClientSignup.php",
+					type:"POST",
+					data:{formdata2:formdata2},
+					success:function(data)	{
+						console.log(data);
+						if(data == 1)	{
+							swal({
+								title: 'Done!',
+								text: 'You successfully signed up! Please login your account.',
+								icon: 'success'
+							}).then(() => {
+								$("#modalSignUp").modal("hide");
+								$("#modalLogin").modal("show");
+							});
+						}
+						else if (data == 2) {
+							swal("Oops!", "Account is already existing. Please signup again.", "error");
+						}
+					}
+				});
 			}
-		})
+		});
 	});
 </script>

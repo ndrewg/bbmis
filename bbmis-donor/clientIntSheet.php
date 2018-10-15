@@ -33,7 +33,7 @@
 					include "fetchIntSheetPrompts.php";
 				?>
 			</form>
-			<button type='submit' id='btnEmpty'>Truncate Records</button>
+			<!--button type='submit' id='btnEmpty'>Truncate Records</button-->
 		</div>
 	</body>
 	<script>
@@ -45,7 +45,7 @@
 				data: {intsheetanswers: intsheetanswers},
 				success: function(data)	{
 					if(data != '')	{
-						// console.log(data);
+						//console.log(data);
 						var varObj = jQuery.parseJSON(data);
 						var varObjLng = varObj.length;
 						

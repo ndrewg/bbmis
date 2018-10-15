@@ -308,6 +308,9 @@
 						}
 					}
 				}
+				else {
+					ntfAgn();
+				}
 			}
 			else if($varDonationStatus == 'Able')	{
 				$qrySsRemarks = mysqli_query($conn, "

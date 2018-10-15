@@ -1,20 +1,52 @@
 <?php
 	include("connection.php");
-
+	
+	//Fetch the answered survey version.
+	$qryVersionUsed = mysqli_query($conn, "
+		SELECT DISTINCT(q.decQuestionVersion)
+		FROM tblquestion q
+		JOIN tblmedicalexam me ON q.intQuestionId = me.intQuestionId
+		WHERE me.intDonationId = (
+			SELECT d.intDonationId
+			FROM tbldonation d 
+			WHERE d.intClientId = $varDbId
+			AND d.stfDonationRemarks = 'Incomplete'
+		)
+	");
+	$rowVersionUsed = mysqli_fetch_assoc($qryVersionUsed);
+	$varVersionUsed = $rowVersionUsed["decQuestionVersion"];
+	
+	//Fetch the current in-use survey version.
+	$qryVersionInUse = mysqli_query($conn, "
+		SELECT DISTINCT(q.decQuestionVersion)
+		FROM tblquestion q
+		WHERE q.boolVersionInUse = '1'
+	");
+	$rowVersionInUse = mysqli_fetch_assoc($qryVersionInUse);
+	$varVersionInUse = $rowVersionInUse["decQuestionVersion"];
+	
+	//Sets the version.
+	if(isset($varVersionUsed))	{
+		$varVersionToUse = $varVersionUsed;
+	}
+	else	{
+		$varVersionToUse = $varVersionInUse;
+	}
+	
 	$varQueCount = 1;
 
 	$qryDistQueCtg = mysqli_query($conn, "
-	SELECT DISTINCT(qc.stfQuestionCategory)
-	FROM tblquestion q
-	JOIN tblquestioncategory qc ON q.intQuestionCategoryId = qc.intQuestionCategoryId
+		SELECT DISTINCT(qc.stfQuestionCategory)
+		FROM tblquestion q
+		JOIN tblquestioncategory qc ON q.intQuestionCategoryId = qc.intQuestionCategoryId
+		WHERE q.decQuestionVersion = $varVersionToUse
 	");
 	
-	$qryCountQueCtg = mysqli_num_rows($qryDistQueCtg);
-
+	$varCountQueCtg = mysqli_num_rows($qryDistQueCtg);
+	
 	$qryCliSex = mysqli_query($conn, "SELECT stfClientSex FROM tblclient WHERE intClientId = $varDbId");
-	while($rowCliSex = mysqli_fetch_assoc($qryCliSex))	{
-		$varSex = $rowCliSex["stfClientSex"];
-	}
+	$rowCliSex = mysqli_fetch_assoc($qryCliSex);
+	$varSex = $rowCliSex["stfClientSex"];
 
 	function typeYn($varQueId)	{
 		echo "
@@ -96,16 +128,12 @@
 		";
 	}
 	
-	for($x=0; $x<$qryCountQueCtg; $x++)	{
+	for($x=0; $x<$varCountQueCtg; $x++)	{
 		$qryQueCtg = mysqli_query($conn, "
 			SELECT DISTINCT(qc.stfQuestionCategory)
 			FROM tblquestion q
 			JOIN tblquestioncategory qc ON q.intQuestionCategoryId = qc.intQuestionCategoryId
-			WHERE decQuestionVersion = (
-				SELECT DISTINCT(q1.decQuestionVersion)
-				FROM tblquestion q1
-				WHERE boolVersionInUse = '1'
-			)
+			WHERE decQuestionVersion = $varVersionToUse
 			LIMIT 1 OFFSET $x
 		");
 		
@@ -133,11 +161,7 @@
 				FROM tblquestion q
 				JOIN tblquestioncategory qc ON q.intQuestionCategoryId = qc.intQuestionCategoryId
 				WHERE qc.stfQuestionCategory = '$varQueCtg'
-				AND decQuestionVersion = (
-					SELECT DISTINCT(q1.decQuestionVersion)
-					FROM tblquestion q1
-					WHERE boolVersionInUse = '1'
-				)
+				AND decQuestionVersion = $varVersionToUse
 			");
 
 			while($rowQue = mysqli_fetch_assoc($qryQue))	{

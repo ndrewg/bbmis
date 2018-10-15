@@ -1,6 +1,8 @@
 <?php
 	include "connection.php";
 	
+	echo $varDbId;
+	
 	$file = $_FILES['fileimg'];
 	$fileName = $_FILES['fileimg']['name'];/*kukunin yung file name*/
 	$fileTmpName = $_FILES['fileimg']['tmp_name'];/*kukunin yung temporary destination na pinupuntahan ng file bago i upload*/
@@ -21,7 +23,11 @@
 				move_uploaded_file($fileTmpName, $fileDestination);/*yung unang paramter kung saan galing which is yung temporary location, yung second parameter kung saan ililipat*/
 				header("Location:home.php");
 				
-				$qryUploadImg = mysqli_query($conn, "UPDATE tbluser(strUserImageDir) VALUES '$fileNameNew' WHERE intUserId = $varDbId");
+				$qryUploadImg = mysqli_query($conn, "
+					UPDATE tbluser
+					SET strUserImageDir = '$fileNameNew'
+					WHERE intUserId = $varDbId
+				");
 				
 				if($qryUploadImg)	{
 					// Success
