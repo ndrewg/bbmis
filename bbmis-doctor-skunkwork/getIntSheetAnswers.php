@@ -1,7 +1,12 @@
 <?php
-	include "connections.php";
-	parse_str($_POST["formdata"], $params);
+	include ("connections.php");
+	parse_str(mysqli_real_escape_string($connections, $_POST["formdata"]), $params);
 	$varDbId = $params["hidden_id"];
+
+	$date = $params['date_med'];
+	$datenow = date('Y-m-d H:i:s');
+	$date_1 = new DateTime($date);
+	$datenow_1 = new DateTime($datenow);
 
 	$qryQueId = mysqli_query($connections, "SELECT intQuestionId,intQuestionCategoryId FROM tblquestion WHERE boolVersionInUse = '1'");
 
@@ -12,7 +17,7 @@
 		$varSex = $rowCliSex["stfClientSex"];
 	}
 
-
+if($date_1 <= $datenow_1){
 	// mysqli_query($connections, "INSERT INTO tbldonation(intClientId,stfDonationRemarks,stfDonationStatus) VALUES('$varDbId','Incomplete','Unable')");
 	mysqli_query($connections, "INSERT INTO tbldonation(intClientId) VALUES('$varDbId')");
 
@@ -22,6 +27,7 @@
 	 $donation_id = $donation["intDonationId"];
 	 settype($donation_id,"int");
  }
+
 
 	while($rowQueId = mysqli_fetch_assoc($qryQueId))	{
 		$varQueId = $rowQueId["intQuestionId"];
@@ -65,21 +71,21 @@
 	//	echo '<br />';
 
 		if($varSex == 'Female'){
-				$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, dtmExamChecked, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', NOW(), '$varstatus')");
+				$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString,dtmExamTaken, dtmExamChecked, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr','$date', '$date', '$varstatus')");
 
 		if($varstatus == 'Wrong'){
 					mysqli_query($connections,"UPDATE tbldonation SET stfDonationRemarks = 'Complete' WHERE intDonationId = '$donation_id'");
 				}
 		}
-		
+
 		else if ($varSex == 'Male' AND $category == '3'){
-			$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, dtmExamChecked, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', NOW(), 'Correct')");
+			$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString,dtmExamTaken, dtmExamChecked, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', '$date','$date', 'Correct')");
 
 		}
-		
+
 		else if ($varSex == 'Male' AND $category != '3') {
 
-			$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString, dtmExamChecked, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', NOW(), '$varstatus')");
+			$qryInsertAnswers = mysqli_query($connections, "INSERT INTO tblmedicalexam( intQuestionId, intDonationId, stfAnswerYn, datAnswerDate, intAnswerQuantity, strAnswerString,dtmExamTaken, dtmExamChecked, stfAnswerRemarks) VALUES('$varQueId', '$donation_id', '$varAnsYn', '$varAnsDat', $varAnsQua, '$varAnsStr', '$date','$date', '$varstatus')");
 
 		if($varstatus == 'Wrong'){
 			mysqli_query($connections,"UPDATE tbldonation SET stfDonationRemarks = 'Complete' WHERE intDonationId = '$donation_id'");
@@ -87,4 +93,7 @@
 		}
 
 	}
+}else{
+	echo '2';
+}
 ?>
