@@ -258,5 +258,6 @@
 	$pdf -> SetX(4.5);
 	$pdf -> Cell(3, 0.3, 'Signature over Printed Name', 0, 0, 'C');
 
-	$pdf -> Output('D', 'ReFeel-MedEx-' . $varDonCode. '.pdf');
+	// $pdf -> Output('D', 'ReFeel-MedEx-' . $varDonCode. '.pdf');
+	$pdf -> Output();
 ?>
