@@ -104,7 +104,7 @@
 				document.getElementById('spnStatus').style.color = '#5CB85C';
 				swal('Hello!', 'You can answer the survey again.', 'info');
 			</script>
-			<button input='submit' class='form-control btn btn-outline-danger m-auto btn-lg mb-4'>Submit Answers</button>
+			<input type='submit' id='btnSbmAns' class='form-control btn btn-outline-danger m-auto btn-lg' value='Submit Answers' />
 		";
 	}
 	function ntfAgnAvl()	{
@@ -114,7 +114,7 @@
 				document.getElementById('spnStatus').style.color = '#5CB85C';
 				swal('Hello!', 'Your medical exam is expired. Please answer the survey again.', 'info');
 			</script>
-			<button input='submit' class='form-control btn btn-outline-danger m-auto btn-lg mb-4'>Submit Answers</button>
+			<input type='submit' id='btnSbmAns' class='form-control btn btn-outline-danger m-auto btn-lg' value='Submit Answers' />
 		";
 	}
 	

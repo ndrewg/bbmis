@@ -8,7 +8,7 @@
 				</button>
 			</div>
 			<div class="modal-body">
-				<form action="valClientSignup.php" method="POST" id="#frmClientSignup" enctype="multipart/form-data">
+				<form action="valClientSignup.php" method="POST" id="frmClientSignup">
 
 					<p class="text-muted"><small><strong>PERSONAL INFORMATION</strong></small></p>
 					<hr style="margin-top: -15px;" />
@@ -124,12 +124,6 @@
 
 					<p class="text-muted"><small><strong>ACCOUNT CREDENTIALS</strong></small></p>
 					<hr style="margin-top: -15px;" />
-
-					<div class="form-group">
-						<label for="fileimg" class="col-form-label">Picture</label>
-						<span style="color: red">*</span>
-						<input type="file" class="form-control-file" name="fileimg" id="fileimg" required="required" />
-					</div>
 					
 					<!-- Username -->
 					<div class="form-group">
@@ -154,15 +148,15 @@
 		</div>
 	</div>
 </div>
-<!--script>
+<script>
 	$("#frmClientSignup").submit(function(e){
 		e.preventDefault();
-		var formdata = $(this).serialize();
-		console.log(formdata);
+		var formdata2 = $(this).serialize();
+		console.log(formdata2);
 		$.ajax({
 			url:"valClientSignup.php",
 			type:"POST",
-			data:{formdata:formdata},
+			data:{formdata2:formdata2},
 			success:function(data){
 				console.log(data);
 				if(data == 1)	{
@@ -171,16 +165,13 @@
 						text: "You are now able to access your account!",
 						type: "success"
 					}).then(function()	{
-						window.location = "home.php";
+						window.location.href = "home.php";
 					});
 				}
 				else if (data == 2) {
-					swal("Oops!", "Donor and applicants are only allowed to access the donor side page.", "error");
-				}
-				else if (data == 3) {
-					swal("Oops!", "Password is incorrect.", "error");
+					swal("Oops!", "Account is already existing. Please signup again.", "error");
 				}
 			}
 		})
 	});
-</script-->
+</script>

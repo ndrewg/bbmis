@@ -26,7 +26,7 @@
 			Status: 
 			<span id="spnStatus"></span>
 		</p>
-		<div class="container">
+		<div class="container mb-4">
 			<form id="frmIntSheet" method="POST">
 				<?php
 					include "fetchIntSheetQuestions-table.php";
@@ -45,18 +45,18 @@
 				data: {intsheetanswers: intsheetanswers},
 				success: function(data)	{
 					if(data != '')	{
-						console.log(data);
+						// console.log(data);
 						var varObj = jQuery.parseJSON(data);
 						var varObjLng = varObj.length;
 						
 						for(x=0; x<varObjLng; x++)	{
-							console.log(varObj[x].id);
-							console.log(varObj[x].yn);
-							console.log(varObj[x].str);
-							console.log(varObj[x].dm);
-							console.log(varObj[x].dd);
-							console.log(varObj[x].dy);
-							console.log(varObj[x].qua);
+							// console.log(varObj[x].id);
+							// console.log(varObj[x].yn);
+							// console.log(varObj[x].str);
+							// console.log(varObj[x].dm);
+							// console.log(varObj[x].dd);
+							// console.log(varObj[x].dy);
+							// console.log(varObj[x].qua);
 							
 							$("input[type='radio'][name='txtYn" + varObj[x].id + "'][value='" + varObj[x].yn + "']").prop('checked', true);
 							$("#btnYn" + varObj[x].id + "[value='" + varObj[x].yn + "']").addClass("active");
@@ -88,7 +88,7 @@
 				
 				swal({
 					title: 'Warning!',
-					text: 'The answers you submitted are very crucial. Are you sure you want to proceed?',
+					text: 'The answers you submitted are crucial. Are you sure you want to proceed?',
 					icon: 'warning',
 					dangerMode: true,
 					buttons: ['No', 'Yes'],
@@ -103,7 +103,7 @@
 								if(data == '1')	{
 									swal({
 										title: 'Done!',
-										text: 'You submitted your medical exam answers. Please wait for the exam results in a few days.',
+										text: 'You submitted your medical exam answers. Please wait for the exam results within three(3) days.',
 										icon: 'success'
 									}).then(() => {
 										window.location.href = 'clientIntSheet.php'
@@ -117,7 +117,7 @@
 		});
 		
 		$("#btnPlsWait").click(function(e)	{
-			swal('Please wait.', 'Your current medical exam is not yet checked. You will be notified in the next few days.', 'info');
+			swal('Please wait.', 'Your current medical exam is not yet checked. You will be notified in three(3) days. If exceeds, the exam will be expired and try to donate again.', 'info');
 		});
 		
 		$("#btnEmpty").click(function(e)	{

@@ -88,9 +88,8 @@
 			FROM tblphysicalexam
 			WHERE intDonationId = $varRecDonId
 		");
-		while($rowPeRemarks = mysqli_fetch_assoc($qryFetchPeRemarks))	{
-			$varPeRemarks = $rowPeRemarks["stfClientPhysicalExamRemarks"];
-		}
+		$rowPeRemarks = mysqli_fetch_assoc($qryFetchPeRemarks);
+		$varPeRemarks = $rowPeRemarks["stfClientPhysicalExamRemarks"];
 		if(isset($varPeRemarks))	{
 			if($varPeRemarks == 'Passed')	{
 				$objDonProg -> pe = 1;
@@ -108,9 +107,8 @@
 			FROM tblinitialscreening
 			WHERE intDonationId = $varRecDonId
 		");
-		while($rowIsRemarks = mysqli_fetch_assoc($qryFetchIsRemarks))	{
-			$varIsRemarks = $rowIsRemarks["stfClientInitialScreeningRemarks"];
-		}
+		$rowIsRemarks = mysqli_fetch_assoc($qryFetchIsRemarks);
+		$varIsRemarks = $rowIsRemarks["stfClientInitialScreeningRemarks"];
 		if(isset($varIsRemarks))	{
 			if($varIsRemarks == 'Passed')	{
 				$objDonProg -> is = 1;
@@ -128,9 +126,9 @@
 			FROM tblserologicalscreening
 			WHERE intDonationId = $varRecDonId
 		");
-		while($rowSsRemarks = mysqli_fetch_assoc($qryFetchSsRemarks))	{
-			$varSsRemarks = $rowSsRemarks["stfDonorSerologicalScreeningRemarks"];
-		}
+		$rowSsRemarks = mysqli_fetch_assoc($qryFetchSsRemarks);
+		$varSsRemarks = $rowSsRemarks["stfDonorSerologicalScreeningRemarks"];
+
 		if(isset($varSsRemarks))	{
 			if($varSsRemarks == 'Passed')	{
 				$objDonProg -> ss = 1;

@@ -19,7 +19,7 @@
 	function typeYn($varQueId)	{
 		echo "
 				<div class='row'>
-					<div class='btn-group-toggle text-center w-100 form-group' data-toggle='buttons'>
+					<div class='btn-group-toggle text-center w-100' data-toggle='buttons'>
 						<label id='btnYn$varQueId' class='btn btn-outline-danger form-control col-4 mr-sm-2' value='Yes'>
 							<input type='radio' name='txtYn$varQueId' value='Yes' autocomplete='off' required='required' />Oo
 						</label>
@@ -33,7 +33,7 @@
 
 	function typeDate($varQueId)	{
 		echo "
-				<div class='row'>
+				<div class='row mt-3'>
 					<div class='form-group col-4'>
 						<select class='form-control' name='optDm$varQueId' placeholder='Month'>
 						<option value='00'>Month</option>';
@@ -79,7 +79,7 @@
 	function typeQua($varQueId)	{
 		echo "
 				<div class='row'>
-					<div class='form-group m-auto mb-sm-3'>
+					<div class='form-group m-auto  mt-3>
 						<input type='number' min='0' class='form-control' name='intQua$varQueId' value=0 />
 					</div>
 				</div>
@@ -89,7 +89,7 @@
 	function typeStr($varQueId)	{
 		echo "
 				<div class='row'>
-					<div class='form-group m-auto'>
+					<div class='form-group m-auto  mt-3'>
 						<input type='text' class='form-control' name='txtStr$varQueId'/>
 					</div>
 				</div>

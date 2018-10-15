@@ -3,7 +3,7 @@
 		<div class="modal-content" style='border-radius: 30px 30px 25px 25px;'>
 			<div class="modal-header bg-danger" style='border-radius: 25px 25px 0px 0px;'>
 				<i class="fa fa-key p-2" style="color: white;"></i>
-				<h5 class="modal-title text-white" style=" vertical-align: middle;">Personal Information</h5>
+				<h5 class="modal-title text-white" style=" vertical-align: middle;">Account Credentials</h5>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true" class='text-white'>&times;</span>
 				</button>
