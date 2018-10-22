@@ -346,7 +346,7 @@
 		SELECT d.strDisease, COUNT(*) AS 'Count'
 		FROM tbldisease d
 		JOIN tblserologicalscreening ss ON d.intDiseaseId = ss.intDiseaseId
-		WHERE ss.strDiseaseRemarks = 'Failed'
+		WHERE ss.decDiseaseRemarks = 'Failed'
 		GROUP BY 1
 	");
 	while($rowDiFail = mysqli_fetch_assoc($difail_count))	{
@@ -382,7 +382,7 @@
 		JOIN tbldonation do ON c.intClientId = do.intClientId
 		JOIN tblserologicalscreening ss ON do.intDonationId = ss.intDonationId
 		JOIN tbldisease di ON ss.intDiseaseId = di.intDiseaseId
-		WHERE ss.strDiseaseRemarks = 'Failed'
+		WHERE ss.decDiseaseRemarks = 'Failed'
 		AND DATE_FORMAT(dtmDateScreened, '%Y') = DATE_FORMAT(NOW(), '%Y')
 		AND DATE_FORMAT(dtmDateScreened, '%m') = DATE_FORMAT(NOW(), '%m')
 		GROUP BY 1

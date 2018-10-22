@@ -124,8 +124,8 @@
               </div>
             </div>
             <div class="modal-footer">
-              <button type="button" class="btn btn-success" id="acceptrequest">Grant</button>
-              <button type="button" class="btn btn-danger" id="rejectrequest">Reject</button>
+              <button type="button" class="btn btn-success" id="acceptrequest">Okay</button>
+              <!--<button type="button" class="btn btn-danger" id="rejectrequest">Reject</button>-->
             </div>
           </form>
         </div>
@@ -197,7 +197,7 @@
       }
     });
 
-    $(document).on("click", "#rejectrequest", function(e){
+  /*  $(document).on("click", "#rejectrequest", function(e){
       var reqId = $('#viewRequestId').val();
       var confirm_input = confirm("Are you sure you?");
       if(confirm_input == true){
@@ -215,7 +215,7 @@
         alert("Confirmation Cancelled");
         return false;
       }
-    });
+    });*/
     </script>
   </body>
   </html>

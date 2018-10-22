@@ -11,6 +11,9 @@ $datenow = date('Y-m-d H:i:s');
 $date_1 = new DateTime($date);
 $datenow_1 = new DateTime($datenow);
 
+
+
+
 $count_disease = mysqli_query($connections,"SELECT COUNT(intDiseaseId) AS Number_of_Diseases  FROM tbldisease WHERE stfDiseaseStatus = 'Active'");
 
 while ($row = mysqli_fetch_assoc($count_disease)){
@@ -28,16 +31,22 @@ if ($bloodbag != "No Available Blood Bag" && $bloodbag != ""){
       $remarks = $params["D_remarks"."$i"];
       $screener = $params["D_screener"."$i"];
       $verifier = $params["D_verifier"."$i"];
-      $option = $params["optradiosero"."$i"];
+      settype($remarks,"float");
+      //$option = $params["optradiosero"."$i"];
 
-    $donationidqry = mysqli_query($connections,"SELECT intDonationId FROM tbldonation WHERE intClientId = '$id' AND stfDonationRemarks = 'Incomplete' ORDER BY intDonationId DESC LIMIT 1 OFFSET 0");
+      $donationidqry = mysqli_query($connections,"SELECT intDonationId FROM tbldonation WHERE intClientId = '$id' AND stfDonationRemarks = 'Incomplete' ORDER BY intDonationId DESC LIMIT 1 OFFSET 0");
 
-    while($donation = mysqli_fetch_assoc($donationidqry)){
-     $donation_id = $donation["intDonationId"];
+      while($donation = mysqli_fetch_assoc($donationidqry)){
+       $donation_id = $donation["intDonationId"];
+            }
+
+          if($remarks <= 1.0){
+            $option = 'Passed';
+          }else {
+            $option = 'Failed';
           }
 
-
-           mysqli_query($connections, "INSERT INTO tblserologicalscreening(intDonationId,intBloodBagId,intDiseaseId,strDiseaseRemarks,strDiseaseScreener,strDiseaseVerifier,dtmDateScreened,strPhlebotomist,stfDonorSerologicalScreeningRemarks)
+           mysqli_query($connections, "INSERT INTO tblserologicalscreening(intDonationId,intBloodBagId,intDiseaseId,decDiseaseRemarks,strDiseaseScreener,strDiseaseVerifier,dtmDateScreened,strPhlebotomist,stfDonorSerologicalScreeningRemarks)
            VALUES ('$donation_id', '$bloodid', '$i', '$remarks', '$screener', '$verifier', '$date','$phleb', '$option')");
 
           }
@@ -61,11 +70,13 @@ if ($bloodbag != "No Available Blood Bag" && $bloodbag != ""){
                                                         }
 
               }else {//if di nagfail
-                                                          mysqli_query($connections,"UPDATE tbldonation SET stfDonationRemarks = 'Complete', stfDonationStatus = 'Able'  WHERE intDonationId = '$donation_id'");
+
 
                                                           $is_saved = mysqli_query($connections,"SELECT * FROM tblserologicalscreening WHERE intDonationId = '$donation_id'");
 
                                                           if(mysqli_num_rows($is_saved) > 0){//ICHECK KUNG NASAVE TALAGA
+                                                            mysqli_query($connections,"UPDATE tbldonation SET stfDonationRemarks = 'Complete', stfDonationStatus = 'Able'  WHERE intDonationId = '$donation_id'");
+                                                            mysqli_query($connections,"UPDATE tblclient SET stfClientType = 'Donor'  WHERE intClientId = '$id'");
                                                             echo '4';
                                                         } elseif (mysqli_num_rows($is_saved) == 0) {
                                                           echo '1';//fail

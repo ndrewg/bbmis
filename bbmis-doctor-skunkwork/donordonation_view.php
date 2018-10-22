@@ -376,7 +376,7 @@
           <?php
           while($serological = mysqli_fetch_assoc($serologicalQry)){
             $diseaseid = $serological["intDiseaseId"];
-            $dremarks = $serological["strDiseaseRemarks"];
+            $dremarks = $serological["decDiseaseRemarks"];
             $dscreener = $serological["strDiseaseScreener"];
             $dverifier = $serological["strDiseaseVerifier"];
             $dpass = $serological["stfDonorSerologicalScreeningRemarks"];

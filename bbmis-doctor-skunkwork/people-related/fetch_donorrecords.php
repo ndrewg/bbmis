@@ -85,10 +85,16 @@ $check_ifhasrecordwithinninetydays = mysqli_query($connections,"SELECT c.intClie
 																							AND ss.dtmDateScreened BETWEEN DATE_SUB(NOW(), INTERVAL 90 DAY) AND NOW()");
 
  $failed_survey = mysqli_query($connections,"SELECT *
-																					FROM `tblmedicalexam`
-																					WHERE intDonationId = '$latestdonationID'
-																					AND `stfAnswerRemarks` = 'Wrong'
-																					AND `dtmExamTaken` BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW()");
+FROM tblmedicalexam
+WHERE intDonationId = '$latestdonationID'
+AND (stfAnswerRemarks = 'Unchecked' OR stfAnswerRemarks = 'Expired')
+AND dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW()");
+
+/*$expired_survey = mysqli_query($connections,"SELECT *
+																				 	FROM `tblmedicalexam`
+																				 	WHERE intDonationId = '$latestdonationID'
+																				 	AND `stfAnswerRemarks` = 'Expired'
+																				 	AND `dtmExamTaken` BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW()");*/
 $unchecked_survey = mysqli_query($connections,"SELECT *
 																				 FROM `tblmedicalexam`
 																				 WHERE intDonationId = '$latestdonationID'

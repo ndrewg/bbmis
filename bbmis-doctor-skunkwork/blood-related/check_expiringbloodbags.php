@@ -20,7 +20,7 @@ $fetchbloodbagrotten = mysqli_query($connections, " SELECT * FROM tblbloodbag tb
 
 
 $fetch_med = mysqli_query($connections,"SELECT * FROM tbldonation d JOIN tblclient c ON d.intClientId = c.intClientId JOIN tblmedicalexam m ON d.intDonationId = m.intDonationId
-WHERE d.intDonationId NOT IN (SELECT intDonationId FROM tblmedicalexam WHERE stfAnswerRemarks = 'Wrong' OR stfAnswerRemarks = 'Unchecked')
+WHERE d.intDonationId NOT IN (SELECT intDonationId FROM tblmedicalexam WHERE stfAnswerRemarks = 'Wrong')
 AND d.intDonationId NOT IN(SELECT intDonationId FROM tblphysicalexam)");
 
 if (mysqli_num_rows($fetch_med) > 0 ){

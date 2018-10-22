@@ -29,35 +29,33 @@
             <?php
             include("connections.php");
 
-            $fetchsurveys = mysqli_query($connections,"SELECT DISTINCT(decQuestionVersion), boolVersionInUse
-            FROM tblquestion GROUP BY decQuestionVersion ORDER BY decQuestionVersion ASC");
+            $fetchsurveys = mysqli_query($connections,"SELECT DISTINCT(decQuestionVersion)
+            FROM tblquestion WHERE boolVersionInUse = '1' UNION SELECT DISTINCT(decQuestionVersion) FROM tblquestion WHERE boolVersionInUse = '0'");
             ?>
             <h4 class="nunito">Available Surveys</h4>
-            <table class='table table-bordered mt-5 text-center' id='tblsurvey'>
+            <table class='table table-bordered mt-5 text-center' id='tblsurvey' style = "tr:first-child {background-color: rgb(234,72,127);}">
               <thead>
                 <tr>
                   <th>Survey Version</th>
-                  <th>In Use</th>
                   <th>Action</th>
                 </tr>
               </thead>
               <?php
               while ($row = mysqli_fetch_assoc($fetchsurveys)) {
                 $version = $row["decQuestionVersion"];
-                $inuse = $row["boolVersionInUse"];
+                //$inuse = $row["boolVersionInUse"];
 
-                if($inuse == '1'){
+                /*if($inuse == '1'){
                   $inusetext = "Yes";
                 }
                 elseif ($inuse == '0') {
                   $inusetext = "No";
-                }
+                }*/
 
                 ?>
                 <tbody>
                   <tr>
                     <td><?php echo $version; ?></td>
-                    <td><?php echo $inusetext; ?></td>
                     <td><a href ="fetch_survey.php?selected=<?php echo $version; ?>"><button type='button' class='btn'  name = 'check_survey'>View</button></a></td>
                   </tr>
                 </tbody>

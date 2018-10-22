@@ -9,7 +9,8 @@ $date = $params["date_init"];*/
     $searchbloodbag = mysqli_query($connections,"SELECT *
                                                 FROM tblbloodbag bb JOIN tblstorage s ON bb.intStorageId = s.intStorageId
                                                 WHERE intStorageTypeId = 1
-                                                AND intClientId = '$donor_id' ");
+                                                AND intClientId = '$donor_id'
+                                                ORDER BY intBloodBagId DESC LIMIT 1 ");
 
 
 
