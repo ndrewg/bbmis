@@ -1,4 +1,19 @@
 Daily:
+SELECT DATE_FORMAT(dtmDateStored, '%W') AS 'Day', dtmDateStored, COUNT(intBloodBagId) AS 'Blood Bag Count'
+FROM tblbloodbag
+WHERE DATE_FORMAT(dtmDateStored, '%U') = DATE_FORMAT(NOW(), '%U')
+GROUP BY 1
+
+Weekly:
+SELECT DATE_FORMAT(dtmDateStored, '%U') AS 'Day', dtmDateStored, COUNT(intBloodBagId) AS 'Blood Bag Count'
+FROM tblbloodbag
+WHERE DATE_FORMAT(dtmDateStored, '%M') = DATE_FORMAT(NOW(), '%M')
+GROUP BY 1
+
+
+---------------------------------------------------------
+
+Daily:
 -Military
 SELECT DATE_FORMAT(dtmDateStored, '%k') AS 'Hour', COUNT(intBloodBagId) AS 'Blood Bag Count'
 FROM tblbloodbag

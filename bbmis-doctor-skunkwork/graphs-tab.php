@@ -1,28 +1,30 @@
 <?php
 include("connections.php");
-// fetch lifespan
-// $fetch_bloodstatus = mysqli_query($connections, " SELECT * FROM tblpreservatives ");
-// while($row = mysqli_fetch_assoc($fetch_bloodstatus)){
-//   $bloodbaglifespan = $row["intPreservativeLifespan"];
-//   $freshbloodbag = $row["intPreservativeFreshPercentage"];
-//   $mediumbloodbag = $row["intPreservativeNeutralPercentage"];
-//   $criticalbloodbag = $row["intPreservativeCriticalPercentage"];
-// }
-// settype($bloodbaglifespan, "int");
-// settype($freshbloodbag, "int");
-// settype($mediumbloodbag, "int");
-// settype($criticalbloodbag, "int");
-//
-// $fresh_percentage = $freshbloodbag / 100;
-// $medium_percentage = $mediumbloodbag / 100;
-// $critical_percentage = $criticalbloodbag / 100;
-//
-// $fresh_lifespan = $bloodbaglifespan * $fresh_percentage;
-// settype($fresh_lifespan, "int");
-// $medium_lifespan = $bloodbaglifespan * $medium_percentage;
-// settype($medium_lifespan, "int");
-// $critical_lifespan = $bloodbaglifespan * $critical_percentage;
-// settype($critical_lifespan, "int");
+/*
+fetch lifespan
+$fetch_bloodstatus = mysqli_query($connections, " SELECT * FROM tblpreservatives ");
+while($row = mysqli_fetch_assoc($fetch_bloodstatus)){
+  $bloodbaglifespan = $row["intPreservativeLifespan"];
+  $freshbloodbag = $row["intPreservativeFreshPercentage"];
+  $mediumbloodbag = $row["intPreservativeNeutralPercentage"];
+  $criticalbloodbag = $row["intPreservativeCriticalPercentage"];
+}
+settype($bloodbaglifespan, "int");
+settype($freshbloodbag, "int");
+settype($mediumbloodbag, "int");
+settype($criticalbloodbag, "int");
+
+$fresh_percentage = $freshbloodbag / 100;
+$medium_percentage = $mediumbloodbag / 100;
+$critical_percentage = $criticalbloodbag / 100;
+
+$fresh_lifespan = $bloodbaglifespan * $fresh_percentage;
+settype($fresh_lifespan, "int");
+$medium_lifespan = $bloodbaglifespan * $medium_percentage;
+settype($medium_lifespan, "int");
+$critical_lifespan = $bloodbaglifespan * $critical_percentage;
+settype($critical_lifespan, "int");
+*/
 
 //count blood bags per blood type
 // type a count
