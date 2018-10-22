@@ -35,7 +35,7 @@ if($_POST["storage_id"]){
     JOIN tblstoragetype tst ON ts.intStorageTypeId = tst.intStorageTypeId
     JOIN tblbloodvolume tbv ON tbb.intBloodVolumeId = tbv.intBloodVolumeId
     JOIN tblpreservatives tp ON tbb.intPreservativeId = tp.intPreservativeId
-    WHERE tbb.intStorageId = $storage_id AND tbt.stfBloodType = 'AB' AND tbb.intBloodDispatchmentId = 1 AND tbb.stfIsBloodBagExpired = 'No' AND tbb.stfIsBloodBagDiscarded = 'No' AND DATEDIFF(NOW(), tbb.dtmDateStored) <= tp.intPreservativeLifespan ");
+    WHERE tbb.intStorageId = $storage_id AND tbt.stfBloodType = 'AB' AND tbb.intBloodDispatchmentId = 1 AND tbb.stfIsBloodBagExpired = 'No' AND tbb.stfIsBloodBagDiscarded = 'No' AND DATEDIFF(NOW(), tbb.dtmDateStored) <= tp.intPreservativeLifespan ORDER BY 7 ASC ");
   $fetchbloodbagrotten = mysqli_query($connections, " SELECT * FROM tblbloodbag tbb
         JOIN tblbloodtype tbt ON tbb.intBloodTypeId = tbt.intBloodTypeId
         JOIN tblstorage ts ON ts.intStorageId = tbb.intStorageId

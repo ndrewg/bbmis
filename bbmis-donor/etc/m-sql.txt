@@ -170,7 +170,7 @@ stfMedicalExamRemarks -> Accepted -> View Report(Passed)
 stfMedicalExamRemarks -> Temp./Perm. Deferred -> View Report(Failed)
 
 tblserologicalscreening:
-strSerologicalScreeningRemarks -> strDiseaseRemarks
+strSerologicalScreeningRemarks -> decDiseaseRemarks
 strSerologicalScreeningScreener -> strDiseaseScreener
 strSerologicalScreeningVerifier -> strDiseaseVerifier
 stfDonorSerologicalScreeningStatus -> stfDonorSerologicalScreeningRemarks

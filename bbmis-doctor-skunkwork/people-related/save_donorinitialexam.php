@@ -40,8 +40,8 @@ if ($date){
   if(mysqli_num_rows($checkiffalse) == 0){
   //  echo 1;//if walang nagfalse/fail dun sa 4 na bloodcomponent
     mysqli_query($connections,"UPDATE tblinitialscreening SET stfClientInitialScreeningRemarks = 'Passed' WHERE intDonationId = '$donation_id' AND dtmDateScreened = '$date' ");
-    mysqli_query($connections,"UPDATE tbldonation SET stfDonationStatus = 'Able'  WHERE intDonationId = '$donation_id'");
-    mysqli_query($connections,"UPDATE tblclient SET stfClientType = 'Donor'  WHERE intClientId = '$id'");
+    //mysqli_query($connections,"UPDATE tbldonation SET stfDonationStatus = 'Able'  WHERE intDonationId = '$donation_id'");
+    //mysqli_query($connections,"UPDATE tblclient SET stfClientType = 'Donor'  WHERE intClientId = '$id'");
         $is_saved = mysqli_query($connections,"SELECT * FROM tblinitialscreening WHERE intDonationId = '$donation_id'");
 
         if(mysqli_num_rows($is_saved) > 0){//ICHECK KUNG NASAVE TALAGA

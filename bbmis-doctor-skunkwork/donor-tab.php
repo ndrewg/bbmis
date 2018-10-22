@@ -26,7 +26,7 @@
       <!-- MAIN CONTENT -->
       <div class="col-md-10 offset-md-2 mb-5">
         <div class="content-container">
-          <h4 style="font-family: 'Nunito-Regular'">Current Donors</h4>
+          <h4 style="font-family: 'Nunito-Regular'">Current Applicant/Donors</h4>
           <div class="container-fluid" style="padding-bottom: 40px;">
             <table id="tbl_donor" class="table table-striped table-bordered text-center" style="width: 100%">
               <thead>
@@ -34,6 +34,7 @@
                   <th>First Name</th>
                   <th>Middle Name</th>
                   <th>Last Name</th>
+                  <th>Type</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -254,15 +255,15 @@
             <div class="form-group">
               <input type = "hidden" id ='clientId' name ='clientId'>
               <label for="clientfname">First Name</label>
-              <input type="text" class="form-control" id='clientfname' disabled>
+              <input type="text" class="form-control" id='clientfname' >
             </div>
             <div class="form-group">
               <label for="clientminit">Middle Name</label>
-              <input type="text" class="form-control" id='clientminit' disabled>
+              <input type="text" class="form-control" id='clientminit' >
             </div>
             <div class="form-group">
               <label for="clientlname">Last Name</label>
-              <input type="text" class="form-control" id='clientlname' disabled>
+              <input type="text" class="form-control" id='clientlname' >
             </div>
             <div class="form-group">
               <label for="clientimage">Image</label>
@@ -279,7 +280,7 @@
             </div>
             <div class="form-group">
               <label for="clientsex">Sex</label>
-              <input type="text" class="form-control" id='clientsex' disabled>
+              <input type="text" class="form-control" id='clientsex' >
             </div>
             <div class="form-group">
               <label for="clientbloodtype">Blood Type</label>

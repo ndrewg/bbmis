@@ -26,6 +26,9 @@
       <!-- SIDE NAVIGATION -->
 			<?php
 				include "employeeSidebar.php";
+        $datenow = date('Y-m-d');
+        $datenow_1 = new DateTime($datenow);
+
 			?>
 			<!-- END OF SIDE NAVIGATION -->
       <div class="col-md-10 offset-md-2">
@@ -69,7 +72,7 @@
                 <div class="col-md-5">
                   <div class="form-group">
                     <label for="date_phys">Date Screened</label>
-                    <input type="date" name="date_phys" required>
+                    <input type="date" name="date_phys" value=<?php echo $datenow ?> required>
                   </div>
                 </div>
                 <div class="col-md-5">
@@ -190,7 +193,7 @@
         <div class="col-md-5">
           <div class="form-group">
             <label for="date_init">Date Screened</label>
-            <input type="date" name="date_init" required>
+            <input type="date" name="date_init" value=<?php echo $datenow ?> required>
           </div>
         </div>
         <table class = "table table-striped">
@@ -290,7 +293,7 @@
         <div class="col-md-5">
           <div class="form-group">
             <label for="date_sero">Date Screened</label>
-            <input type="date" name="date_sero" required>
+            <input type="date" name="date_sero" value=<?php echo $datenow ?> required>
           </div>
         </div>
         <div class="col-md-5">
@@ -306,7 +309,6 @@
               <th>Remarks</th>
               <th>Screener</th>
               <th>Verifier</th>
-              <th>Status</th>
             </tr>
           </thead>
           <tbody>
@@ -324,7 +326,7 @@
                 <input type="hidden" value="<?php echo $diseaseid; ?>" name ='hidden_ID'>
                 <tr>
                   <td><?php echo $diseasename; ?></td>
-                  <td>  <input type="text" class="form-control" placeholder="Enter Remarks" name = "D_remarks<?php echo $diseaseid; ?>" id = "D_remarks<?php echo $diseaseid; ?>" required> </td>
+                  <td>  <input type="number" step = 'any' class="form-control" placeholder="Enter Remarks" name = "D_remarks<?php echo $diseaseid; ?>" id = "D_remarks<?php echo $diseaseid; ?>" required> </td>
                   <td>
                     <select class="form-control" name="D_screener<?php echo $diseaseid; ?>" id="D_screener<?php echo $diseaseid; ?>" required>
                       <?php
@@ -371,10 +373,10 @@
                       ?>
                     </select>
                   </td>
-                  <td>
+                  <!--<td>
                     <label class="radio-inline"><input type="radio" name="optradiosero<?php echo $diseaseid; ?>" id="optradiosero<?php echo $diseaseid; ?>" value="Passed" required>Negative</label>
                     <label class="radio-inline"><input type="radio" name="optradiosero<?php echo $diseaseid; ?>" id="optradiosero<?php echo $diseaseid; ?>" value="Failed" required>Positive</label>
-                  </td>
+                  </td>-->
                 </tr>
                 <?php
               }
@@ -428,15 +430,15 @@
             <div class="form-group">
               <input type = "hidden" id ='clientId' name ='clientId'>
               <label for="clientfname">First Name</label>
-              <input type="text" class="form-control" id='clientfname' disabled>
+              <input type="text" class="form-control" id='clientfname' >
             </div>
             <div class="form-group">
               <label for="clientminit">Middle Name</label>
-              <input type="text" class="form-control" id='clientminit' disabled>
+              <input type="text" class="form-control" id='clientminit' >
             </div>
             <div class="form-group">
               <label for="clientlname">Last Name</label>
-              <input type="text" class="form-control" id='clientlname' disabled>
+              <input type="text" class="form-control" id='clientlname' >
             </div>
             <div class="form-group">
               <label for="clientocc">Occupation</label>
@@ -448,7 +450,7 @@
             </div>
             <div class="form-group">
               <label for="clientsex">Sex</label>
-              <input type="text" class="form-control" id='clientsex' disabled>
+              <input type="text" class="form-control" id='clientsex' >
             </div>
             <div class="form-group">
               <label for="clientbloodtype">Blood Type</label>

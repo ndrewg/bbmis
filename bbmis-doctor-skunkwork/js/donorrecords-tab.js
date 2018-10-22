@@ -298,7 +298,7 @@ $(document).ready(function(){
 
               $.ajax({//kung magpoproceed sa sero kunin mo yung nakaquarantine na bloodbag
                 type: "POST",
-                url: 'fetch_newunderquarantinebloodbag.php',
+                url: 'fetch_underquarantinebloodbag.php',
                 data: {donor_id,donor_id},
                 success:function(data){
                   $('#bloodbag_underquarantine').val(data);

@@ -5,7 +5,7 @@ $columns = array('strClientFirstName',
 		'strClientMiddleName', 'strClientLastName'
 	 	);
 
-	$query = "SELECT intClientId, strClientFirstName, strClientMiddleName, strClientLastName,strClientOccupation,strClientContact,intBloodTypeId,stfClientCivilStatus,stfClientSex,TIMESTAMPDIFF(year,datClientBirthday,NOW()) AS age
+	$query = "SELECT intClientId, strClientFirstName, strClientMiddleName, strClientLastName,strClientOccupation,strClientContact,intBloodTypeId,stfClientCivilStatus,stfClientSex,stfClientType,TIMESTAMPDIFF(year,datClientBirthday,NOW()) AS age
 		  		FROM tblclient";
 
 	// datatable column index  => database column name
@@ -61,6 +61,8 @@ $bloodid = $row["intBloodTypeId"];
 
   $sub_array[] = '<div class="update" data-id="'.$row["intClientId"].'" 	data-column="strClientLastName">' . $row["strClientLastName"] . '</div>';
 
+	$sub_array[] = '<div class="update" data-id="'.$row["intClientId"].'" 	data-column="stfClientType">' . $row["stfClientType"] . '</div>';
+
 	 $sub_array[] =
 	 	'
 		<button type="button" class="btn btn-success" data-toggle="modal" data-target="#editdonorinfo" data-id="'.$row["intClientId"].'" data-fname = "'.$row["strClientFirstName"].'"
@@ -75,7 +77,8 @@ $bloodid = $row["intBloodTypeId"];
 function get_all_data($connections)
 {
  $query = "SELECT strClientFirstName, strClientMiddleName, strClientLastName
-		  		FROM tblclient";
+		  		FROM tblclient
+					WHERE stfClientCandonate = 'Yes'";
  $result = mysqli_query($connections, $query);
  return mysqli_num_rows($result);
 }

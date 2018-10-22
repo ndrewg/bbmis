@@ -42,7 +42,7 @@ Disease - Failed Client Count:
 SELECT d.strDisease, COUNT(*) AS 'Failed Client Count'
 FROM tbldisease d
 JOIN tblserologicalscreening ss ON d.intDiseaseId = ss.intDiseaseId
-WHERE ss.strDiseaseRemarks = 'Failed'
+WHERE ss.decDiseaseRemarks = 'Failed'
 GROUP BY 1
 
 Disease - Failed Client List:
@@ -50,7 +50,7 @@ SELECT CONCAT(c.strClientFirstName, ' ', c.strClientLastName) AS 'Client Full Na
 FROM tblclient c
 JOIN tbldonation d ON c.intClientId = d.intClientId 
 JOIN tblserologicalscreening ss ON d.intDonationId = ss.intDonationId
-WHERE ss.strDiseaseRemarks = 'Failed'
+WHERE ss.decDiseaseRemarks = 'Failed'
 GROUP BY 1
 
 Count Client per Age:
