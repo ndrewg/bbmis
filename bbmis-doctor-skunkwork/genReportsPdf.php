@@ -1,8 +1,8 @@
 <?php
 	include "connections.php";
-	// session_start();
-	// $varEmpId = $_SESSION["empId"];
-	$varEmpId = 1;
+	session_start();
+	$varEmpId = $_SESSION["empId"];
+	// $varEmpId = 1;
 
 	require('assets/fpdf/fpdf.php');
 

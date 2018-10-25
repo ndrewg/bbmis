@@ -6,71 +6,112 @@ parse_str(mysqli_real_escape_string($connections, $_POST["formdata"]), $params);
 $from_range = $params['from_range'];
 $to_range = $params['to_range'];
 
-
-$reports_wastage = mysqli_query($connections, " SELECT bt.intBloodTypeId,stfBloodType,stfBloodTypeRhesus,COUNT(intBloodBagId) AS 'count_wastage'
-FROM tblbloodtype bt
-JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId WHERE stfIsBloodBagExpired ='Yes'AND stfTransfusionsuccess = 'No' AND bb.dtmDateStored BETWEEN '$from_range' AND '$to_range' GROUP BY bt.intBloodTypeId, YEAR(dtmDateStored)
- ");
-
-$reports_daily = mysqli_query($connections, " SELECT DATE_FORMAT(dtmDateStored, '%W') AS 'Day',COUNT(intBloodBagId) AS 'Blood Bag Count',stfBloodType
-FROM tblbloodbag bb JOIN tblbloodtype bt ON bb.intBloodTypeId = bt.intBloodTypeId JOIN tblpreservatives pr ON bb.intPreservativeId = pr.intPreservativeId
-WHERE bb.dtmDateStored BETWEEN '$from_range' AND '$to_range'
-GROUP BY 3;
+$reports_wastage = mysqli_query($connections, "
+	SELECT bt.intBloodTypeId, stfBloodType, stfBloodTypeRhesus, COUNT(intBloodBagId) AS 'count_wastage'
+	FROM tblbloodtype bt
+	JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId
+	WHERE stfIsBloodBagExpired ='Yes'
+	AND stfTransfusionSuccess = 'No'
+	AND bb.dtmDateStored BETWEEN '$from_range' AND '$to_range'
+	GROUP BY bt.intBloodTypeId, YEAR(dtmDateStored)
 ");
 
-$reports_monthly = mysqli_query($connections,"SELECT DATE_FORMAT(dtmDateStored, '%M %Y') AS 'Month Year', COUNT(intBloodBagId) AS 'Blood Bag Count',stfBloodType
-FROM tblbloodbag bb JOIN tblbloodtype bt ON bb.intBloodTypeId = bt.intBloodTypeId
-WHERE bb.dtmDateStored BETWEEN '$from_range' AND '$to_range'
-GROUP BY 3
-ORDER BY 1 ASC");
-$reports_yearly = mysqli_query($connections,"SELECT DATE_FORMAT(dtmDateStored, '%Y') AS 'Year', COUNT(intBloodBagId) AS 'Blood Bag Count',stfBloodType
-FROM tblbloodbag bb JOIN tblbloodtype bt ON bb.intBloodTypeId = bt.intBloodTypeId
-WHERE bb.dtmDateStored BETWEEN '$from_range' AND '$to_range'
-GROUP BY 3
-ORDER BY 1 ASC");
-$bloodbagpertype = mysqli_query($connections,"SELECT bt.stfBloodType AS 'Blood Type', COUNT(bb.intBloodTypeId) AS 'Blood Bag Count'
-FROM tblbloodtype bt
-JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId
-WHERE stfIsBloodBagExpired = 'No'
-GROUP BY 1");
-$donorpertype = mysqli_query($connections,"SELECT COUNT(DISTINCT(d.intDonationId)) AS 'Donor Count', stfBloodType AS 'Blood Type'
-FROM tblserologicalscreening s
-JOIN tbldonation d ON s.intDonationId = d.intDonationId
-JOIN tblclient c ON d.intClientId = c.intClientId
-JOIN tblbloodtype bt ON c.intBloodTypeId = bt.intBloodTypeId
-WHERE dtmDateScreened BETWEEN '$from_range' AND '$to_range'
-GROUP BY 2");
-$bloodcomponentfailedcount = mysqli_query($connections,"SELECT DATE_FORMAT(dtmDateScreened, '%M %Y') AS 'Month Year' , bc.strBloodComponent, COUNT(*) AS 'Failed Client Count'
-FROM tblbloodcomponent bc
-JOIN tblinitialscreening ins ON bc.intBloodComponentId = ins.intBloodComponentId
-WHERE ins.strBloodComponentRemarks = 'Failed' AND dtmDateScreened BETWEEN '$from_range' AND '$to_range'
-GROUP BY 2");
-$bloodcomponentfailedlist = mysqli_query($connections,"SELECT DATE_FORMAT(dtmDateScreened, '%M %Y') AS 'Month Year', strBloodComponent, CONCAT(c.strClientFirstName, ' ', c.strClientLastName) AS 'Client Full Name'
-FROM tblclient c
-JOIN tbldonation d ON c.intClientId = d.intClientId
-JOIN tblinitialscreening ins ON d.intDonationId = ins.intDonationId
-JOIN tblbloodcomponent bc ON ins.intBloodComponentId = bc.intBloodComponentId
-WHERE ins.strBloodComponentRemarks = 'Failed' AND dtmDateScreened BETWEEN '$from_range' AND '$to_range'
-GROUP BY 3");
-$blooddiseasefailedcount = mysqli_query($connections,"SELECT DATE_FORMAT(dtmDateScreened, '%M %Y') AS 'Month Year', d.strDisease, COUNT(*) AS 'Failed Client Count'
-FROM tbldisease d
-JOIN tblserologicalscreening ss ON d.intDiseaseId = ss.intDiseaseId
-WHERE ss.stfDonorSerologicalScreeningRemarks = 'Failed' AND dtmDateScreened BETWEEN '$from_range' AND '$to_range'
-GROUP BY 2");
-$blooddiseasefailedlist = mysqli_query($connections,"SELECT DATE_FORMAT(dtmDateScreened, '%M %Y') AS 'Month Year',strDisease,CONCAT(c.strClientFirstName, ' ', c.strClientLastName) AS 'Client Full Name'
-FROM tblclient c
-JOIN tbldonation d ON c.intClientId = d.intClientId
-JOIN tblserologicalscreening ss ON d.intDonationId = ss.intDonationId
-JOIN tbldisease di ON di.intDiseaseId = ss.intDiseaseId
-WHERE ss.stfDonorSerologicalScreeningRemarks = 'Failed' AND dtmDateScreened BETWEEN '$from_range' AND '$to_range'
-GROUP BY 3");
-$donorcountperage = mysqli_query($connections,"SELECT TIMESTAMPDIFF(YEAR, datClientBirthday, NOW()) AS 'Client Age', COUNT(*) AS 'Client Count'
-FROM tblclient
-GROUP BY 1
-ORDER BY 1 ASC");
-$donorcountpersex = mysqli_query($connections,"SELECT stfClientSex AS 'Client Sex', COUNT(*) AS 'Client Count'
-FROM tblclient
-GROUP BY 1");
+$reports_daily = mysqli_query($connections, "
+	SELECT DATE_FORMAT(dtmDateStored, '%W') AS 'Day', COUNT(intBloodBagId) AS 'Blood Bag Count', stfBloodType
+	FROM tblbloodbag bb
+	JOIN tblbloodtype bt ON bb.intBloodTypeId = bt.intBloodTypeId
+	JOIN tblpreservatives pr ON bb.intPreservativeId = pr.intPreservativeId
+	WHERE bb.dtmDateStored BETWEEN '$from_range' AND '$to_range'
+	GROUP BY 3;
+");
+
+$reports_monthly = mysqli_query($connections,"
+	SELECT DATE_FORMAT(dtmDateStored, '%M %Y') AS 'Month Year', COUNT(intBloodBagId) AS 'Blood Bag Count', stfBloodType
+	FROM tblbloodbag bb
+	JOIN tblbloodtype bt ON bb.intBloodTypeId = bt.intBloodTypeId
+	WHERE bb.dtmDateStored BETWEEN '$from_range' AND '$to_range'
+	GROUP BY 3
+	ORDER BY 1 ASC
+");
+
+$reports_yearly = mysqli_query($connections,"
+	SELECT DATE_FORMAT(dtmDateStored, '%Y') AS 'Year', COUNT(intBloodBagId) AS 'Blood Bag Count', stfBloodType
+	FROM tblbloodbag bb
+	JOIN tblbloodtype bt ON bb.intBloodTypeId = bt.intBloodTypeId
+	WHERE bb.dtmDateStored BETWEEN '$from_range' AND '$to_range'
+	GROUP BY 3
+	ORDER BY 1 ASC
+");
+
+$bloodbagpertype = mysqli_query($connections,"
+	SELECT bt.stfBloodType AS 'Blood Type', COUNT(bb.intBloodTypeId) AS 'Blood Bag Count'
+	FROM tblbloodtype bt
+	JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId
+	WHERE stfIsBloodBagExpired = 'No'
+	GROUP BY 1
+");
+
+$donorpertype = mysqli_query($connections,"
+	SELECT COUNT(DISTINCT(d.intDonationId)) AS 'Donor Count', stfBloodType AS 'Blood Type'
+	FROM tblserologicalscreening s
+	JOIN tbldonation d ON s.intDonationId = d.intDonationId
+	JOIN tblclient c ON d.intClientId = c.intClientId
+	JOIN tblbloodtype bt ON c.intBloodTypeId = bt.intBloodTypeId
+	WHERE dtmDateScreened BETWEEN '$from_range' AND '$to_range'
+	GROUP BY 2
+");
+
+$bloodcomponentfailedcount = mysqli_query($connections,"
+	SELECT DATE_FORMAT(dtmDateScreened, '%M %Y') AS 'Month Year' , bc.strBloodComponent, COUNT(*) AS 'Failed Client Count'
+	FROM tblbloodcomponent bc
+	JOIN tblinitialscreening ins ON bc.intBloodComponentId = ins.intBloodComponentId
+	WHERE ins.strBloodComponentRemarks = 'Failed' AND dtmDateScreened BETWEEN '$from_range' AND '$to_range'
+	GROUP BY 2
+");
+
+$bloodcomponentfailedlist = mysqli_query($connections,"
+	SELECT DATE_FORMAT(dtmDateScreened, '%M %Y') AS 'Month Year', strBloodComponent, CONCAT(c.strClientFirstName, ' ', c.strClientLastName) AS 'Client Full Name'
+	FROM tblclient c
+	JOIN tbldonation d ON c.intClientId = d.intClientId
+	JOIN tblinitialscreening ins ON d.intDonationId = ins.intDonationId
+	JOIN tblbloodcomponent bc ON ins.intBloodComponentId = bc.intBloodComponentId
+	WHERE ins.strBloodComponentRemarks = 'Failed'
+	AND dtmDateScreened BETWEEN '$from_range' AND '$to_range'
+	GROUP BY 3
+");
+
+$blooddiseasefailedcount = mysqli_query($connections,"
+	SELECT DATE_FORMAT(dtmDateScreened, '%M %Y') AS 'Month Year', d.strDisease, COUNT(*) AS 'Failed Client Count'
+	FROM tbldisease d
+	JOIN tblserologicalscreening ss ON d.intDiseaseId = ss.intDiseaseId
+	WHERE ss.stfDonorSerologicalScreeningRemarks = 'Failed'
+	AND dtmDateScreened BETWEEN '$from_range' AND '$to_range'
+	GROUP BY 2
+");
+
+$blooddiseasefailedlist = mysqli_query($connections,"
+	SELECT DATE_FORMAT(dtmDateScreened, '%M %Y') AS 'Month Year', strDisease, CONCAT(c.strClientFirstName, ' ', c.strClientLastName) AS 'Client Full Name'
+	FROM tblclient c
+	JOIN tbldonation d ON c.intClientId = d.intClientId
+	JOIN tblserologicalscreening ss ON d.intDonationId = ss.intDonationId
+	JOIN tbldisease di ON di.intDiseaseId = ss.intDiseaseId
+	WHERE ss.stfDonorSerologicalScreeningRemarks = 'Failed'
+	AND dtmDateScreened BETWEEN '$from_range' AND '$to_range'
+	GROUP BY 3
+");
+
+$donorcountperage = mysqli_query($connections,"
+	SELECT TIMESTAMPDIFF(YEAR, datClientBirthday, NOW()) AS 'Client Age', COUNT(*) AS 'Client Count'
+	FROM tblclient
+	GROUP BY 1
+	ORDER BY 1 ASC
+");
+
+$donorcountpersex = mysqli_query($connections,"
+	SELECT stfClientSex AS 'Client Sex', COUNT(*) AS 'Client Count'
+	FROM tblclient
+	GROUP BY 1
+");
 ?>
 <?php
 // if (mysqli_num_rows($reports_remaining) > 0 ){
