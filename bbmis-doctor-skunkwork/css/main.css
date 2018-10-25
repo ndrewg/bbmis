@@ -134,7 +134,7 @@ a.nav-link.nav-item.active{
   border-top-style: solid;
   border-top-color: rgb(221, 56, 116);
   border-radius: 3px;
-  margin: 60px 0 30px 0;
+  margin: 55px 0 30px 0;
   padding: 30px 20px 30px 20px;
   background-color: rgb(255,255,255);
   box-shadow: 0 0 5px 1px #bdbdbd;
@@ -239,8 +239,14 @@ a.nav-link.nav-item.active{
   margin-top:10px;
   font-family: 'Nunito-Regular';
 }
-.notification-dropdown{
+/* .notification-dropdown{
   max-height: 400px;
   min-height: 200px;
   min-width: 200px;
+} */
+/* .rep_header{
+  color:
+} */
+.karla{
+  font-family: "Karla-Regular";
 }

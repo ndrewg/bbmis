@@ -15,16 +15,10 @@
   <div class="container-fluid">
     <div class="row">
       <div class="col-md-12 header">
-  			<button type="button" class="btn float-right text-white text-center" style="background-color: rgb(234,72,127); margin-top: 3px; width: 65px; height: 30px;">Logout</button>
   			<!-- notification -->
-  			<div class="dropdown show">
-  				<a href="#" class="float-right mr-3 text-white dropdown-toggle" id="notifications" style="margin-top: 10px;" data-toggle="dropdown">
-  					<span class="badge badge-pill count" style="border-radius:10px;"></span>
-  					<i class="fas fa-bell"></i>
-  				</a>
-  				<div class="dropdown-menu" aria-labelledby="notifications">
-  				</div>
-  			</div>
+  			<?php
+        include "employeeNavbar.php";
+         ?>
   			<button type="button" class="btn mt-1 float-left text-white" style="background-color: rgb(234, 72, 127); margin-top: 13px;" onclick="location.href='donorrecords-tab.php'"><i class="fas fa-long-arrow-alt-left"></i> Back</button>
   			<h5 class="float-left ml-3" style='color:rgb(250,250,250); font-family:"Nunito-Regular"; margin-top:13px;'>Donor Records</h5>
   		</div>
@@ -435,5 +429,9 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+  <script type="text/javascript" src="bs4/assets/js/vendor/popper.min.js"></script>
+  <script type="text/javascript" src="bs4/dist/js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="js/notification.js"></script>
 </body>
 </html>
