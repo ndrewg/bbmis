@@ -306,9 +306,10 @@
           <thead>
             <tr>
               <th>Disease</th>
-              <th>Remarks</th>
+              <th>Result</th>
               <th>Screener</th>
               <th>Verifier</th>
+              <th>Remarks</th>
             </tr>
           </thead>
           <tbody>
@@ -316,17 +317,24 @@
             include("connections.php");
 
             $fetch_disease = mysqli_query($connections,"SELECT * FROM tbldisease WHERE stfDiseaseStatus = 'Active'");
+            $fetch_diseasecount = mysqli_query($connections,"SELECT COUNT(intDiseaseId) AS diseasecount FROM tbldisease WHERE stfDiseaseStatus = 'Active'");
+
+              while($row = mysqli_fetch_assoc($fetch_diseasecount)){
+                $diseasecount = $row['diseasecount'];
+              }
 
             if(mysqli_num_rows($fetch_disease)>0)
             {
               while ($row = mysqli_fetch_assoc($fetch_disease)){
                 $diseaseid = $row['intDiseaseId'];
                 $diseasename = $row['strDisease'];
+
                 ?>
-                <input type="hidden" value="<?php echo $diseaseid; ?>" name ='hidden_ID'>
+                <input type ="hidden" value="<?php echo $diseaseid ?>" name ='hidden_ID' id='hidden_ID'>
+                <input type ="hidden" value="<?php echo $diseasecount ?>" id ='hidden_count'>
                 <tr>
                   <td><?php echo $diseasename; ?></td>
-                  <td>  <input type="number" step = 'any' class="form-control" placeholder="Enter Remarks" name = "D_remarks<?php echo $diseaseid; ?>" id = "D_remarks<?php echo $diseaseid; ?>" required> </td>
+                  <td>  <input type="number" step = 'any' class="form-control d_remarks" placeholder="Enter Remarks" name = "D_remarks<?php echo $diseaseid; ?>" id = "<?php echo $diseaseid; ?>"  required> </td>
                   <td>
                     <select class="form-control" name="D_screener<?php echo $diseaseid; ?>" id="D_screener<?php echo $diseaseid; ?>" required>
                       <?php
@@ -377,6 +385,10 @@
                     <label class="radio-inline"><input type="radio" name="optradiosero<?php echo $diseaseid; ?>" id="optradiosero<?php echo $diseaseid; ?>" value="Passed" required>Negative</label>
                     <label class="radio-inline"><input type="radio" name="optradiosero<?php echo $diseaseid; ?>" id="optradiosero<?php echo $diseaseid; ?>" value="Failed" required>Positive</label>
                   </td>-->
+                  <td>
+                    <button type = "button" class ="btn btn-danger" disabled style="display:none;" id = "remarkspositive<?php echo $diseaseid; ?>" >POSITIVE</button>
+                    <button type = "button" class ="btn btn-success" disabled style="display:none;" id = "remarksnegative<?php echo $diseaseid; ?>" >NEGATIVE</button>
+                  </td>
                 </tr>
                 <?php
               }
@@ -568,6 +580,34 @@ $('#donorrecordstab').addClass("active");
 $(document).ready(function(){
 fetch_table();
 check_expiringbloodbags();
+check_seroremarks();
+
+function check_seroremarks(){
+/*  var i;
+  var diseasecount = $("#hidden_count").val();
+  for( i = 1; i <= diseasecount; i++){
+      console.log(i);
+    $("#D_remarks"+i).change(function(){
+      var input = $("#D_remarks"+i).val();
+      console.log(i);
+    });
+  }*/
+  $(".d_remarks").change(function(){
+    var diseasecount = $(this).attr("id");
+    var input = parseFloat($(this).val());
+    console.log(input);
+
+if(input <= 1.0 && input >= 0.1){
+$("#remarkspositive"+diseasecount).hide();
+$("#remarksnegative"+diseasecount).show();
+}else{
+$("#remarkspositive"+diseasecount).show();
+$("#remarksnegative"+diseasecount).hide();
+}
+
+  });
+
+}
 
 function check_expiringbloodbags(){
   $.ajax({

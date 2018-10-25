@@ -40,7 +40,7 @@ if ($bloodbag != "No Available Blood Bag" && $bloodbag != ""){
        $donation_id = $donation["intDonationId"];
             }
 
-          if($remarks <= 1.0){
+          if($remarks <= 1.0 AND $remarks >= 0.1){
             $option = 'Passed';
           }else {
             $option = 'Failed';
