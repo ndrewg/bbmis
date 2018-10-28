@@ -27,7 +27,7 @@ include("../connections.php");
 
 
 //notification query
-$getnotificationdetailsrotten = mysqli_query($connections, " SELECT * FROM tblbloodbag tbb JOIN tblbloodtype tbt ON tbb.intBloodTypeId = tbt.intBloodTypeId JOIN tblstorage ts ON ts.intStorageId = tbb.intStorageId JOIN tblpreservatives tp ON tbb.intPreservativeId = tp.intPreservativeId WHERE DATEDIFF(NOW(), tbb.dtmDateStored) > tp.intPreservativeLifespan AND stfIsBloodBagExpired = 'No' " );
+$getnotificationdetailsrotten = mysqli_query($connections, " SELECT * FROM tblbloodbag tbb JOIN tblbloodtype tbt ON tbb.intBloodTypeId = tbt.intBloodTypeId JOIN tblstorage ts ON ts.intStorageId = tbb.intStorageId JOIN tblpreservatives tp ON tbb.intPreservativeId = tp.intPreservativeId WHERE DATEDIFF(NOW(), tbb.dtmDateStored) > tp.intPreservativeLifespan AND stfIsBloodBagExpired = 'Yes' AND stfIsBloodBagDiscarded = 'No'  " );
 $getnotificationdetailsalmostrotten = mysqli_query($connections, " SELECT * FROM tblbloodbag tbb JOIN tblbloodtype tbt ON tbb.intBloodTypeId = tbt.intBloodTypeId JOIN tblstorage ts ON ts.intStorageId = tbb.intStorageId JOIN tblpreservatives tp ON tbb.intPreservativeId = tp.intPreservativeId WHERE DATEDIFF(NOW(), tbb.dtmDateStored) < intPreservativeLifespan AND DATEDIFF(NOW(), tbb.dtmDateStored) > intPreservativeCriticalPercentage AND intBloodDispatchmentId = 1 AND stfIsBloodBagExpired = 'No' ");
 $getnotificationincomplete = mysqli_query($connections, " SELECT DISTINCT(td.intClientId), strClientFirstName, strClientMiddleName, strClientLastName FROM tbldonation td JOIN tblclient tcc ON td.intClientId = tcc.intClientId WHERE stfDonationRemarks = 'Incomplete' ");
 $getnotificationeditrequest = mysqli_query($connections, " SELECT * FROM tblrequest tr JOIN tblclient tcc ON tr.intClientId = tcc.intClientId WHERE stfRequestStatus = 'Requested' AND stfUpdateStatus = 'Not Updated' AND stfRequestFeedback = 'Unnotified' ");
@@ -37,27 +37,39 @@ $getnotificationuncheckedsurvey = mysqli_query($connections, " SELECT DISTINCT(d
                                                 AND dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 4 DAY) AND NOW() ");
 $output = '';
 while($rowalmostrotten = mysqli_fetch_assoc($getnotificationdetailsalmostrotten)){
+
   $serialnoalmostrotten = $rowalmostrotten["strBloodBagSerialNo"];
-  $output .= "
-  <li class='p-1'>
-  <a href='#'>
-  <strong>$serialnoalmostrotten</strong><br>
-  <small>This blood bag is about to expire</small>
-  </a>
-  </li>
-  <li class='divider'></li>
-  ";
+  $getnotificationdetailsalmostrottenbb = mysqli_query($connections, " SELECT * FROM tblbloodbag tbb JOIN tblbloodtype tbt ON tbb.intBloodTypeId = tbt.intBloodTypeId JOIN tblstorage ts ON ts.intStorageId = tbb.intStorageId JOIN tblpreservatives tp ON tbb.intPreservativeId = tp.intPreservativeId WHERE DATEDIFF(NOW(), tbb.dtmDateStored) < intPreservativeLifespan AND DATEDIFF(NOW(), tbb.dtmDateStored) > intPreservativeCriticalPercentage AND intBloodDispatchmentId = 1 AND stfIsBloodBagExpired = 'No' AND strBloodBagSerialNo = '$serialnoalmostrotten' ");
+
+  while($rowalmostrottenbb = mysqli_fetch_assoc($getnotificationdetailsalmostrottenbb)){
+    $output .= "
+    <li class='p-1'>
+    <a href='#'>
+    <strong>$serialnoalmostrotten</strong><br>
+    <small>This blood bag is about to expire</small>
+    </a>
+    </li>
+    <li class='divider'></li>
+    ";
+  }
+
 }
 while($rowrotten = mysqli_fetch_assoc($getnotificationdetailsrotten)){
   $serialnorotten = $rowrotten["strBloodBagSerialNo"];
-  $output .= "
-  <li class='p-1'>
-  <a href='#'>
-  <strong>$serialnorotten</strong><br>
-  <small>This blood bag is expired.</small>
-  </li>
-  <li class='divider'></li>
-  ";
+
+  $getnotificationdetailsrottenbb = mysqli_query($connections, " SELECT COUNT(*) as countrotten FROM tblbloodbag tbb JOIN tblbloodtype tbt ON tbb.intBloodTypeId = tbt.intBloodTypeId JOIN tblstorage ts ON ts.intStorageId = tbb.intStorageId JOIN tblpreservatives tp ON tbb.intPreservativeId = tp.intPreservativeId WHERE DATEDIFF(NOW(), tbb.dtmDateStored) > tp.intPreservativeLifespan AND stfIsBloodBagExpired = 'Yes' AND stfIsBloodBagDiscarded = 'No' AND strBloodBagSerialNo = '$serialnorotten' " );
+  if (mysqli_num_rows($getnotificationdetailsrottenbb) > 0){
+    while ( $rowrottenbb = mysqli_fetch_assoc($getnotificationdetailsrottenbb)){
+      $output .= "
+      <li class='p-1'>
+      <a href='#'>
+      <strong>$serialnorotten</strong><br>
+      <small>This blood bag is expired.</small>
+      </li>
+      <li class='divider'></li>
+      ";
+    }
+  }
 }
 while($rowincomplete = mysqli_fetch_assoc($getnotificationincomplete)){
   $clientfirstname = $rowincomplete["strClientFirstName"];
