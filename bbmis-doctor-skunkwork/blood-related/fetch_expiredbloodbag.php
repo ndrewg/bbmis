@@ -2,7 +2,7 @@
 include("../connections.php");
 
 // fetch numbers that will be used to compare to dates
-$fetch_bloodstatus = mysqli_query($connections, " SELECT * FROM tblpreservatives WHERE intPreservativeId = 1 ");
+/*$fetch_bloodstatus = mysqli_query($connections, " SELECT * FROM tblpreservatives WHERE intPreservativeId = 1 ");
 while($row = mysqli_fetch_assoc($fetch_bloodstatus)){
   $bloodbaglifespan = $row["intPreservativeLifespan"];
   $freshbloodbag = $row["intPreservativeFreshPercentage"];
@@ -23,9 +23,14 @@ settype($fresh_lifespan, "int");
 $medium_lifespan = $bloodbaglifespan * $medium_percentage;
 settype($medium_lifespan, "int");
 $critical_lifespan = $bloodbaglifespan * $critical_percentage;
-settype($critical_lifespan, "int");
+settype($critical_lifespan, "int");*/
 
-$fetch_expiredbloodbags = mysqli_query($connections, " SELECT * FROM tblbloodbag WHERE stfIsBloodBagExpired = 'Yes' AND stfIsBloodBagDiscarded = 'No' OR  DATEDIFF(NOW(), dtmDateStored) > $bloodbaglifespan ");
+$fetch_expiredbloodbags = mysqli_query($connections, " SELECT * FROM tblbloodbag tbb
+  JOIN tblbloodtype tbt ON tbb.intBloodTypeId = tbt.intBloodTypeId
+  JOIN tblstorage ts ON tbb.intStorageId = ts.intStorageId
+  JOIN tblstoragetype tst ON ts.intStorageTypeId = tst.intStorageTypeId
+  JOIN tblbloodvolume tbv ON tbb.intBloodVolumeId = tbv.intBloodVolumeId
+  JOIN tblpreservatives tp ON tbb.intPreservativeId = tp.intPreservativeId WHERE stfIsBloodBagExpired = 'Yes' AND stfIsBloodBagDiscarded = 'No' OR  DATEDIFF(NOW(), dtmDateStored) > tp.intPreservativeLifespan ");
 
 if (mysqli_num_rows($fetch_expiredbloodbags) > 0 ){
   $output = "

@@ -87,14 +87,14 @@ $check_ifhasrecordwithinninetydays = mysqli_query($connections,"SELECT c.intClie
  $failed_survey = mysqli_query($connections,"SELECT *
 FROM tblmedicalexam
 WHERE intDonationId = '$latestdonationID'
-AND (stfAnswerRemarks = 'Unchecked' OR stfAnswerRemarks = 'Expired')
+AND stfAnswerRemarks = 'Wrong'
 AND dtmExamTaken BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW()");
 
-/*$expired_survey = mysqli_query($connections,"SELECT *
+$expired_survey = mysqli_query($connections,"SELECT *
 																				 	FROM `tblmedicalexam`
 																				 	WHERE intDonationId = '$latestdonationID'
 																				 	AND `stfAnswerRemarks` = 'Expired'
-																				 	AND `dtmExamTaken` BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW()");*/
+																				 	AND `dtmExamTaken` BETWEEN DATE_SUB(NOW(), INTERVAL 3 DAY) AND NOW()");
 $unchecked_survey = mysqli_query($connections,"SELECT *
 																				 FROM `tblmedicalexam`
 																				 WHERE intDonationId = '$latestdonationID'
@@ -151,7 +151,7 @@ $checkifpwedenaulit = mysqli_query($connections,"SELECT *
 
 
  																								if(mysqli_num_rows($check_ifhasrecordwithinninetydays) == 0){
-																									  if(mysqli_num_rows($failed_BC) == 0 AND mysqli_num_rows($failed_survey) == 0){
+																									  if(mysqli_num_rows($failed_BC) == 0 AND mysqli_num_rows($failed_survey) == 0 AND mysqli_num_rows($expired_survey) == 0){
 																											if(mysqli_num_rows($unchecked_survey) == 0){
 																									    //  if(mysqli_num_rows($failed_hemo) == 0){
 																									            if(mysqli_num_rows($check_ifnophys) > 0){

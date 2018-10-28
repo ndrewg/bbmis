@@ -442,15 +442,15 @@
             <div class="form-group">
               <input type = "hidden" id ='clientId' name ='clientId'>
               <label for="clientfname">First Name</label>
-              <input type="text" class="form-control" id='clientfname' >
+              <input type="text" class="form-control" id='clientfname' name ='clientfname' >
             </div>
             <div class="form-group">
               <label for="clientminit">Middle Name</label>
-              <input type="text" class="form-control" id='clientminit' >
+              <input type="text" class="form-control" id='clientminit' name ='clientminit'>
             </div>
             <div class="form-group">
               <label for="clientlname">Last Name</label>
-              <input type="text" class="form-control" id='clientlname' >
+              <input type="text" class="form-control" id='clientlname' name ='clientlname'>
             </div>
             <div class="form-group">
               <label for="clientocc">Occupation</label>
@@ -462,7 +462,10 @@
             </div>
             <div class="form-group">
               <label for="clientsex">Sex</label>
-              <input type="text" class="form-control" id='clientsex' >
+              <select class ='form-control' name='clientsex' id = 'clientsex' disabled>
+                <option value='Male'>Male</option>
+                <option value='Male'>Female</option>
+              </select>
             </div>
             <div class="form-group">
               <label for="clientbloodtype">Blood Type</label>

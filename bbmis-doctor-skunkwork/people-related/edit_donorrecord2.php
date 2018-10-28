@@ -8,12 +8,16 @@ $occupation = $params['clientocc'];
 $contact = $params['clientcontact'];
 $civilstat = $params['clientcivstat'];
 $blood_type = $params['clientbloodtype'];
+$clientfname =  $params['clientfname'];
+$clientminit =  $params['clientminit'];
+$clientlname =  $params['clientlname'];
+//$clientsex =  $params['clientsex'];
 
 
-if($occupation && $contact && $civilstat && $blood_type)
+if($occupation && $contact && $civilstat && $blood_type && $clientfname && $clientminit && $clientlname )
 {
   mysqli_query($connections,"UPDATE tblclient
-                            SET strClientContact = '$contact', strClientOccupation = '$occupation', stfClientCivilStatus = '$civilstat', intBloodTypeId = '$blood_type'
+                            SET strClientContact = '$contact', strClientOccupation = '$occupation', stfClientCivilStatus = '$civilstat', intBloodTypeId = '$blood_type',strClientFirstName ='$clientfname',strClientMiddleName ='$clientminit',strClientLastName='$clientlname'
                             WHERE intClientId = $id");
 
   //echo  "<script type='text/javascript'>alert('Edit Succesful!');</script>";

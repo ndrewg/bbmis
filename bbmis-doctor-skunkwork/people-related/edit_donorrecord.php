@@ -8,6 +8,10 @@ $occupation = mysqli_real_escape_string($connections,$_POST['clientocc']);
 $contact = mysqli_real_escape_string($connections,$_POST['clientcontact']);
 $civilstat = mysqli_real_escape_string($connections,$_POST['clientcivstat']);
 $blood_type = mysqli_real_escape_string($connections, $_POST['clientbloodtype']);
+$clientfname = mysqli_real_escape_string($connections, $_POST['clientfname']);
+$clientminit = mysqli_real_escape_string($connections, $_POST['clientminit']);
+$clientlname = mysqli_real_escape_string($connections, $_POST['clientlname']);
+//$clientsex = mysqli_real_escape_string($connections, $_POST['clientsex']);
 
 $file = $_FILES ['clientimage'];
 $fileName = $_FILES['clientimage']['name'];/*kukunin yung file name*/
@@ -44,10 +48,10 @@ else	{
 }
 
 
-if($occupation && $contact && $civilstat && $blood_type)
+if($occupation && $contact && $civilstat && $blood_type && $clientfname&&$clientminit && $clientlname)
 {
   mysqli_query($connections,"UPDATE tblclient
-                            SET strClientContact = '$contact', strClientOccupation = '$occupation', stfClientCivilStatus = '$civilstat', intBloodTypeId = '$blood_type'
+                            SET strClientContact = '$contact', strClientOccupation = '$occupation', stfClientCivilStatus = '$civilstat', intBloodTypeId = '$blood_type',strClientFirstName ='$clientfname',strClientMiddleName ='$clientminit',strClientLastName='$clientlname'
                             WHERE intClientId = $id");
 
   $useridqry = mysqli_query($connections,"SELECT * FROM tblclient c JOIN tbluser u ON c.intUserId = u.intUserId WHERE c.intClientId = '$id'");
