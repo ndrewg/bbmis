@@ -218,14 +218,26 @@
               while ($row = mysqli_fetch_assoc($fetch_components)){
                 $bloodcomponentid = $row['intBloodComponentId'];
                 $componentname = $row['strBloodComponent'];
+                $maleleast = $row['decMaleLeastVal'];
+                $malemax = $row['decMaleMaxVal'];
+                $femaleleast = $row['decFemaleLeastVal'];
+                $femalemax = $row['decFemaleMaxVal'];
+
                 ?>
                 <input type="hidden" value="<?php echo $bloodcomponentid; ?>" name ='hidden_ID'>
                 <tr>
                   <td><?php echo $componentname; ?></td>
-                  <td>  <input type="text" class="form-control" placeholder="Enter Result" name = "BC_result<?php echo $bloodcomponentid; ?>" id = "BC_result<?php echo $bloodcomponentid; ?>" required> </td>
-                  <td>
+                  <td>  <input type="number" step = 'any' class="form-control BC_result" placeholder="Enter Result" name = "BC_result<?php echo $bloodcomponentid; ?>" id = "<?php echo $bloodcomponentid; ?>" data-ml ='<?php echo $maleleast; ?>' data-mm ='<?php echo $malemax; ?>' data-fl ='<?php echo $femaleleast; ?>'
+                   data-fm ='<?php echo $femalemax; ?>' required>
+                  </td>
+                <!--  <td>
                     <label class="radio-inline"><input type="radio" name="BC_remarks<?php echo $bloodcomponentid; ?>" id="BC_remarks<?php echo $bloodcomponentid; ?>" value="Passed" required>Passed</label>
                     <label class="radio-inline"><input type="radio" name="BC_remarks<?php echo $bloodcomponentid; ?>" id="optradio<?php echo $bloodcomponentid; ?>" value="Failed" required>Failed</label>
+
+                  </td>-->
+                  <td>
+                    <button type = "button" class ="btn btn-success" disabled style="display:none;" id = "BCremarkspassed<?php echo $bloodcomponentid; ?>" >PASSED</button>
+                    <button type = "button" class ="btn btn-danger" disabled style="display:none;" id = "BCremarksfailed<?php echo $bloodcomponentid; ?>" >FAILED</button>
                   </td>
                   <td>
                     <select class="form-control" name="BC_screener<?php echo $bloodcomponentid; ?>" id="BC_screener<?php echo $bloodcomponentid; ?>" required>
@@ -334,7 +346,7 @@
                 <input type ="hidden" value="<?php echo $diseasecount ?>" id ='hidden_count'>
                 <tr>
                   <td><?php echo $diseasename; ?></td>
-                  <td>  <input type="number" step = 'any' class="form-control d_remarks" placeholder="Enter Remarks" name = "D_remarks<?php echo $diseaseid; ?>" id = "<?php echo $diseaseid; ?>"  required> </td>
+                  <td>  <input type="number" step = 'any' class="form-control d_remarks" placeholder="Enter Remarks" name = "D_remarks<?php echo $diseaseid; ?>" id = "<?php echo $diseaseid; ?>"  data-trial='hi' required> </td>
                   <td>
                     <select class="form-control" name="D_screener<?php echo $diseaseid; ?>" id="D_screener<?php echo $diseaseid; ?>" required>
                       <?php
@@ -584,21 +596,15 @@ $(document).ready(function(){
 fetch_table();
 check_expiringbloodbags();
 check_seroremarks();
+check_initremarks();
 
 function check_seroremarks(){
-/*  var i;
-  var diseasecount = $("#hidden_count").val();
-  for( i = 1; i <= diseasecount; i++){
-      console.log(i);
-    $("#D_remarks"+i).change(function(){
-      var input = $("#D_remarks"+i).val();
-      console.log(i);
-    });
-  }*/
+
   $(".d_remarks").change(function(){
     var diseasecount = $(this).attr("id");
     var input = parseFloat($(this).val());
-    console.log(input);
+    var sex = $("#csex").text();
+    console.log(sex);
 
 if(input <= 1.0 && input >= 0.1){
 $("#remarkspositive"+diseasecount).hide();
@@ -607,6 +613,39 @@ $("#remarksnegative"+diseasecount).show();
 $("#remarkspositive"+diseasecount).show();
 $("#remarksnegative"+diseasecount).hide();
 }
+
+  });
+
+}
+
+function check_initremarks(){
+
+  $(".BC_result").change(function(){
+    var bccount = $(this).attr("id");
+    var input = parseFloat($(this).val());
+    var sex = $("#csex").text();
+    var ml = $(this).data('ml');
+    var mm = $(this).data('mm');
+    var fl = $(this).data('fl');
+    var fm = $(this).data('fm');
+    console.log(ml+mm+fl+fm+sex);
+    if(sex == 'Male'){
+      if(input >= ml && input <= mm){
+        $("#BCremarkspassed"+bccount).show();
+        $("#BCremarksfailed"+bccount).hide();
+      }else{
+        $("#BCremarkspassed"+bccount).hide();
+        $("#BCremarksfailed"+bccount).show();
+      }
+    }else if (sex =='Female'){
+      if(input >= fl && input <= fm){
+        $("#BCremarkspassed"+bccount).show();
+        $("#BCremarksfailed"+bccount).hide();
+      }else{
+        $("#BCremarkspassed"+bccount).hide();
+        $("#BCremarksfailed"+bccount).show();
+      }
+    }
 
   });
 

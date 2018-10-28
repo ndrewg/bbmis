@@ -30,7 +30,7 @@ $fetch_expiredbloodbags = mysqli_query($connections, " SELECT * FROM tblbloodbag
   JOIN tblstorage ts ON tbb.intStorageId = ts.intStorageId
   JOIN tblstoragetype tst ON ts.intStorageTypeId = tst.intStorageTypeId
   JOIN tblbloodvolume tbv ON tbb.intBloodVolumeId = tbv.intBloodVolumeId
-  JOIN tblpreservatives tp ON tbb.intPreservativeId = tp.intPreservativeId WHERE stfIsBloodBagExpired = 'Yes' AND stfIsBloodBagDiscarded = 'No' OR  DATEDIFF(NOW(), dtmDateStored) > tp.intPreservativeLifespan ");
+  JOIN tblpreservatives tp ON tbb.intPreservativeId = tp.intPreservativeId WHERE stfIsBloodBagExpired = 'Yes' AND stfIsBloodBagDiscarded = 'No' AND  DATEDIFF(NOW(), dtmDateStored) > tp.intPreservativeLifespan ");
 
 if (mysqli_num_rows($fetch_expiredbloodbags) > 0 ){
   $output = "

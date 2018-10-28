@@ -80,6 +80,22 @@
               <label for="newBloodComponentDeferral">Blood Component Deferral</label>
               <input type="number" class="form-control" id='newBloodComponentDeferral' name ='newBloodComponentDeferral' required>
             </div>
+            <div class="form-group">
+              <label for="newBloodComponentML">Least Accepted Value (Male)</label>
+              <input type="number" step = 'any' class="form-control" id='newBloodComponentML' name ='newBloodComponentML' required>
+            </div>
+            <div class="form-group">
+              <label for="newBloodComponentMM">Max Accepted Value (Male)</label>
+              <input type="number" step = 'any' class="form-control" id='newBloodComponentMM' name ='newBloodComponentMM' required>
+            </div>
+            <div class="form-group">
+              <label for="newBloodComponentFL">Least Accepted Value (Female)</label>
+              <input type="number" step = 'any' class="form-control" id='newBloodComponentFL' name ='newBloodComponentFL' required>
+            </div>
+            <div class="form-group">
+              <label for="newBloodComponentFL">Max Accepted Value (Female)</label>
+              <input type="number" step = 'any' class="form-control" id='newBloodComponentFM' name ='newBloodComponentFM' required>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -110,6 +126,22 @@
               <label for="editBloodComponentDeferral">Blood Component Deferral Day</label>
               <input type="number" class="form-control" id='editBloodComponentDeferral' name ='editBloodComponentDeferral' required>
             </div>
+            <div class="form-group">
+              <label for="editBloodComponentML">Least Accepted Value (Male)</label>
+              <input type="number" step = 'any'class="form-control" id='editBloodComponentML' name ='editBloodComponentML' required>
+            </div>
+            <div class="form-group">
+              <label for="editBloodComponentMM">Max Accepted Value (Male)</label>
+              <input type="number" step = 'any' class="form-control" id='editBloodComponentMM' name ='editBloodComponentMM' required>
+            </div>
+            <div class="form-group">
+              <label for="editBloodComponentFL">Least Accepted Value (Female)</label>
+              <input type="number" step = 'any' class="form-control" id='editBloodComponentFL' name ='editBloodComponentFL' required>
+            </div>
+            <div class="form-group">
+              <label for="editBloodComponentFM">Max Accepted Value (Female)</label>
+              <input type="number" step = 'any' class="form-control" id='editBloodComponentFM' name ='editBloodComponentFM' required>
+            </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -138,7 +170,23 @@
 					</div>
           <div class="form-group">
             <label for="viewBloodComponentDeferral">Blood Component Deferral Day</label>
-            <input type="number" class="form-control" id='viewBloodComponentDeferral' name ='viewBloodComponentDeferral' readonly>
+            <input type="number"  class="form-control" id='viewBloodComponentDeferral' name ='viewBloodComponentDeferral' readonly>
+          </div>
+          <div class="form-group">
+            <label for="editBloodComponentML">Least Accepted Value (Male)</label>
+            <input type="number" step = 'any' class="form-control" id='viewBloodComponentML' name ='editBloodComponentML' readonly>
+          </div>
+          <div class="form-group">
+            <label for="editBloodComponentMM">Max Accepted Value (Male)</label>
+            <input type="number" step = 'any' class="form-control" id='viewBloodComponentMM' name ='editBloodComponentMM' readonly>
+          </div>
+          <div class="form-group">
+            <label for="editBloodComponentFL">Least Accepted Value (Female)</label>
+            <input type="number" step = 'any' class="form-control" id='viewBloodComponentFL' name ='editBloodComponentFL' readonly>
+          </div>
+          <div class="form-group">
+            <label for="editBloodComponentFM">Max Accepted Value (Female)</label>
+            <input type="number" step = 'any' class="form-control" id='viewBloodComponentFM' name ='editBloodComponentFM' readonly>
           </div>
 				</div>
 				<div class="modal-footer">
@@ -169,6 +217,22 @@
           <div class="form-group">
             <label for="viewBloodComponentDeferral">Blood Component Deferral Day</label>
             <input type="number" class="form-control" id='viewBloodComponentDeferral_enable' name ='viewBloodComponentDeferral' readonly>
+          </div>
+          <div class="form-group">
+            <label for="editBloodComponentML">Least Accepted Value (Male)</label>
+            <input type="number" class="form-control" id='viewBloodComponentML_enable' name ='editBloodComponentML' readonly>
+          </div>
+          <div class="form-group">
+            <label for="editBloodComponentMM">Max Accepted Value (Male)</label>
+            <input type="number" class="form-control" id='viewBloodComponentMM_enable' name ='editBloodComponentMM' readonly>
+          </div>
+          <div class="form-group">
+            <label for="editBloodComponentFL">Least Accepted Value (Female)</label>
+            <input type="number" class="form-control" id='viewBloodComponentFL_enable' name ='editBloodComponentFL' readonly>
+          </div>
+          <div class="form-group">
+            <label for="editBloodComponentFM">Max Accepted Value (Female)</label>
+            <input type="number" class="form-control" id='viewBloodComponentFM_enable' name ='editBloodComponentFM' readonly>
           </div>
 				</div>
 				<div class="modal-footer">
@@ -279,6 +343,21 @@
                 }
               });
             }
+            else if (data == 4) {
+              swal({
+                title: "",
+                text: "Blood Component is not added Least values must be lesser than max values!",
+                icon: "error",
+                buttons:{text:"Okay"},
+              })
+              .then((willApprove) => {
+                if (willApprove) {
+                  //window.location.href = "bloodcomponent-tab.php";
+                }
+              });
+              // alert("Blood Component is not Edited");
+
+            }
           }
         });
       }
@@ -300,6 +379,11 @@
         $('#bloodcomp_ID').val(data.intBloodComponentId);
         $('#editBloodComponentName').val(data.strBloodComponent);
         $('#editBloodComponentDeferral').val(data.intDeferralDay);
+        $('#editBloodComponentML').val(data.decMaleLeastVal);
+        $('#editBloodComponentMM').val(data.decMaleMaxVal);
+        $('#editBloodComponentFL').val(data.decFemaleLeastVal);
+        $('#editBloodComponentFM').val(data.decFemaleMaxVal);
+
       }
     });
   });
@@ -316,6 +400,10 @@
         $('#viewbloodcomp_ID').val(data.intBloodComponentId);
         $('#viewBloodComponentName').val(data.strBloodComponent);
         $('#viewBloodComponentDeferral').val(data.intDeferralDay);
+        $('#viewBloodComponentML').val(data.decMaleLeastVal);
+        $('#viewBloodComponentMM').val(data.decMaleMaxVal);
+        $('#viewBloodComponentFL').val(data.decFemaleLeastVal);
+        $('#viewBloodComponentFM').val(data.decFemaleMaxVal);
       }
     });
   });
@@ -332,6 +420,10 @@
         $('#viewbloodcomp_ID_enable').val(data.intBloodComponentId);
         $('#viewBloodComponentName_enable').val(data.strBloodComponent);
         $('#viewBloodComponentDeferral_enable').val(data.intDeferralDay);
+        $('#viewBloodComponentML_enable').val(data.decMaleLeastVal);
+        $('#viewBloodComponentMM_enable').val(data.decMaleMaxVal);
+        $('#viewBloodComponentFL_enable').val(data.decFemaleLeastVal);
+        $('#viewBloodComponentFM_enable').val(data.decFemaleMaxVal);
       }
     });
   });
@@ -393,6 +485,21 @@
               .then((willApprove) => {
                 if (willApprove) {
                   window.location.href = "bloodcomponent-tab.php";
+                }
+              });
+              // alert("Blood Component is not Edited");
+
+            }
+            else if (data == 4) {
+              swal({
+                title: "",
+                text: "Blood Component is not edited Least values must be lesser than max values!",
+                icon: "error",
+                buttons:{text:"Okay"},
+              })
+              .then((willApprove) => {
+                if (willApprove) {
+                  //window.location.href = "bloodcomponent-tab.php";
                 }
               });
               // alert("Blood Component is not Edited");
@@ -496,6 +603,98 @@
       }
     });
   });
+//new------------------------------------------------------------------------------------
+  $("#newBloodComponentML").on('change',function(){
+    var ml = parseFloat($('#newBloodComponentML').val());
+    var mm = parseFloat($('#newBloodComponentMM').val());
+    var fl = parseFloat($('#newBloodComponentFL').val());
+    var fm = parseFloat($('#newBloodComponentFM').val());
+
+    if(ml > mm){
+      alert("Least value must be less than max value.");
+    }
+  });
+
+  $("#newBloodComponentMM").on('change',function(){
+    var ml = parseFloat($('#newBloodComponentML').val());
+    var mm = parseFloat($('#newBloodComponentMM').val());
+    var fl = parseFloat($('#newBloodComponentFL').val());
+    var fm = parseFloat($('#newBloodComponentFM').val());
+
+    if(ml > mm){
+      alert("Least value must be less than max value.");
+    }
+  });
+
+  $("#newBloodComponentFL").on('change',function(){
+    var ml = parseFloat($('#newBloodComponentML').val());
+    var mm = parseFloat($('#newBloodComponentMM').val());
+    var fl = parseFloat($('#newBloodComponentFL').val());
+    var fm = parseFloat($('#newBloodComponentFM').val());
+
+    if(fl > fm){
+      alert("Least value must be less than max value.");
+    }
+  });
+
+  $("#newBloodComponentFM").on('change',function(){
+    var ml = parseFloat($('#newBloodComponentML').val());
+    var mm = parseFloat($('#newBloodComponentMM').val());
+    var fl = parseFloat($('#newBloodComponentFL').val());
+    var fm = parseFloat($('#newBloodComponentFM').val());
+
+    if(fl > fm){
+      alert("Least value must be less than max value.");
+    }
+  });
+  //new------------------------------------------------------------------------------------
+  //edit------------------------------------------------------------------------------------
+  $("#editBloodComponentML").on('change',function(){
+    var ml = parseFloat($('#editBloodComponentML').val());
+    var mm = parseFloat($('#editBloodComponentMM').val());
+    var fl = parseFloat($('#editBloodComponentFL').val());
+    var fm = parseFloat($('#editBloodComponentFM').val());
+
+    if(ml > mm){
+      alert("Least value must be less than max value.");
+    }
+  });
+
+  $("#editBloodComponentMM").on('change',function(){
+    var ml = parseFloat($('#editBloodComponentML').val());
+    var mm = parseFloat($('#editBloodComponentMM').val());
+    var fl = parseFloat($('#editBloodComponentFL').val());
+    var fm = parseFloat($('#editBloodComponentFM').val());
+
+    if(ml > mm){
+      alert("Least value must be less than max value.");
+    }
+  });
+
+  $("#editBloodComponentFL").on('change',function(){
+    var ml = parseFloat($('#editBloodComponentML').val());
+    var mm = parseFloat($('#editBloodComponentMM').val());
+    var fl = parseFloat($('#editBloodComponentFL').val());
+    var fm = parseFloat($('#editBloodComponentFM').val());
+
+    if(fl > fm){
+      alert("Least value must be less than max value.");
+    }
+  });
+
+  $("#editBloodComponentFM").on('change',function(){
+    var ml = parseFloat($('#editBloodComponentML').val());
+    var mm = parseFloat($('#editBloodComponentMM').val());
+    var fl = parseFloat($('#editBloodComponentFL').val());
+    var fm = parseFlaot($('#editBloodComponentFM').val());
+
+    if(fl > fm){
+      alert("Least value must be less than max value.");
+    }
+  });
+  //edit------------------------------------------------------------------------------------
+
+
   </script>
 </body>
 </html>

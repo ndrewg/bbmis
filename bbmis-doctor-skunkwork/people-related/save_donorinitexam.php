@@ -6,10 +6,14 @@ $date = $params["date_init"];
 //$newdate = date_format($date,"Y/m/d");
 
 
-$count_components = mysqli_query($connections,"SELECT COUNT(intBloodComponentId) AS Number_of_Components  FROM tblbloodcomponent WHERE stfBloodComponentStatus = 'Active'");
+$count_components = mysqli_query($connections,"SELECT COUNT(intBloodComponentId) AS Number_of_Components,decMaleLeastVal,decMaleMaxVal,decFemaleLeastVal,decFemaleMaxVal  FROM tblbloodcomponent WHERE stfBloodComponentStatus = 'Active'");
 
 while ($row = mysqli_fetch_assoc($count_components)){
   $NumberOfComponents = $row["Number_of_Components"];
+  $maleleast = $row['decMaleLeastVal'];
+  $malemax = $row['decMaleMaxVal'];
+  $femaleleast = $row['decFemaleLeastVal'];
+  $femalemax = $row['decFemaleMaxVal'];
 }
 
 if ($date){
@@ -17,18 +21,28 @@ if ($date){
       $id = $params['clientId_init'];
       settype($id,'int');
       $result= $params["BC_result"."$i"];
-      $remarks = $params["BC_remarks"."$i"];
+      //$remarks = $params["BC_remarks"."$i"];
       $screener = $params["BC_screener"."$i"];
       $verifier = $params["BC_verifier"."$i"];
       $option = $params["optradio"."$i"];
 
+//fetchlatestdonation-----------------------------------------------------------------
       $donationidqry = mysqli_query($connections,"SELECT intDonationId FROM tbldonation WHERE intClientId = '$id' AND stfDonationRemarks = 'Incomplete' ORDER BY intDonationId DESC LIMIT 1 OFFSET 0");
 
       while($donation = mysqli_fetch_assoc($donationidqry)){
        $donation_id = $donation["intDonationId"];
       }
+//-------------------------------------------------------------------------------------
+//fetchDonorSex-----------------------------------------------------------------
+      $fetchDonorSex = mysqli_query($connections,"SELECT stfClientSex FROM tblclient WHERE intClientId = '$id'");
 
-    //$curdate = date("Y/m/d");
+      while($donor = mysqli_fetch_assoc($fetchDonorSex)){
+       $sex = $donor["stfClientSex"];
+      }
+//-------------------------------------------------------------------------------------
+
+
+
            mysqli_query($connections, "INSERT INTO tblinitialscreening(intDonationId,intBloodComponentId,strBloodComponentResult,strBloodComponentRemarks,strBloodComponentScreener,strBloodComponentVerifier,dtmDateScreened,stfClientInitialScreeningRemarks)
            VALUES ('$donation_id','$i','$result', '$remarks', '$screener', '$verifier', '$date', '$option')");
           }
