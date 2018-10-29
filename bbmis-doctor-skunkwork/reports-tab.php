@@ -36,9 +36,9 @@
                     <input type = "date" name="from_range" id = "from_range" class = "form-control-inline" value="<?php echo $datenow ?>">
                     <label class="ml-3">To:</label>
                     <input type="date" name="to_range" id="to_range" class="form-control-inline" value="<?php echo $datenow ?>">
-                    <button type "button" class ="btn form-control-inline">Go</button>
+                    <button type="button" class ="btn form-control-inline">Go</button>
+										<button type="submit" class="btn btn-outline-danger float-right clearfix mb-5" id="btn_genpdf" style="margin-top:-40px"><i class="fas fa-print"></i> Print Reports</button>
                   </form>
-                  <button type="button" class="btn btn-outline-danger float-right clearfix mb-5" id="btn_genpdf" style="margin-top:-40px"><i class="fas fa-print"></i> Print Reports</button>
                 </div>
               </div>
               <!-- <div class="col-md-4 card card-body text-center mx-auto">
@@ -66,9 +66,9 @@
 <script type="text/javascript" src="js/notification.js"></script>
 <script type="text/javascript">
 $("#reportstab").addClass("active");
-$(document).on("click","#btn_genpdf", function(e){
-  window.location.href = "genReportsPdf.php";
-});
+// $(document).on("click","#btn_genpdf", function(e){
+  // window.location.href = "genReportsPdf.php";
+// });
 
 var formdata = $("form[name='daterange']").serialize();
 console.log(formdata);
@@ -93,6 +93,12 @@ $(document).on("submit","form[name='daterange']",function(e){
       $("#reports").html(data);
     }
   });
+});
+
+$(document).on("click","#btn_genpdf",function(e){
+  var from_range = $("#from_range").val();
+  var to_range = $("#to_range").val();
+	window.location.href = "genReportsPdf.php?from_range=" + from_range + "&to_range=" + to_range;
 });
 </script>
 </body>

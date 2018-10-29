@@ -1,8 +1,10 @@
 <?php
 	include "connections.php";
 	session_start();
-	$varEmpId = $_SESSION["empId"];
-	// $varEmpId = 1;
+	$varEmpId = $_SESSION["sessEmpId"];
+
+	$from_range = date_format(date_create($_GET['from_range']), 'F d, Y');
+	$to_range =  date_format(date_create($_GET['to_range']), 'F d, Y');
 
 	require('assets/fpdf/fpdf.php');
 
@@ -15,13 +17,15 @@
 
 	$pdf -> SetFont('Arial', 'B', 20);
 	$pdf -> Text(2.25, 0.95, 'Reports');
+	$pdf -> SetFont('Times', '', 12);
+	$pdf -> Text(2.25, 1.15, $from_range . ' - ' . $to_range);
 
 	$pdf -> Line(0.5, 1.65, 8, 1.65);
 
 	$qryFetchEmpInfo = mysqli_query($connections, "
 		SELECT e.strEmployeeFirstName, e.strEmployeeMiddleName, e.strEmployeeLastName, NOW() AS 'Date Generated'
 		FROM tblemployee e
-		WHERE intEmployeeId = $varEmpId
+		WHERE e.intEmployeeId = $varEmpId
 	");
 
 	while($rowEmpInfo = mysqli_fetch_assoc($qryFetchEmpInfo))	{
@@ -104,7 +108,7 @@
 	");
 	while($rowBbWst = mysqli_fetch_assoc($reports_wastage))	{
 		$varBloodTypeWst = $rowBbWst["stfBloodType"];
-		$varWstCount = $rowBbWst["count_remaining"];
+		$varWstCount = $rowBbWst["count_wastage"];
 		$pdf -> SetFont('Times', '', 12);
 		$pdf -> SetX(0.5);
 		$pdf -> Cell(3.75, 0.3, $varBloodTypeWst, 1, 0, 'C');
@@ -390,7 +394,7 @@
 	");
 	while($rowDiFailList = mysqli_fetch_assoc($difail_list))	{
 		$pdf -> SetFont('Times', '', 12);
-		$varDiFail2 = $rowDiFailList["strBloodComponent"];
+		$varDiFail2 = $rowDiFailList["strDisease"];
 		$varDiFailClient = $rowDiFailList["Client Full Name"];
 		$pdf -> SetX(0.5);
 		$pdf -> Cell(3.75, 0.3, $varDiFail2, 1, 0, 'C');
@@ -441,7 +445,7 @@
 	$pdf -> SetTextColor(255, 255, 255);
 	$pdf -> SetFillColor(220, 53, 69);
 	$pdf -> SetX(0.5);
-	$pdf -> Cell(7.5, 0.3, 'Client Count per Sex', 1, 1, 'C', true);
+	$pdf -> Cell(7.5, 0.3, 'Client Count per Age', 1, 1, 'C', true);
 	$pdf -> SetX(0.5);
 	$pdf -> SetTextColor(0, 0, 0);
 	$pdf -> Cell(3.75, 0.3, 'Age', 1, 0, 'C');
@@ -473,3 +477,6 @@
 
 	$pdf -> Output();
 ?>
+<script>
+
+</script>
