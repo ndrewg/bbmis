@@ -3,8 +3,8 @@
 	session_start();
 	$varEmpId = $_SESSION["sessEmpId"];
 
-	$from_range = date_format(date_create($_GET['from_range']), 'F d, Y');
-	$to_range =  date_format(date_create($_GET['to_range']), 'F d, Y');
+	$varRangeFrom = $_GET['from_range'];
+	$varRangeTo = $_GET['to_range'];
 
 	require('assets/fpdf/fpdf.php');
 
@@ -18,7 +18,7 @@
 	$pdf -> SetFont('Arial', 'B', 20);
 	$pdf -> Text(2.25, 0.95, 'Reports');
 	$pdf -> SetFont('Times', '', 12);
-	$pdf -> Text(2.25, 1.15, $from_range . ' - ' . $to_range);
+	$pdf -> Text(2.25, 1.15, date_format(date_create($varRangeFrom), 'F d, Y') . ' - ' . date_format(date_create($varRangeTo), 'F d, Y'));
 
 	$pdf -> Line(0.5, 1.65, 8, 1.65);
 
@@ -46,13 +46,14 @@
 		$pdf -> Text(0.75, 2, 'Name : ' .  strtoupper($varFullName1));
 	}
 
-
 	$pdf -> Text(0.75, 2.25, 'Date Generated : ' . date_format(date_create($varDateNow), 'F d, Y'));
 
 	$pdf -> Line(0.5, 2.50, 8, 2.50);
 
 	$pdf -> Ln(2.25);
-
+	
+	//Static Reports
+	
 	//Remaining Blood Bag per Blood Type
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
@@ -68,7 +69,7 @@
 		SELECT bt.stfBloodType, COUNT(intBloodBagId) AS 'count_remaining'
 		FROM tblbloodtype bt
 		JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId
-		WHERE stfIsBloodBagExpired ='No'
+		WHERE stfIsBloodBagExpired = 'No'
 		AND intBloodDispatchmentId = '1'
 		GROUP BY 1
 	");
@@ -88,7 +89,7 @@
 	}
 	$pdf -> Ln(0.25);
 
-	//Waster Blood Bag per Blood Type
+	//Wasted Blood Bag per Blood Type
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
 	$pdf -> SetFillColor(220, 53, 69);
@@ -102,8 +103,8 @@
 	$reports_wastage = mysqli_query($connections, " SELECT stfBloodType, COUNT(intBloodBagId) AS 'count_wastage'
 		FROM tblbloodtype bt
 		JOIN tblbloodbag bb ON bt.intBloodTypeId = bb.intBloodTypeId
-		WHERE stfIsBloodBagExpired ='Yes'
-		AND stfTransfusionsuccess = 'No'
+		WHERE stfIsBloodBagExpired = 'Yes'
+		AND stfTransfusionSuccess = 'No'
 		GROUP BY bt.intBloodTypeId, YEAR(dtmDateStored)
 	");
 	while($rowBbWst = mysqli_fetch_assoc($reports_wastage))	{
@@ -121,7 +122,9 @@
 		$pdf -> Cell(7.5, 0.3, 'No wasted blood bags.', 1, 1, 'C');
 	}
 	$pdf -> Ln(0.25);
-
+	
+	//Dynamic Reports
+	
 	//Daily Blood Bag Count
 	$pdf -> SetFont('Times', 'B', 12);
 	$pdf -> SetTextColor(255, 255, 255);
@@ -134,13 +137,10 @@
 	$pdf -> Cell(3.75, 0.3, 'Count', 'TRB', 1, 'C');
 
 	$daily_count = mysqli_query($connections, "
-		SELECT stfBloodType, COUNT(intBloodBagId) AS 'Daily Count'
+		SELECT bt.stfBloodType, COUNT(bb.intBloodBagId) AS 'Daily Count'
 		FROM tblbloodbag bb
 		JOIN tblbloodtype bt ON bb.intBloodTypeId = bt.intBloodTypeId
-		WHERE DATE_FORMAT(dtmDateStored, '%Y') = DATE_FORMAT(NOW(), '%Y')
-		AND DATE_FORMAT(dtmDateStored, '%m') = DATE_FORMAT(NOW(), '%m')
-		AND DATE_FORMAT(dtmDateStored, '%U') = DATE_FORMAT(NOW(), '%U')
-		AND DATE_FORMAT(dtmDateStored, '%d') = DATE_FORMAT(NOW(), '%d')
+		WHERE bb.dtmDateStored BETWEEN '$varRangeFrom' AND '$varRangeTo'
 		GROUP BY 1
 	");
 	while($rowBbDaily = mysqli_fetch_assoc($daily_count))	{
@@ -174,9 +174,7 @@
 		SELECT stfBloodType, COUNT(intBloodBagId) AS 'Weekly Count'
 		FROM tblbloodbag bb
 		JOIN tblbloodtype bt ON bb.intBloodTypeId = bt.intBloodTypeId
-		WHERE DATE_FORMAT(dtmDateStored, '%Y') = DATE_FORMAT(NOW(), '%Y')
-		AND DATE_FORMAT(dtmDateStored, '%m') = DATE_FORMAT(NOW(), '%m')
-		AND DATE_FORMAT(dtmDateStored, '%U') = DATE_FORMAT(NOW(), '%U')
+		WHERE bb.dtmDateStored BETWEEN '$varRangeFrom' AND '$varRangeTo'
 		GROUP BY 1
 	");
 	while($rowBbWeekly = mysqli_fetch_assoc($weekly_count))	{
@@ -210,8 +208,7 @@
 		SELECT stfBloodType, COUNT(intBloodBagId) AS 'Monthly Count'
 		FROM tblbloodbag bb
 		JOIN tblbloodtype bt ON bb.intBloodTypeId = bt.intBloodTypeId
-		WHERE DATE_FORMAT(dtmDateStored, '%Y') = DATE_FORMAT(NOW(), '%Y')
-		AND DATE_FORMAT(dtmDateStored, '%m') = DATE_FORMAT(NOW(), '%m')
+		WHERE bb.dtmDateStored BETWEEN '$varRangeFrom' AND '$varRangeTo'
 		GROUP BY 1
 	");
 	while($rowBbMonthly = mysqli_fetch_assoc($monthly_count))	{
@@ -245,7 +242,7 @@
 		SELECT stfBloodType, COUNT(intBloodBagId) AS 'Yearly Count'
 		FROM tblbloodbag bb
 		JOIN tblbloodtype bt ON bb.intBloodTypeId = bt.intBloodTypeId
-		WHERE DATE_FORMAT(dtmDateStored, '%Y') = DATE_FORMAT(NOW(), '%Y')
+		WHERE bb.dtmDateStored BETWEEN '$varRangeFrom' AND '$varRangeTo'
 		GROUP BY 1
 	");
 	while($rowBbYearly = mysqli_fetch_assoc($yearly_count))	{
@@ -280,6 +277,7 @@
 		FROM tblbloodcomponent bc
 		JOIN tblinitialscreening ins ON bc.intBloodComponentId = ins.intBloodComponentId
 		WHERE ins.strBloodComponentRemarks = 'Failed'
+		AND ins.dtmDateScreened BETWEEN '$varRangeFrom' AND '$varRangeTo'
 		GROUP BY 1
 	");
 	while($rowBcFail = mysqli_fetch_assoc($bcfail_count))	{
@@ -294,7 +292,7 @@
 		$pdf -> SetFont('Times', '', 12);
 		$pdf -> SetTextColor(0, 0, 0);
 		$pdf -> SetX(0.5);
-		$pdf -> Cell(7.5, 0.3, 'No failed blood components.', 1, 1, 'C');
+		$pdf -> Cell(7.5, 0.3, 'No failed blood components count.', 1, 1, 'C');
 	}
 	$pdf -> Ln(0.25);
 
@@ -351,7 +349,7 @@
 		SELECT d.strDisease, COUNT(*) AS 'Count'
 		FROM tbldisease d
 		JOIN tblserologicalscreening ss ON d.intDiseaseId = ss.intDiseaseId
-		WHERE ss.decDiseaseRemarks = 'Failed'
+		WHERE ss.stfDonorSerologicalScreeningRemarks = 'Failed'
 		GROUP BY 1
 	");
 	while($rowDiFail = mysqli_fetch_assoc($difail_count))	{
@@ -387,7 +385,7 @@
 		JOIN tbldonation do ON c.intClientId = do.intClientId
 		JOIN tblserologicalscreening ss ON do.intDonationId = ss.intDonationId
 		JOIN tbldisease di ON ss.intDiseaseId = di.intDiseaseId
-		WHERE ss.decDiseaseRemarks = 'Failed'
+		WHERE ss.stfDonorSerologicalScreeningRemarks = 'Failed'
 		AND DATE_FORMAT(dtmDateScreened, '%Y') = DATE_FORMAT(NOW(), '%Y')
 		AND DATE_FORMAT(dtmDateScreened, '%m') = DATE_FORMAT(NOW(), '%m')
 		GROUP BY 1
