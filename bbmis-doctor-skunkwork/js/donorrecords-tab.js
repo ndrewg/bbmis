@@ -177,9 +177,12 @@ $(document).ready(function(){
           $('#clientlname').val(data.strClientLastName);
           $('#clientcontact').val(data.strClientContact);
           $('#clientsex').val(data.stfClientSex);
+          $('#clientbloodtype').val(data.intBloodTypeId);
           $('#clientcivstat').val(data.stfClientCivilStatus);
           $('#clientbday').val(data.datClientBirthday);
           $('#clientocc').val(data.strClientOccupation);
+          /*var btype = $('#clientbloodtype').val();
+          console.log(btype);*/
         }
       });
     });

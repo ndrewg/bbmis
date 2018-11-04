@@ -14,7 +14,7 @@ $clientlname =  $params['clientlname'];
 //$clientsex =  $params['clientsex'];
 
 
-if($occupation && $contact && $civilstat && $blood_type && $clientfname && $clientminit && $clientlname )
+if($occupation && $contact && $civilstat && $blood_type && $clientfname  && $clientlname )
 {
   mysqli_query($connections,"UPDATE tblclient
                             SET strClientContact = '$contact', strClientOccupation = '$occupation', stfClientCivilStatus = '$civilstat', intBloodTypeId = '$blood_type',strClientFirstName ='$clientfname',strClientMiddleName ='$clientminit',strClientLastName='$clientlname'
