@@ -1,3 +1,6 @@
+/*
+Old modification:
+
 .dropdown-item:active{color:#fff;text-decoration:none;background-color:#dc3545}
 
 .dropdown-item:focus{color:#fff;text-decoration:none;background-color:#dc3545}
@@ -8,6 +11,18 @@
 
 .btn:focus,.btn:hover,.page-link:focus,.page-link:hover{text-decoration:none}
 .btn:focus,.btn:hover,.page-link:focus,.page-link:hover{outline:0;box-shadow:0 0 0 .1rem rgba(237,154,162,.5)}
+*/
+
+.dropdown-item:active{color:#fff;text-decoration:none;background-color:#fa3c4c}
+
+.dropdown-item:focus{color:#fff;text-decoration:none;background-color:#fa3c4c}
+
+.form-control:focus{color:#495057;background-color:#fff;border-color:#fa3c4c;outline:0;box-shadow:0 0 0 .2rem rgba(237,154,162,.5)}
+
+.form-control[readonly]{background-color:#fff;}
+
+.btn:focus,.btn:hover,.page-link:focus,.page-link:hover{text-decoration:none}
+.btn:focus,.btn:hover,.page-link:focus,.page-link:hover{outline:0;box-shadow:0 0 0 .1rem rgba(237,154,162,0.5)}
 
 /* .btn-danger:focus,.btn-danger:hover{text-decoration:none} */
 /* .btn-danger:focus,.btn-danger:hover{outline:0;box-shadow:0 0 0 .2rem rgba(237,154,162,.5)} */
@@ -26,3 +41,15 @@
 	display: none;
 }
 
+:root	{
+	--danger: #fa3c4c;
+}
+
+.bg-danger	{
+	background-color: #fa3c4c!important;
+}
+
+.btn-danger	{
+	background-color: #fa3c4c!important;
+	border-color: #fa3c4c!important;
+}

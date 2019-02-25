@@ -24,7 +24,7 @@
 				</ul>
 				<div class="form-inline my-2 my-lg-0 text-center">
 					<ul class="navbar-nav m-auto">
-						<li class="nav-item border border-danger pt-1 pr-1">
+						<li class="nav-item pt-1 pr-1">
 							<img src="../img/<?php echo $varImg;?>" style="width: 50px; border-radius: 25px;" />
 						</li>
 						<li class="nav-item dropdown">
