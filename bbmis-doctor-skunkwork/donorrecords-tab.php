@@ -494,7 +494,7 @@
                     $blood_type = $row["stfBloodType"];
                     $rhesus = $row["stfBloodTypeRhesus"];
                     ?>
-                    <option value="<?php echo $blood_typeid ?>"><?php echo $blood_type . " " . $rhesus ?></option>
+                    <option value="<?php echo $blood_typeid ?>"><?php echo $blood_type." ".$rhesus ?></option>
                     <?php
                   }
                 }

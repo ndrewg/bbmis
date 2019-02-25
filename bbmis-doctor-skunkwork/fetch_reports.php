@@ -6,6 +6,13 @@ parse_str(mysqli_real_escape_string($connections, $_POST["formdata"]), $params);
 $from_range = $params['from_range'];
 $to_range = $params['to_range'];
 
+$reports_critical = mysqli_query($connections,"SELECT strBloodBagSerialNo, dtmDateStored, stfBloodType, stfBloodTypeRhesus, intBloodVolume, intPreservativeLifespan, TIMESTAMPDIFF(DAY, NOW(), DATE_ADD(dtmDateStored, INTERVAL intPreservativeLifespan DAY)) AS 'Days Remaining' FROM tblbloodbag tbb
+          JOIN tblbloodtype tbt ON tbb.intBloodTypeId = tbt.intBloodTypeId
+          JOIN tblstorage ts ON ts.intStorageId = tbb.intStorageId
+          JOIN tblbloodvolume tbv ON tbb.intBloodVolumeId = tbv.intBloodVolumeId
+          JOIN tblpreservatives tp ON tbb.intPreservativeId = tp.intPreservativeId
+          WHERE DATEDIFF(NOW(), tbb.dtmDateStored) >= tp.intPreservativeCriticalPercentage AND DATEDIFF(NOW(), tbb.dtmDateStored) <= tp.intPreservativeLifespan");
+
 $reports_wastage = mysqli_query($connections, "
 	SELECT bt.intBloodTypeId, stfBloodType, stfBloodTypeRhesus, COUNT(intBloodBagId) AS 'count_wastage'
 	FROM tblbloodtype bt
@@ -147,6 +154,61 @@ $donorcountpersex = mysqli_query($connections,"
 // echo $output;
 // }
  ?>
+ <div class="card">
+	 <div class="card-header" id="hdg_criticalbb">
+		 <!-- <h4 class="mb-0"> -->
+			 <h5 class="karla" data-toggle="collapse" data-target="#div_criticalbb" aria-expanded="true" aria-controls="div_criticalbb">Currently Critical Blood Bags</h5>
+		 <!-- </h4> -->
+	 </div>
+	 <div class="collapse show col-md-12" id="div_criticalbb" aria-labelledby="hdg_criticalbb" data-parent="#accordion">
+		 <div class="card-body">
+			 <table class='table text-center'>
+				 <thead>
+					 <tr>
+						 <th>Blood Bag Serial</th>
+						 <th>Blood Type</th>
+						 <th>Date Stored</th>
+						 <th>Days Remaining</th>
+					 </tr>
+				 </thead>
+				 <?php
+				 if (mysqli_num_rows($reports_critical) > 0){
+					 $output = "";
+					 while($row = mysqli_fetch_assoc($reports_critical)){
+						 $serial = $row["strBloodBagSerialNo"];
+						 $datestored = $row["dtmDateStored"];
+						 $bloodType = $row["stfBloodType"];
+						 $remaining = $row["Days Remaining"];
+						 $output .=
+						 "
+						 <tbody>
+						 <tr>
+						 <td>$serial</td>
+						 <td>$datestored</td>
+						 <td>$bloodType</td>
+						 <td>$remaining</td>
+						 </tr>
+						 </tbody>
+						 ";
+					 }
+					 $output .= "</table>";
+					 echo $output;
+				 }
+				 else if (mysqli_num_rows($reports_critical) == 0){
+					 $output =
+					 "
+					 <tr>
+						 <td>No records</td>
+						 <td></td>
+					 </tr>
+					 </table>
+					 ";
+					 echo $output;
+				 }
+					?>
+		 </div>
+	 </div>
+ </div>
  <!-- <div id="accordion"> -->
    <div class="card">
      <div class="card-header" id="hdg_remainingbbpertype">

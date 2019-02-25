@@ -36,8 +36,8 @@
                     <input type = "date" name="from_range" id = "from_range" class = "form-control-inline" value="<?php echo $datenow ?>">
                     <label class="ml-3">To:</label>
                     <input type="date" name="to_range" id="to_range" class="form-control-inline" value="<?php echo $datenow ?>">
-                    <button type="button" class ="btn form-control-inline">Go</button>
-										<button type="submit" class="btn btn-outline-danger float-right clearfix mb-5" id="btn_genpdf" style="margin-top:-40px"><i class="fas fa-print"></i> Print Reports</button>
+                    <button type="submit" class ="btn form-control-inline">Go</button>
+										<button type="button" class="btn btn-outline-danger float-right clearfix mb-5" id="btn_genpdf" style="margin-top:-40px"><i class="fas fa-print"></i> Print Reports</button>
                   </form>
                 </div>
               </div>
