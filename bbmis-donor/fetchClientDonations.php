@@ -10,7 +10,7 @@
 		WHERE d.intDonationId = (
 			SELECT d1.intDonationId
 			FROM tbldonation d1
-			WHERE d.intClientId = $varDbId
+			WHERE d1.intClientId = $varDbId
 			LIMIT 1
 		)
 		GROUP BY d.intDonationId

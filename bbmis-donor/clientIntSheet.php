@@ -5,6 +5,7 @@
 		<link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css" type="text/css">
 		<link rel="stylesheet" href="assets/fa/css/all.min.css" type="text/css">
 		<link rel="stylesheet" href="assets/css/bs-override.css" type="text/css">
+		<link rel="stylesheet" href="assets/css/style.css" type="text/css">
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<script src="assets/swal/sweetalert.min.js" type="text/javascript"></script>
@@ -21,7 +22,7 @@
 		<?php
 			include "clientNavBar.php";
 		?>
-		<h4 class="display-4 text-center my-sm-4">Interview Sheet</h4>
+		<h4 id="headTitle" class="display-4 text-center my-sm-4">Interview Sheet</h4>
 		<p class="text-center h5 mb-4">
 			Status: 
 			<span id="spnStatus"></span>
@@ -35,7 +36,27 @@
 			</form>
 			<!--button type='submit' id='btnEmpty'>Truncate Records</button-->
 		</div>
+		<a href="#headTitle">
+			<button id="btnTop" class="btn btn-lg btn-danger" title="Back to Top">
+				<i class="fa fa-angle-double-up"></i>
+			</button>
+		</a>
 	</body>
+	<!-- Animation scripts -->
+	<script>
+		// When the user scrolls down 20px from the top of the document, show the button
+		window.onscroll = function() {scrollFunction()};
+
+		function scrollFunction() {
+			if(document.body.scrollTop < 20 || document.documentElement.scrollTop > 20) {
+				document.getElementById("btnTop").style.animationPlayState = "running";
+			} 
+			else	{
+				document.getElementById("btnTop").style.animationDirection = "reverse";
+				document.getElementById("btnTop").style.animationPlayState = "running";
+			}
+		}
+	</script>
 	<script>
 		$(document).ready(function()	{
 			var intsheetanswers = $(this).serialize();
