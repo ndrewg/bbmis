@@ -1,8 +1,9 @@
 <?php
 	include "connection.php";
 	parse_str($_POST["formdata"], $params);
-	$varUn = $params["txtUn"];
-	$varPw = $params["txtPw"];
+
+	$varUn = filter_var($params["txtUn"], FILTER_SANITIZE_STRING);
+	$varPw = filter_var($params["txtPw"], FILTER_SANITIZE_STRING);
 
 	/* Username and Password has value */
 	if($varUn && $varPw)	{

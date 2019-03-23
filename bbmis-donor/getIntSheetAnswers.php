@@ -65,7 +65,7 @@
 		}
 
 		if(isset($params["txtStr$varQueId"]))	{
-			$varAnsStr = $params["txtStr$varQueId"];
+			$varAnsStr = filter_var($params["txtStr$varQueId"], FILTER_SANITIZE_STRING);
 		}
 		else	{
 			$varAnsStr = null;

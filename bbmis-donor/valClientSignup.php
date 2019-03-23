@@ -2,19 +2,19 @@
 	include "connection.php";
 	parse_str($_POST["formdata2"], $params2);
 
-	$varFname = ucwords(strtolower(ltrim(rtrim($params2["txtFname"]))));
-	$varMname = ucwords(strtolower(ltrim(rtrim($params2["txtMname"]))));
-	$varLname = ucwords(strtolower(ltrim(rtrim($params2["txtLname"]))));
-	$varContNo = ltrim(rtrim($params2["txtContNo"]));
-	$varEmail = $params2["txtEmail"];
-	$varSex = $params2["optSex"];
-	$varCvlStat = $params2["optCvlStat"];
-	$varBm = $params2["txtBm"];
-	$varBd = $params2["txtBd"];
-	$varBy = $params2["txtBy"];
-	$varOcc = ucwords(strtolower(ltrim(rtrim($params2["txtOcc"]))));
-	$varUn = strtolower(ltrim(rtrim($params2["txtUn"])));
-	$varPw = $params2["txtPw"];
+	$varFname = filter_var(ucwords(strtolower(ltrim(rtrim($params2["txtFname"])))), FILTER_SANITIZE_STRING);
+	$varMname = filter_var(ucwords(strtolower(ltrim(rtrim($params2["txtMname"])))), FILTER_SANITIZE_STRING);
+	$varLname = filter_var(ucwords(strtolower(ltrim(rtrim($params2["txtLname"])))), FILTER_SANITIZE_STRING);
+	$varContNo = filter_var(ltrim(rtrim($params2["txtContNo"])), FILTER_SANITIZE_STRING);
+	$varEmail = filter_var($params2["txtEmail"], FILTER_SANITIZE_EMAIL);
+	$varSex = filter_var($params2["optSex"], FILTER_SANITIZE_STRING);
+	$varCvlStat = filter_var($params2["optCvlStat"], FILTER_SANITIZE_STRING);
+	$varBm = filter_var($params2["txtBm"], FILTER_SANITIZE_STRING);
+	$varBd = filter_var($params2["txtBd"], FILTER_SANITIZE_STRING);
+	$varBy = filter_var($params2["txtBy"], FILTER_SANITIZE_STRING);
+	$varOcc = filter_var(ucwords(strtolower(ltrim(rtrim($params2["txtOcc"])))), FILTER_SANITIZE_STRING);
+	$varUn = filter_var(strtolower(ltrim(rtrim($params2["txtUn"]))), FILTER_SANITIZE_STRING);
+	$varPw = filter_var($params2["txtPw"], FILTER_SANITIZE_STRING);
 
 
 	if($varUn && $varPw)	{
