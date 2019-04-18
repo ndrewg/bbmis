@@ -49,7 +49,6 @@
 		public $dy;
 		public $qua;
 	}
-	
 	// $arrPrntItemsAns = array();
 	// $arrChldItemsAns = array();
 	
@@ -57,9 +56,21 @@
 		$varQueId = $rowItemAns["intQuestionId"];
 		$varAnsYn = $rowItemAns["stfAnswerYn"];
 		$varAnsStr = $rowItemAns["strAnswerString"];
-		$varAnsDm = date_format(date_create($rowItemAns["datAnswerDate"]), 'n');
-		$varAnsDd = date_format(date_create($rowItemAns["datAnswerDate"]), 'j');
-		$varAnsDy = date_format(date_create($rowItemAns["datAnswerDate"]), 'Y');
+
+		if($rowItemAns["datAnswerDate"] == '0000-00-00' || $rowItemAns["datAnswerDate"] == null)	{
+			$varAnsDm = $varAnsDd = '00';
+			$varAnsDy = '0000';
+		}
+		else	{
+			$varAnsDm = date_format(date_create($rowItemAns["datAnswerDate"]), 'n');
+			$varAnsDd = date_format(date_create($rowItemAns["datAnswerDate"]), 'j');
+			$varAnsDy = date_format(date_create($rowItemAns["datAnswerDate"]), 'Y');
+		}
+		
+		// $varAnsDm = date_format(date_create($rowItemAns["datAnswerDate"]), 'n');
+		// $varAnsDd = date_format(date_create($rowItemAns["datAnswerDate"]), 'j');
+		// $varAnsDy = date_format(date_create($rowItemAns["datAnswerDate"]), 'Y');
+		
 		$varAnsQua = $rowItemAns["intAnswerQuantity"];
 		
 		$objItemsAns = new ItemAns();

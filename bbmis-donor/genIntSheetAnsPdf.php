@@ -109,9 +109,9 @@
 			JOIN tblquestion q ON qc.intQuestionCategoryId = q.intQuestionCategoryId
 			JOIN tblmedicalexam me ON q.intQuestionId = me.intQuestionId
 			WHERE me.intDonationId = (
-				SELECT intDonationId
-				FROM tbldonation
-				WHERE intClientId = '$clientid'
+				SELECT MAX(d1.intDonationId)
+				FROM tbldonation d1
+				WHERE d1.intClientId = '$clientid'
 				ORDER BY 1 DESC
 			)
 			LIMIT 1 OFFSET $varOffset

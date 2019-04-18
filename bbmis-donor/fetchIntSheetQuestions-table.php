@@ -33,7 +33,6 @@
 		$varVersionToUse = $varVersionInUse;
 	}
 	
-	$varQueCount = 1;
 
 	$qryDistQueCtg = mysqli_query($conn, "
 		SELECT DISTINCT(qc.stfQuestionCategory)
@@ -44,10 +43,15 @@
 	
 	$varCountQueCtg = mysqli_num_rows($qryDistQueCtg);
 	
-	$qryCliSex = mysqli_query($conn, "SELECT stfClientSex FROM tblclient WHERE intClientId = $varDbId");
+	$qryCliSex = mysqli_query($conn, "
+		SELECT stfClientSex
+		FROM tblclient
+		WHERE intClientId = $varDbId");
 	$rowCliSex = mysqli_fetch_assoc($qryCliSex);
 	$varSex = $rowCliSex["stfClientSex"];
 
+	$varQueCount = 1;
+	
 	function typeYn($varQueId)	{
 		echo "
 				<div class='row'>

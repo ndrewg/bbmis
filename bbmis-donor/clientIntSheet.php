@@ -44,11 +44,11 @@
 	</body>
 	<!-- Animation scripts -->
 	<script>
-		// When the user scrolls down 20px from the top of the document, show the button
+		// When the user scrolls down 20px from the top of the document, show button
 		window.onscroll = function() {scrollFunction()};
-
 		function scrollFunction() {
-			if(document.body.scrollTop < 20 || document.documentElement.scrollTop > 20) {
+			console.log(document.documentElement.scrollTop);
+			if(document.documentElement.scrollTop != 0) {
 				document.getElementById("btnTop").style.animationPlayState = "running";
 			} 
 			else	{
@@ -69,6 +69,8 @@
 						//console.log(data);
 						var varObj = jQuery.parseJSON(data);
 						var varObjLng = varObj.length;
+						
+						console.log(varObj);
 						
 						for(x=0; x<varObjLng; x++)	{
 							// console.log(varObj[x].id);
